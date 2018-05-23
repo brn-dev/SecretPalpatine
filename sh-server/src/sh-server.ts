@@ -4,14 +4,16 @@ import * as socketIo from 'socket.io';
 import { ADDRCONFIG } from 'dns';
 
 export class SHServer {
-  public static readonly PORT: number = 8999;
 
   private app: express.Application;
   private server: Server;
   private io: SocketIO.Server;
+
   private port: string | number;
 
-  constructor() {}
+  constructor(port: number = 88) {
+    this.port = port;
+  }
 
   private createApp(): void {
     this.app = express();
@@ -22,7 +24,7 @@ export class SHServer {
   }
 
   private config(): void {
-    this.port = process.env.PORT || SHServer.PORT;
+    this.port = process.env.PORT || this.port;
   }
 
   private createIoServer(): void {
