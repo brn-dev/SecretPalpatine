@@ -12,6 +12,8 @@ dependencies:
   angular_components: ^0.8.0
   socket_io_client:
     git: git://github.com/rikulo/socket.io-client-dart.git
+  sh_shared:
+    path: ../sh-shared
 
 dev_dependencies:
   angular_test: ^1.0.0
