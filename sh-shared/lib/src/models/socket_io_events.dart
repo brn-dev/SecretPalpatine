@@ -5,6 +5,8 @@ class SocketIoEvents {
   static const String gameStarted = 'game-started';
   static const String presidentSet = 'president-set';
   static const String chancellorSet = 'chancellor-set';
+  static const String playerFinishedVoting = 'player-finished-voting';
+  static const String voteFinished = 'vote-finished';
   static const String policyRevealed = 'policy-revealed';
   static const String chancellorIsHitler = 'chancellor-hitler';
   static const String presidentChoosing = 'president-choosing';
@@ -20,6 +22,7 @@ class SocketIoEvents {
   static const String presidentPickingNextPresident = 'president-picking-next-president';
 
   // Client to Server 
+  static const String setName = 'set-name';
   static const String createLobby = 'create-lobby';
   static const String joinLobby = 'join-lobby';
   static const String startGame = 'start-game';
