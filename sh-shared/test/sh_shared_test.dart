@@ -45,7 +45,7 @@ void main() {
       testPerson1 = new Player(1, 'Brn');
       testPerson2 = new Player(2, 'Haiden');
       testLobby = new Lobby.withPlayers(1, 'Lobby 1', [testPerson1, testPerson2]);
-      testLobbyJson = '{"id":1,"name":"Lobby 1","players":[{"id":1,"name":"Brn"},{"id":2,"name":"Haiden"}]}';
+      testLobbyJson = '{"id":1,"name":"Lobby 1","players":[{"id":1,"name":"Brn"},{"id":2,"name":"Haiden"}],"open":true}';
     });
 
     test('serialization', () {
@@ -68,7 +68,7 @@ void main() {
       var lobby = new Lobby.fromJsonString('{}');
       expect(lobby.id, null);
       expect(lobby.name, null);
-      expect(lobby.players, null);
+      expect(lobby.players, []);
     });
   });
 

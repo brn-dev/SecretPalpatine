@@ -1,12 +1,22 @@
-import 'serializable.dart';
+import 'dart:convert';
 
-class Player extends Serializable {
+class Player {
   int id;
   String name;
 
   Player([this.id, this.name]);
 
-  Player.fromJson(Map<String, dynamic> jsonMap) : super.fromJson(jsonMap);
+  Player.fromJsonString(String json) : this.fromJson(JSON.decode(json));
 
-  Player.fromJsonString(String json) : super.fromJsonString(json);
+  Player.fromJson(Map<String, dynamic> jsonMap) {
+    this.id = jsonMap['id'];
+    this.name = jsonMap['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = new Map<String, dynamic>();
+    map['id'] = id;
+    map['name'] = name;
+    return map;
+  }
 }

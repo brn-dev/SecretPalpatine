@@ -1,27 +1,43 @@
+import 'dart:convert';
 import 'player.dart';
-import 'serializable.dart';
 
-class Lobby extends Serializable {
+class Lobby {
   int id;
   String name;
-  List<Player> _players = new List<Player>();
+  List<Player> players = new List<Player>();
   bool open = true;
 
   Lobby([this.id, this.name]);
 
-  Lobby.fromJson(Map<String, dynamic> jsonMap) : super.fromJson(jsonMap);
+  Lobby.withPlayers(this.id, this.name, this.players);
 
-  Lobby.fromJsonString(String json) : super.fromJsonString(json);
+  Lobby.fromJsonString(String json) : this.fromJson(JSON.decode(json));
 
-  List<Player> get player => _players;
+  Lobby.fromJson(Map<String, dynamic> jsonMap) {
+    id = jsonMap['id'];
+    name = jsonMap['name'];
+    open = jsonMap['open'];
+    if (jsonMap['players'] != null) {
+      players = jsonMap['players'].map((playerJson) => new Player.fromJson(playerJson)).toList();
+    }
+  }
 
   void removePlayerWithId(int playerId) =>
-      _players.removeWhere((player) => player.id == playerId);
+      players.removeWhere((player) => player.id == playerId);
 
   void addPlayer(Player player) {
     if (!open) {
       throw new Exception('Lobby is not open anymore - player can\'t join');
     }
-    _players.add(player);
+    players.add(player);
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = new Map<String, dynamic>();
+    map['id'] = id;
+    map['name'] = name;
+    map['players'] = players.map((player) => player.toJson()).toList();
+    map['open'] = open;
+    return map;
   }
 }
