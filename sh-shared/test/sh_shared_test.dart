@@ -112,7 +112,7 @@ void main() {
     setUp(() {
       testRole = new Role(1, false, 'Hitler', '');
       testGameInfo = new GameInfo(testRole, [2, 3], 3);
-      testGameInfoJson = '{"role":{"id":1,"membership":false,"name":"Hitler","imageUrl":""},"alliesIds":[2,3],"hitlerId":3}';
+      testGameInfoJson = '{"role":{"id":1,"membership":false,"name":"Hitler","imageUrl":""},"fascistsIds":[2,3],"hitlerId":3}';
     });
 
     test('serialization', () {
@@ -126,9 +126,9 @@ void main() {
       expect(gi.role.membership, testRole.membership);
       expect(gi.role.name, testRole.name);
       expect(gi.role.imageUrl, testRole.imageUrl);
-      expect(gi.alliesIds.length, testGameInfo.alliesIds.length);
-      for (var i = 0; i < gi.alliesIds.length; i++) {
-        expect(gi.alliesIds[i], testGameInfo.alliesIds[i]);
+      expect(gi.fascistsIds.length, testGameInfo.fascistsIds.length);
+      for (var i = 0; i < gi.fascistsIds.length; i++) {
+        expect(gi.fascistsIds[i], testGameInfo.fascistsIds[i]);
       }
       expect(gi.hitlerId, testGameInfo.hitlerId);
     });
@@ -136,7 +136,7 @@ void main() {
     test('deserialization empty', () {
       var gi = new GameInfo.fromJsonString('{}');
       expect(gi.role, null);
-      expect(gi.alliesIds, null);
+      expect(gi.fascistsIds, null);
       expect(gi.hitlerId, null);
     });
   });

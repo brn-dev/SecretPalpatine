@@ -36,7 +36,7 @@ class SHServer {
       PlayerSocket playerSocket =
           new PlayerSocket(_playerManager.createPlayer(playerName), client);
       client.once(SocketIoEvents.createLobby, (String lobbyName) {
-        onCreateLobby(playerSocket, lobbyName);
+        createLobby(playerSocket, lobbyName);
         client.off(SocketIoEvents.joinLobby);
       });
       client.once(SocketIoEvents.joinLobby, (int lobbyId) {
@@ -46,7 +46,7 @@ class SHServer {
     });
   }
 
-  void onCreateLobby(PlayerSocket hostPlayer, String lobbyName) {
+  void createLobby(PlayerSocket hostPlayer, String lobbyName) {
     Lobby lobby = _lobbyManager.createLobby(lobbyName);
     GameHandler gameHandler =
         new GameHandler(io, lobby, hostPlayer, whenEmpty: () {

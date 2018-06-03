@@ -10,5 +10,7 @@ export 'src/models/role.dart';
 export 'src/models/game_info.dart';
 
 export 'src/models/socket_io_events.dart';
+export 'src/models/roles.dart';
+export 'src/models/special_powers.dart';
 
 // TODO: Export any libraries intended for clients of this package.
