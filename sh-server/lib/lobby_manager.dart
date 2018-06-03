@@ -8,6 +8,8 @@ class LobbyManager {
 
   List<Lobby> get lobbies => _lobbies;
 
+  List<Lobby> get openLobbies => _lobbies.where((lobby) => lobby.open).toList();
+
   Lobby createLobby(String name) {
     var newLobby = new Lobby(_lobbyIdManager.getNextId(), name);
     _lobbies.add(newLobby);
