@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'game_handler.dart';
 import 'lobby_manager.dart';
-import 'models/player-socket.dart';
+import 'models/player_socket.dart';
 import 'package:sh_shared/sh_shared.dart';
 import 'package:socket_io/socket_io.dart';
 import 'player_manager.dart';

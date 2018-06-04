@@ -17,9 +17,7 @@ class SocketIoEvents {
   static const String liberalsWon = 'liberals-won';
   static const String fascistsWon = 'fascists-won';
   static const String playerKilled = 'player-killed';
-  static const String presidentExamining = 'president-examining';
-  static const String presidentExamined = 'president-examined';
-  static const String presidentInvestigating = 'president-investigating';
+  static const String playerInvestigated = 'player-investigated';
   static const String presidentInvestigated = 'president-investigated';
   static const String presidentPickingNextPresident = 'president-picking-next-president';
 
