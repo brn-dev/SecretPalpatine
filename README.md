@@ -1,8 +1,8 @@
 # SecretPalpatine
 Digital version of the board game [Secret Hitler](secrethitler.com)
 
-##Technologies
-###Backend
+## Technologies
+### Backend
 Dart + SocketIO-Dart
-###Frontend
+### Frontend
 Angulardart + SocketIO-Dart
