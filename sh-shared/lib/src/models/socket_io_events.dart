@@ -1,7 +1,7 @@
 
 class SocketIoEvents {
   // Server to Client
-  static const String lobbyCreated = 'lobby-created';
+  static const String lobbyJoined = 'lobby-joined';
   static const String lobbies = 'lobbies';
   static const String playerJoined = 'player-joined';
   static const String gameStarted = 'game-started';

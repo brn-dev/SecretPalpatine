@@ -65,7 +65,6 @@ class GameHandler {
     roomId = lobbyPrefix + lobby.id.toString();
     join(host);
     host.socket.once(SocketIoEvents.startGame, (_) => startGame());
-    host.socket.emit(SocketIoEvents.lobbyCreated, JSON.encode(lobby));
 
     specialPowersFunctionMapping = {
       SpecialPowers.policyPeek: handlePolicyPeek,
@@ -149,6 +148,8 @@ class GameHandler {
     lobby.addPlayer(playerSocket.player);
     players.add(playerSocket);
     playerSocket.socket.join(roomId);
+
+    playerSocket.socket.emit(SocketIoEvents.lobbyJoined, JSON.encode(lobby));
 
     playerSocket.socket
         .to(roomId)
