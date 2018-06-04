@@ -13,4 +13,4 @@ Angulardart + [SocketIO-Client-Dart](https://github.com/rikulo/socket.io-client-
 ## Structure
 * sh-client: The client app for the game
 * sh-server: Manages the clients and the communication between the clients
-* sh-shared: A package which provides some models and other data two the other two packages listed above.
+* sh-shared: A package which provides some models and other data to the other two packages listed above.
