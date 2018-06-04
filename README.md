@@ -6,6 +6,11 @@ Simply because many people don't know Secret Hitler and I don't want people to w
 
 ## Technologies
 ### Backend
-Dart + SocketIO-Dart
+Dart + [SocketIO-Dart](https://github.com/rikulo/socket.io-dart)
 ### Frontend
-Angulardart + SocketIO-Dart
+Angulardart + [SocketIO-Client-Dart](https://github.com/rikulo/socket.io-client-dart)
+
+## Structure
+* sh-client: The client app for the game
+* sh-server: Manages the clients and the communication between the clients
+* sh-shared: A package which provides some models and other data two the other two packages listed above.
