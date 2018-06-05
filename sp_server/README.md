@@ -1,4 +1,4 @@
-# sh_server
+# sp_server
 
 A sample command-line application.
 

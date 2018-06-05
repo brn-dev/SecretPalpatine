@@ -8,7 +8,7 @@
             "name": "Dart",
             "type": "dart",
             "request": "launch",
-            "program": "${workspaceFolder}/sh-shared/test/sh_shared_test.dart"
+            "program": "${workspaceFolder}/sh-shared/test/sp_shared_test.dart"
         }
     ]
 }

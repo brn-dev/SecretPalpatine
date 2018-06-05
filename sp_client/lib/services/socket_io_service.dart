@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:angular/core.dart';
 
-import 'package:sh_client/services/game_state_service.dart';
-import 'package:sh_shared/sh_shared.dart';
+import 'package:sp_client/services/game_state_service.dart';
+import 'package:sp_shared/sp_shared.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 typedef void VoidCallback();

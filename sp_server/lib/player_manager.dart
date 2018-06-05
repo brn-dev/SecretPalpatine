@@ -1,5 +1,5 @@
 import 'id_manager.dart';
-import 'package:sh_shared/sh_shared.dart';
+import 'package:sp_shared/sp_shared.dart';
 
 class PlayerManager {
   final IDManager _playerIdManager = new IDManager();

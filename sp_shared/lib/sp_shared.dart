@@ -1,7 +1,7 @@
 /// Support for doing something awesome.
 ///
 /// More dartdocs go here.
-library sh_shared;
+library sp_shared;
 
 // export 'src/models/serializable.dart';
 export 'src/models/player.dart';

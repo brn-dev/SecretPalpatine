@@ -1,4 +1,4 @@
-# sh_shared
+# sp_shared
 
 A library for Dart developers.
 
@@ -9,7 +9,7 @@ Created from templates made available by Stagehand under a BSD-style
 
 A simple usage example:
 
-    import 'package:sh_shared/sh_shared.dart';
+    import 'package:sp_shared/sp_shared.dart';
 
     main() {
       var awesome = new Awesome();
