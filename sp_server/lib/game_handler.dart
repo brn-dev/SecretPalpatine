@@ -24,34 +24,34 @@ class GameHandler {
   Random random = new Random();
 
   Map<PlayerSocket, Role> rolesForPlayers = new Map<PlayerSocket, Role>();
-  PlayerSocket _president;
+  PlayerSocket _viceChair;
   PlayerSocket _chancellor;
-  PlayerSocket previousPresident;
+  PlayerSocket previousViceChair;
   PlayerSocket previousChancellor;
-  PlayerSocket presidentBeforeSpecialElection = null;
+  PlayerSocket viceChairBeforeSpecialElection = null;
   List<PlayerSocket> killedPlayers = new List<PlayerSocket>();
   PolicyPile policyDrawPile = new PolicyPile();
   PolicyPile policyDiscardPile = new PolicyPile();
   int failedGovernmentCounter = 0;
-  int liberalEnactedPolicyCount = 0;
-  int fascistEnactedPolicyCount = 0;
+  int loyalistEnactedPolicyCount = 0;
+  int seperatistEnactedPolicyCount = 0;
   List<SpecialPowerFunction> specialPowers;
 
   Map<int, SpecialPowerFunction> specialPowersFunctionMapping;
 
-  static const int liberalPolicyWinCount = 5;
-  static const int fascistPolicyWinCount = 6;
-  static final int hitlerRoleId = Roles.hitler.id;
+  static const int loyalistPolicyWinCount = 5;
+  static const int seperatistPolicyWinCount = 6;
+  static final int palpatineRoleId = Roles.palpatine.id;
 
-  bool get hitlerKnowsFascists => players.length <= 6;
+  bool get palpatineKnowsSeperatists => players.length <= 6;
 
   List<PlayerSocket> get alivePlayers =>
       players.where((player) => !killedPlayers.contains(player)).toList();
 
-  PlayerSocket get president => _president;
-  set president(PlayerSocket player) {
-    _president = player;
-    room.emit(SocketIoEvents.presidentSet, player.player.id);
+  PlayerSocket get viceChair => _viceChair;
+  set viceChair(PlayerSocket player) {
+    _viceChair = player;
+    room.emit(SocketIoEvents.viceChairSet, player.player.id);
   }
 
   PlayerSocket get chancellor => _chancellor;
@@ -91,24 +91,24 @@ class GameHandler {
     return players[currIndex];
   }
 
-  PlayerSocket getNextPresident() {
-    return getNextPlayer(president);
+  PlayerSocket getNextViceChair() {
+    return getNextPlayer(viceChair);
   }
 
   bool isAlive(PlayerSocket player) {
     return !killedPlayers.contains(player);
   }
 
-  bool isHitlerWin() {
-    return fascistEnactedPolicyCount >= 3 &&
-        rolesForPlayers[chancellor].id == hitlerRoleId;
+  bool isPalpatineWin() {
+    return seperatistEnactedPolicyCount >= 3 &&
+        rolesForPlayers[chancellor].id == palpatineRoleId;
   }
 
   bool isPlayerValidForChancellor(PlayerSocket player) {
     if (!alivePlayers.contains(player)) {
       return false;
     }
-    if (player == previousPresident || player == previousChancellor) {
+    if (player == previousViceChair || player == previousChancellor) {
       return false;
     }
     return true;
@@ -120,17 +120,17 @@ class GameHandler {
 
   void resetTermLimits() {
     previousChancellor = null;
-    previousPresident = null;
+    previousViceChair = null;
   }
 
   GameInfo createGameInfo(
-      Role role, List<int> fascistPlayerIds, int hitlerPlayerId) {
+      Role role, List<int> seperatistPlayerIds, int palpatinePlayerId) {
     var gameInfo = new GameInfo(role, [], null);
-    if (!role.membership && (role.id != hitlerRoleId || hitlerKnowsFascists)) {
-      gameInfo.fascistsIds = fascistPlayerIds;
+    if (!role.membership && (role.id != palpatineRoleId || palpatineKnowsSeperatists)) {
+      gameInfo.seperatistsIds = seperatistPlayerIds;
     }
     if (!role.membership) {
-      gameInfo.hitlerId = hitlerPlayerId;
+      gameInfo.palpatineId = palpatinePlayerId;
     }
     return gameInfo;
   }
@@ -189,18 +189,18 @@ class GameHandler {
     setupPolicies();
     setupSpecialPowers();
     assignRoles();
-    president = players[random.nextInt(players.length)];
+    viceChair = players[random.nextInt(players.length)];
     formGovernment();
   }
 
   void setupPolicies() {
     policyDrawPile = new PolicyPile();
-    var fascistPolicyCount = 11;
-    var liberalPolicyCount = 6;
-    for (var i = 0; i < fascistPolicyCount; i++) {
+    var seperatistPolicyCount = 11;
+    var loyalistPolicyCount = 6;
+    for (var i = 0; i < seperatistPolicyCount; i++) {
       policyDrawPile.add(false);
     }
-    for (var i = 0; i < liberalPolicyCount; i++) {
+    for (var i = 0; i < loyalistPolicyCount; i++) {
       policyDrawPile.add(true);
     }
     policyDrawPile.shuffle();
@@ -220,18 +220,18 @@ class GameHandler {
 
   void assignRoles() {
     rolesForPlayers = randomlyAssignRoles();
-    var fascistPlayerIds = new List<int>();
-    var hitlerPlayerId = -1;
+    var seperatistPlayerIds = new List<int>();
+    var palpatinePlayerId = -1;
     rolesForPlayers.forEach((player, role) {
       if (!role.membership) {
-        fascistPlayerIds.add(player.player.id);
+        seperatistPlayerIds.add(player.player.id);
       }
-      if (role.id == hitlerRoleId) {
-        hitlerPlayerId = player.player.id;
+      if (role.id == palpatineRoleId) {
+        palpatinePlayerId = player.player.id;
       }
     });
     rolesForPlayers.forEach((player, role) {
-      var gameInfo = createGameInfo(role, fascistPlayerIds, hitlerPlayerId);
+      var gameInfo = createGameInfo(role, seperatistPlayerIds, palpatinePlayerId);
       player.socket.emit(SocketIoEvents.gameStarted, gameInfo);
     });
   }
@@ -247,7 +247,7 @@ class GameHandler {
   }
 
   void formGovernment() {
-    president.socket.once(SocketIoEvents.chooseChancellor, (int playerId) {
+    viceChair.socket.once(SocketIoEvents.chooseChancellor, (int playerId) {
       var selectedChancellor = getPlayerById(playerId);
       if (!isPlayerValidForChancellor(selectedChancellor)) {
         print(
@@ -276,7 +276,7 @@ class GameHandler {
     room.emit(SocketIoEvents.voteFinished, votePerPlayer);
     bool voteResult = evaluateVote(votePerPlayer);
     if (voteResult) {
-      previousPresident = president;
+      previousViceChair = viceChair;
       previousChancellor = chancellor;
       handleLegislativeSession();
       failedGovernmentCounter = 0;
@@ -308,7 +308,7 @@ class GameHandler {
       revealFirstPolicy();
       failedGovernmentCounter = 0;
     }
-    setNextPlayerAsPresident();
+    setNextPlayerAsViceChair();
     formGovernment();
   }
 
@@ -316,38 +316,38 @@ class GameHandler {
     bool policy = policyDrawPile.draw();
     room.emit(SocketIoEvents.policyRevealed, JSON.encode(policy));
     if (policy) {
-      enactLiberalPolicy();
+      enactLoyalistPolicy();
     } else {
-      enactFascistPolicy(true);
+      enactSeperatistPolicy(true);
     }
     refillPoliciesIfNecessary();
   }
 
-  void setNextPlayerAsPresident() {
-    if (presidentBeforeSpecialElection == null) {
-      president = getNextPresident();
+  void setNextPlayerAsViceChair() {
+    if (viceChairBeforeSpecialElection == null) {
+      viceChair = getNextViceChair();
     } else {
-      president = getNextPlayer(presidentBeforeSpecialElection);
-      presidentBeforeSpecialElection = null;
+      viceChair = getNextPlayer(viceChairBeforeSpecialElection);
+      viceChairBeforeSpecialElection = null;
     }
   }
 
   void handleLegislativeSession() {
-    if (isHitlerWin()) {
-      room.emit(SocketIoEvents.chancellorIsHitler);
-      fascistWin();
+    if (isPalpatineWin()) {
+      room.emit(SocketIoEvents.chancellorIsPalpatine);
+      seperatistWin();
       return;
     }
     List<bool> drawnPolicies = policyDrawPile.drawMany(3);
     refillPoliciesIfNecessary();
-    handlePresidentsDiscard(drawnPolicies);
+    handleViceChairsDiscard(drawnPolicies);
   }
 
-  void handlePresidentsDiscard(List<bool> drawnPolicies) {
-    president.socket
+  void handleViceChairsDiscard(List<bool> drawnPolicies) {
+    viceChair.socket
         .emit(SocketIoEvents.policiesDrawn, JSON.encode(drawnPolicies));
-    president.socket.to(roomId).emit(SocketIoEvents.presidentChoosing);
-    president.socket.once(SocketIoEvents.discardPolicy, (bool policy) {
+    viceChair.socket.to(roomId).emit(SocketIoEvents.viceChairChoosing);
+    viceChair.socket.once(SocketIoEvents.discardPolicy, (bool policy) {
       drawnPolicies.remove(policy);
       policyDiscardPile.add(policy);
 
@@ -370,40 +370,40 @@ class GameHandler {
 
   void handlePolicy(bool policy) {
     if (policy) {
-      enactLiberalPolicy();
+      enactLoyalistPolicy();
     } else {
-      enactFascistPolicy();
+      enactSeperatistPolicy();
     }
   }
 
-  void enactLiberalPolicy() {
-    liberalEnactedPolicyCount++;
-    if (liberalEnactedPolicyCount == liberalPolicyWinCount) {
-      liberalWin();
+  void enactLoyalistPolicy() {
+    loyalistEnactedPolicyCount++;
+    if (loyalistEnactedPolicyCount == loyalistPolicyWinCount) {
+      loyalistWin();
       return;
     }
-    setNextPlayerAsPresident();
+    setNextPlayerAsViceChair();
     formGovernment();
   }
 
-  void enactFascistPolicy([bool ingnorePresidentalSpecialPower = false]) {
-    fascistEnactedPolicyCount++;
-    if (fascistEnactedPolicyCount == fascistPolicyWinCount) {
-      fascistWin();
+  void enactSeperatistPolicy([bool ingnoreViceChairalSpecialPower = false]) {
+    seperatistEnactedPolicyCount++;
+    if (seperatistEnactedPolicyCount == seperatistPolicyWinCount) {
+      seperatistWin();
       return;
     }
     var callback = () {
-      setNextPlayerAsPresident();
+      setNextPlayerAsViceChair();
       formGovernment();
     };
-    if (!ingnorePresidentalSpecialPower) {
+    if (!ingnoreViceChairalSpecialPower) {
       handleSpecialPower(callback);
     }
     callback();
   }
 
   void handleSpecialPower(Function callback) {
-    var specialPower = specialPowers[fascistEnactedPolicyCount];
+    var specialPower = specialPowers[seperatistEnactedPolicyCount];
     if (specialPower != null) {
       specialPower(callback);
     }
@@ -411,44 +411,44 @@ class GameHandler {
 
   void handlePolicyPeek(Function callback) {
     List<bool> peekedPolicies = policyDrawPile.peekMany(3);
-    president.socket
+    viceChair.socket
         .emit(SocketIoEvents.policiesDrawn, JSON.encode(peekedPolicies));
     callback();
   }
 
   void handleLoyaltyInvestigation(Function callback) {
-    president.socket.once(SocketIoEvents.investigatePlayer, (int playerId) {
+    viceChair.socket.once(SocketIoEvents.investigatePlayer, (int playerId) {
       PlayerSocket chosenPlayer = getPlayerById(playerId);
-      president.socket.emit(SocketIoEvents.playerInvestigated,
+      viceChair.socket.emit(SocketIoEvents.playerInvestigated,
           JSON.encode(rolesForPlayers[chosenPlayer].membership));
-      president.socket.to(roomId).emit(SocketIoEvents.presidentInvestigated);
+      viceChair.socket.to(roomId).emit(SocketIoEvents.viceChairInvestigated);
       callback();
     });
   }
 
   void handleSpecialElection(Function callback) {
-    president.socket.once(SocketIoEvents.pickNextPresident, (int playerId) {
-      presidentBeforeSpecialElection = president;
-      president = getPlayerById(playerId);
+    viceChair.socket.once(SocketIoEvents.pickNextViceChair, (int playerId) {
+      viceChairBeforeSpecialElection = viceChair;
+      viceChair = getPlayerById(playerId);
       formGovernment();
     });
   }
 
   void handleExecution(Function callback) {
-    president.socket.once(SocketIoEvents.killPlayer, (int playerId) {
+    viceChair.socket.once(SocketIoEvents.killPlayer, (int playerId) {
       var killedPlayer = getPlayerById(playerId);
       killedPlayers.add(killedPlayer);
-      president.socket.to(roomId).emit(
+      viceChair.socket.to(roomId).emit(
           SocketIoEvents.playerKilled, JSON.encode(killedPlayer.player.id));
       callback();
     });
   }
 
-  void fascistWin() {
-    room.emit(SocketIoEvents.fascistsWon);
+  void seperatistWin() {
+    room.emit(SocketIoEvents.seperatistsWon);
   }
 
-  void liberalWin() {
-    room.emit(SocketIoEvents.liberalsWon);
+  void loyalistWin() {
+    room.emit(SocketIoEvents.loyalistsWon);
   }
 }

@@ -9,16 +9,16 @@ class GameStateService {
   Lobby lobby;
 
   // Board State
-  int fascistEnactedPolicies;
-  int liberalEnactedPolicies;
+  int seperatistEnactedPolicies;
+  int loyalistEnactedPolicies;
 
   // Information
   Role role;
-  List<Player> fellowFascists;
-  Player hitler;
+  List<Player> fellowSeperatists;
+  Player palpatine;
 
   // Players
-  Player president;
+  Player viceChair;
   Player chancellor;
   List<Player> killedPlayers;
   List<Player> get players => lobby?.players ?? null;
@@ -34,35 +34,35 @@ class GameStateService {
 
   void reset() {
     player = null;
-    fascistEnactedPolicies = 0;
-    liberalEnactedPolicies = 0;
+    seperatistEnactedPolicies = 0;
+    loyalistEnactedPolicies = 0;
     role = null;
-    fellowFascists = null;
-    hitler = null;
-    president = null;
+    fellowSeperatists = null;
+    palpatine = null;
+    viceChair = null;
     chancellor = null;
     killedPlayers = new List<Player>();
   }
 
-  void addFascistPolicy() => fascistEnactedPolicies++;
+  void addSeperatistPolicy() => seperatistEnactedPolicies++;
 
-  void addLiberalPolicy() => liberalEnactedPolicies++;
+  void addLoyalistPolicy() => loyalistEnactedPolicies++;
 
   Player getPlayerById(int playerId) =>
       players.singleWhere((player) => player.id == playerId);
 
-  void setPresidentById(int playerId) => president = getPlayerById(playerId);
+  void setViceChairById(int playerId) => viceChair = getPlayerById(playerId);
 
   void setChancellorById(int playerId) => chancellor = getPlayerById(playerId);
 
-  void setHitlerById(int playerId) => hitler = getPlayerById(playerId);
+  void setPalpatineById(int playerId) => palpatine = getPlayerById(playerId);
 
-  void setFellowFascistByPlayerIds(List<int> playerIds) {
+  void setFellowSeperatistByPlayerIds(List<int> playerIds) {
     if (playerIds == null) {
-      fellowFascists = null;
+      fellowSeperatists = null;
       return;
     }
-    fellowFascists =
+    fellowSeperatists =
         playerIds.map((playerId) => getPlayerById(playerId)).toList();
   }
 

@@ -5,21 +5,21 @@ class SocketIoEvents {
   static const String lobbies = 'lobbies';
   static const String playerJoined = 'player-joined';
   static const String gameStarted = 'game-started';
-  static const String presidentSet = 'president-set';
+  static const String viceChairSet = 'viceChair-set';
   static const String chancellorSet = 'chancellor-set';
   static const String playerFinishedVoting = 'player-finished-voting';
   static const String voteFinished = 'vote-finished';
   static const String policyRevealed = 'policy-revealed';
-  static const String chancellorIsHitler = 'chancellor-hitler';
-  static const String presidentChoosing = 'president-choosing';
+  static const String chancellorIsPalpatine = 'chancellor-palpatine';
+  static const String viceChairChoosing = 'viceChair-choosing';
   static const String chancellorChoosing = 'chancellor-choosing';
   static const String policiesDrawn = 'policies-drawn';
-  static const String liberalsWon = 'liberals-won';
-  static const String fascistsWon = 'fascists-won';
+  static const String loyalistsWon = 'loyalists-won';
+  static const String seperatistsWon = 'seperatists-won';
   static const String playerKilled = 'player-killed';
   static const String playerInvestigated = 'player-investigated';
-  static const String presidentInvestigated = 'president-investigated';
-  static const String presidentPickingNextPresident = 'president-picking-next-president';
+  static const String viceChairInvestigated = 'viceChair-investigated';
+  static const String viceChairPickingNextViceChair = 'viceChair-picking-next-viceChair';
 
   // Client to Server 
   static const String setName = 'set-name';
@@ -32,5 +32,5 @@ class SocketIoEvents {
   static const String discardPolicy = 'discard-policy';
   static const String killPlayer = 'kill-player';
   static const String investigatePlayer = 'investigate-player';
-  static const String pickNextPresident = 'pick-next-president';
+  static const String pickNextViceChair = 'pick-next-viceChair';
 }

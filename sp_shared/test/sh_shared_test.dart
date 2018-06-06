@@ -77,8 +77,8 @@ void main() {
     String testRoleJson;
 
     setUp(() {
-      testRole = new Role(1, false, 'Hitler', '');
-      testRoleJson = '{"id":1,"membership":false,"name":"Hitler","imageUrl":""}';
+      testRole = new Role(1, false, 'Palpatine', '');
+      testRoleJson = '{"id":1,"membership":false,"name":"Palpatine","imageUrl":""}';
     });
 
     test('serialization', () {
@@ -110,9 +110,9 @@ void main() {
     String testGameInfoJson;
 
     setUp(() {
-      testRole = new Role(1, false, 'Hitler', '');
+      testRole = new Role(1, false, 'Palpatine', '');
       testGameInfo = new GameInfo(testRole, [2, 3], 3);
-      testGameInfoJson = '{"role":{"id":1,"membership":false,"name":"Hitler","imageUrl":""},"fascistsIds":[2,3],"hitlerId":3}';
+      testGameInfoJson = '{"role":{"id":1,"membership":false,"name":"Palpatine","imageUrl":""},"seperatistsIds":[2,3],"palpatineId":3}';
     });
 
     test('serialization', () {
@@ -126,18 +126,18 @@ void main() {
       expect(gi.role.membership, testRole.membership);
       expect(gi.role.name, testRole.name);
       expect(gi.role.imageUrl, testRole.imageUrl);
-      expect(gi.fascistsIds.length, testGameInfo.fascistsIds.length);
-      for (var i = 0; i < gi.fascistsIds.length; i++) {
-        expect(gi.fascistsIds[i], testGameInfo.fascistsIds[i]);
+      expect(gi.seperatistsIds.length, testGameInfo.seperatistsIds.length);
+      for (var i = 0; i < gi.seperatistsIds.length; i++) {
+        expect(gi.seperatistsIds[i], testGameInfo.seperatistsIds[i]);
       }
-      expect(gi.hitlerId, testGameInfo.hitlerId);
+      expect(gi.palpatineId, testGameInfo.palpatineId);
     });
 
     test('deserialization empty', () {
       var gi = new GameInfo.fromJsonString('{}');
       expect(gi.role, null);
-      expect(gi.fascistsIds, null);
-      expect(gi.hitlerId, null);
+      expect(gi.seperatistsIds, null);
+      expect(gi.palpatineId, null);
     });
   });
 }
