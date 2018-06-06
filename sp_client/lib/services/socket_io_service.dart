@@ -13,12 +13,18 @@ typedef void PoliciesCallback(List<bool> policies);
 
 @Injectable()
 class SocketIoService {
-  static const serverUrl = 'http://localhost:88';
+  String serverUrl = 'http://localhost:88';
 
   Socket socket;
   GameStateService gameStateService;
 
   SocketIoService(this.gameStateService) {
+    socket = io(serverUrl);
+  }
+
+  void reconnectTo(String url) {
+    socket.disconnect();
+    socket.close();
     socket = io(serverUrl);
   }
 
