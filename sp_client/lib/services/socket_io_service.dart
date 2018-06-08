@@ -52,8 +52,8 @@ class SocketIoService {
   void investigatePlayer(int playerId) =>
       socket.emit(SocketIoEvents.investigatePlayer, playerId);
 
-  void pickNextPresident(int playerId) =>
-      socket.emit(SocketIoEvents.pickNextPresident, playerId);
+  void pickNextViceChair(int playerId) =>
+      socket.emit(SocketIoEvents.pickNextViceChair, playerId);
 
   void whenLobbyJoined(VoidCallback callback) =>
       socket.once(SocketIoEvents.lobbyJoined, (String lobbyJson) {
@@ -66,23 +66,23 @@ class SocketIoService {
       socket.once(SocketIoEvents.gameStarted, (String gameInfoJson) {
         GameInfo gameInfo = new GameInfo.fromJsonString(gameInfoJson);
         gameStateService.role = gameInfo.role;
-        if (gameInfo.fascistsIds != null) {
-          gameStateService.setFellowFascistByPlayerIds(gameInfo.fascistsIds);
+        if (gameInfo.seperatistsIds != null) {
+          gameStateService.setFellowSeperatistByPlayerIds(gameInfo.seperatistsIds);
         }
-        if (gameInfo.hitlerId != null) {
-          gameStateService.setHitlerById(gameInfo.hitlerId);
+        if (gameInfo.palpatineId != null) {
+          gameStateService.setPalpatineById(gameInfo.palpatineId);
         }
       });
 
-  void whenPresidentSet(VoidCallback callback) =>
-      socket.once(SocketIoEvents.presidentSet, (int presidentId) {
-        gameStateService.setPresidentById(presidentId);
+  void whenViceChairSet(VoidCallback callback) =>
+      socket.once(SocketIoEvents.viceChairSet, (int viceChairId) {
+        gameStateService.setViceChairById(viceChairId);
         callback();
       });
 
   void whenChancellorSet(VoidCallback callback) =>
-      socket.once(SocketIoEvents.chancellorSet, (int presidentId) {
-        gameStateService.setChancellorById(presidentId);
+      socket.once(SocketIoEvents.chancellorSet, (int viceChairId) {
+        gameStateService.setChancellorById(viceChairId);
         callback();
       });
 
@@ -99,19 +99,19 @@ class SocketIoService {
   void whenPolicyRevealed(BoolCallback policyCallback) =>
       socket.once(SocketIoEvents.policyRevealed, (bool policy) {
         if (policy) {
-          gameStateService.addLiberalPolicy();
+          gameStateService.addLoyalistPolicy();
         } else {
-          gameStateService.addFascistPolicy();
+          gameStateService.addSeperatistPolicy();
         }
         policyCallback(policy);
       });
 
-  void whenChancellorIsHitler(BoolCallback isHitlerCallback) => socket.once(
-      SocketIoEvents.chancellorIsHitler,
-      (bool isHitler) => isHitlerCallback(isHitler));
+  void whenChancellorIsPalpatine(BoolCallback isPalpatineCallback) => socket.once(
+      SocketIoEvents.chancellorIsPalpatine,
+      (bool isPalpatine) => isPalpatineCallback(isPalpatine));
 
-  void whenPresidentChoosing(VoidCallback callback) =>
-      socket.once(SocketIoEvents.presidentChoosing, (_) => callback());
+  void whenViceChairChoosing(VoidCallback callback) =>
+      socket.once(SocketIoEvents.viceChairChoosing, (_) => callback());
 
   void whenChancellorChoosing(VoidCallback callback) =>
       socket.once(SocketIoEvents.chancellorChoosing, (_) => callback());
@@ -134,8 +134,8 @@ class SocketIoService {
         membershipCallback(membership);
       });
 
-  void whenPresidentInvestigated(PlayerCallback callback) =>
-      socket.once(SocketIoEvents.presidentInvestigated, (int playerId) {
+  void whenViceChairInvestigated(PlayerCallback callback) =>
+      socket.once(SocketIoEvents.viceChairInvestigated, (int playerId) {
         var player = gameStateService.getPlayerById(playerId);
         callback(player);
       });

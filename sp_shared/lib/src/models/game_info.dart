@@ -3,10 +3,10 @@ import 'role.dart';
 
 class GameInfo {
   Role role;
-  List<int> fascistsIds;
-  int hitlerId;
+  List<int> seperatistsIds;
+  int palpatineId;
 
-  GameInfo([this.role, this.fascistsIds, this.hitlerId]);
+  GameInfo([this.role, this.seperatistsIds, this.palpatineId]);
 
   GameInfo.fromJsonString(String json) : this.fromJson(JSON.decode(json));
 
@@ -14,15 +14,15 @@ class GameInfo {
     if (jsonMap['role'] != null) {
       role = new Role.fromJson(jsonMap['role']);
     }
-    fascistsIds = jsonMap['fascistsIds'];
-    hitlerId = jsonMap['hitlerId'];
+    seperatistsIds = jsonMap['seperatistsIds'];
+    palpatineId = jsonMap['palpatineId'];
   }
 
   Map<String, dynamic> toJson() {
     var map = new Map<String, dynamic>();
     map['role'] = role.toJson();
-    map['fascistsIds'] = fascistsIds;
-    map['hitlerId'] = hitlerId;
+    map['seperatistsIds'] = seperatistsIds;
+    map['palpatineId'] = palpatineId;
     return map;
   }
 }

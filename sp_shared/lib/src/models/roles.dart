@@ -1,80 +1,80 @@
 import 'role.dart';
 
 class Roles {
-  static final Role hitler = new Role(1, false, 'Hitler', null);
+  static final Role palpatine = new Role(1, false, 'Palpatine', null);
 
-  static final Role fascist1 = new Role(11, false, 'Fascist', null);
-  static final Role fascist2 = new Role(12, false, 'Fascist', null);
-  static final Role fascist3 = new Role(13, false, 'Fascist', null);
+  static final Role seperatist1 = new Role(11, false, 'Seperatist', null);
+  static final Role seperatist2 = new Role(12, false, 'Seperatist', null);
+  static final Role seperatist3 = new Role(13, false, 'Seperatist', null);
 
-  static final Role liberal1 = new Role(21, true, 'Liberal', null);
-  static final Role liberal2 = new Role(22, true, 'Liberal', null);
-  static final Role liberal3 = new Role(23, true, 'Liberal', null);
-  static final Role liberal4 = new Role(24, true, 'Liberal', null);
-  static final Role liberal5 = new Role(25, true, 'Liberal', null);
-  static final Role liberal6 = new Role(26, true, 'Liberal', null);
+  static final Role loyalist1 = new Role(21, true, 'Loyalist', null);
+  static final Role loyalist2 = new Role(22, true, 'Loyalist', null);
+  static final Role loyalist3 = new Role(23, true, 'Loyalist', null);
+  static final Role loyalist4 = new Role(24, true, 'Loyalist', null);
+  static final Role loyalist5 = new Role(25, true, 'Loyalist', null);
+  static final Role loyalist6 = new Role(26, true, 'Loyalist', null);
 
   static final List<Role> roles5Players = [
-    hitler,
-    fascist1,
-    liberal1,
-    liberal2,
-    liberal3,
+    palpatine,
+    seperatist1,
+    loyalist1,
+    loyalist2,
+    loyalist3,
   ];
 
   static final List<Role> roles6Players = [
-    hitler,
-    fascist1,
-    liberal1,
-    liberal2,
-    liberal3,
-    liberal4,
+    palpatine,
+    seperatist1,
+    loyalist1,
+    loyalist2,
+    loyalist3,
+    loyalist4,
   ];
 
   static final List<Role> roles7Players = [
-    hitler,
-    fascist1,
-    fascist2,
-    liberal1,
-    liberal2,
-    liberal3,
-    liberal4,
+    palpatine,
+    seperatist1,
+    seperatist2,
+    loyalist1,
+    loyalist2,
+    loyalist3,
+    loyalist4,
   ];
 
   static final List<Role> roles8Players = [
-    hitler,
-    fascist1,
-    fascist2,
-    liberal1,
-    liberal2,
-    liberal3,
-    liberal4,
-    liberal5,
+    palpatine,
+    seperatist1,
+    seperatist2,
+    loyalist1,
+    loyalist2,
+    loyalist3,
+    loyalist4,
+    loyalist5,
   ];
 
   static final List<Role> roles9Players = [
-    hitler,
-    fascist1,
-    fascist2,
-    fascist3,
-    liberal1,
-    liberal2,
-    liberal3,
-    liberal4,
-    liberal5,
+    palpatine,
+    seperatist1,
+    seperatist2,
+    seperatist3,
+    loyalist1,
+    loyalist2,
+    loyalist3,
+    loyalist4,
+    loyalist5,
   ];
 
   static final List<Role> roles10Players = [
-    hitler,
-    fascist1,
-    fascist2,
-    fascist3,
-    liberal1,
-    liberal2,
-    liberal3,
-    liberal4,
-    liberal5,
-    liberal6,
+    palpatine,
+    seperatist1,
+    seperatist2,
+    seperatist3,
+    loyalist1,
+    loyalist2,
+    loyalist3,
+    loyalist4,
+    loyalist5,
+    loyalist6,
   ];
 
   static final List<List<Role>> _rolesForPlayerAmounts = [

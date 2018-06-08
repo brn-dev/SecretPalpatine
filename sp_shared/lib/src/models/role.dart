@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class Role {
   int id;
-  bool membership; //true=liberal, false=fascist
+  bool membership; //true=loyalist, false=seperatist
   String name;
   String imageUrl;
 
