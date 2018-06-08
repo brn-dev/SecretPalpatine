@@ -21,6 +21,7 @@ dev_dependencies:
   dart_to_js_script_rewriter: ^1.0.1
   test: ^0.12.0
 
+
 transformers:
 - angular:
     entry_points:
@@ -32,6 +33,6 @@ transformers:
 
 # Uncomment the following in sdk 1.24+ to make pub serve
 # use dartdevc (webdev.dartlang.org/tools/dartdevc).
-#web:
-#  compiler:
-#    debug: dartdevc
+web:
+  compiler:
+    debug: dartdevc
