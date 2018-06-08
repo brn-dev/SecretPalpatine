@@ -5,8 +5,18 @@ body {
   max-width: 600px;
   margin: 0 auto;
   padding: 5vw;
+  font-family: "Star Jedi";
 }
 
-* {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
+@font-face {
+  font-family: 'Star Jedi';
+  src: url('assets/fonts/Star Jedi.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  url('assets/fonts/Star Jedi.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
+
+/*
+@font-face {
+  font-family: 'StarJedi Special Edition';
+  src: url('assets/fonts/StarJedi Special Edition.woff') format('woff'), !* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ *!
+  url('assets/fonts/StarJedi Special Edition.ttf') format('truetype'); !* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 *!
+}*/
