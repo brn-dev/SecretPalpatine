@@ -6,7 +6,7 @@ import 'package:sp_shared/sp_shared.dart';
 import 'package:socket_io/socket_io.dart';
 import 'player_manager.dart';
 
-class SHServer {
+class SPServer {
   final int port;
   Server io;
 
@@ -14,7 +14,7 @@ class SHServer {
   final LobbyManager _lobbyManager = new LobbyManager();
   final Map<int, GameHandler> _gameHandlers = new Map<int, GameHandler>();
 
-  SHServer([this.port = 88]) {
+  SPServer([this.port = 88]) {
     createServer();
   }
 
