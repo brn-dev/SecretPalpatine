@@ -72,6 +72,7 @@ class SocketIoService {
         if (gameInfo.palpatineId != null) {
           gameStateService.setPalpatineById(gameInfo.palpatineId);
         }
+        callback();
       });
 
   void whenViceChairSet(VoidCallback callback) =>
