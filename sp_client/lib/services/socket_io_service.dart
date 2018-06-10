@@ -145,7 +145,7 @@ class SocketIoService {
     socket.once(SocketIoEvents.lobbies, (String lobbiesJson) {
       List<Lobby> lobbies = JSON
           .decode(lobbiesJson)
-          .map((lobbyJson) => new Lobby.fromJsonString(lobbyJson))
+          .map((lobbyJson) => new Lobby.fromJson(lobbyJson))
           .toList();
       callback(lobbies);
     });

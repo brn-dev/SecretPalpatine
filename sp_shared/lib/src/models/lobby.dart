@@ -11,7 +11,7 @@ class Lobby {
 
   Lobby.withPlayers(this.id, this.name, this.players);
 
-  Lobby.fromJsonString(String json) : this.fromJson(JSON.decode(json));
+  Lobby.fromJsonString(Map json) : this.fromJson(JSON.decode(json));
 
   Lobby.fromJson(Map<String, dynamic> jsonMap) {
     id = jsonMap['id'];

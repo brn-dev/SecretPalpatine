@@ -21,8 +21,8 @@ class GameStateService {
   Player viceChair;
   Player chancellor;
   List<Player> killedPlayers;
-  List<Player> get players => lobby?.players ?? null;
-  List<Player> get alivePlayers => players?.where((player) => !killedPlayers.contains(player)) ?? null;
+  List<Player> get players => lobby?.players;
+  List<Player> get alivePlayers => players?.where((player) => !killedPlayers.contains(player));
 
   // Vote
   Map<Player, bool> votes;
@@ -62,9 +62,12 @@ class GameStateService {
       fellowSeperatists = null;
       return;
     }
+    
     fellowSeperatists =
         playerIds.map((playerId) => getPlayerById(playerId)).toList();
+    
   }
+
 
   void addPlayer(Player player) {
     lobby.addPlayer(player);

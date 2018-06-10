@@ -10,6 +10,7 @@ environment:
 dependencies:
   angular: ^4.0.0
   angular_components: ^0.8.0
+  angular_router: ^1.0.2
   socket_io_client:
     git: git://github.com/rikulo/socket.io-client-dart.git
   sp_shared:
@@ -33,6 +34,6 @@ transformers:
 
 # Uncomment the following in sdk 1.24+ to make pub serve
 # use dartdevc (webdev.dartlang.org/tools/dartdevc).
-web:
-  compiler:
-    debug: dartdevc
+#web:
+#  compiler:
+#    debug: dartdevc
