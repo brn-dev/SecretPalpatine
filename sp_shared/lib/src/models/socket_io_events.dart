@@ -20,6 +20,7 @@ class SocketIoEvents {
   static const String playerInvestigated = 'player-investigated';
   static const String viceChairInvestigated = 'viceChair-investigated';
   static const String viceChairPickingNextViceChair = 'viceChair-picking-next-viceChair';
+  static const String lobbyCreated = "lobby-created";
 
   // Client to Server 
   static const String setName = 'set-name';

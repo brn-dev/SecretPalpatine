@@ -158,6 +158,14 @@ class SocketIoService {
         gameStateService.addPlayer(player);
         callback(player);
       });
+  void onLobbyCreated(LobbiesCallback callback) =>
+    socket.on(SocketIoEvents.lobbyCreated, (String lobbiesJson){
+      List<Lobby> lobbies = JSON
+          .decode(lobbiesJson)
+          .map((lobbyJson) => new Lobby.fromJson(lobbyJson))
+          .toList();
+      callback(lobbies);
+    });
 
   void stopOnPlayerJoined() {
     socket.off(SocketIoEvents.playerJoined);
