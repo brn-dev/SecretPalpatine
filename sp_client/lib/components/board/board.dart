@@ -2,7 +2,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 
 @Component(
-  selector: 'board',
+  selector: 'app-board',
   styleUrls: const ['board.css'],
   templateUrl: 'board.html',
   directives: const [
