@@ -16,12 +16,15 @@ dependencies:
     path: ../sp_shared
 
 dev_dependencies:
+  sass_builder: ^1.0.1
   angular_test: ^1.0.0
   browser: ^0.10.0
   dart_to_js_script_rewriter: ^1.0.1
   test: ^0.12.0
 
 transformers:
+- sass_builder:
+    outputExtension: .scss.css
 - angular:
     entry_points:
       - web/main.dart
@@ -29,6 +32,7 @@ transformers:
 - test/pub_serve:
     $include: test/**_test.dart
 - dart_to_js_script_rewriter
+
 
 # Uncomment the following in sdk 1.24+ to make pub serve
 # use dartdevc (webdev.dartlang.org/tools/dartdevc).

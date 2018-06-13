@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:angular/core.dart';
 
@@ -55,19 +56,23 @@ class SocketIoService {
   void pickNextViceChair(int playerId) =>
       socket.emit(SocketIoEvents.pickNextViceChair, playerId);
 
-  void whenLobbyJoined(VoidCallback callback) =>
-      socket.once(SocketIoEvents.lobbyJoined, (String lobbyJson) {
-        Lobby lobby = new Lobby.fromJsonString(lobbyJson);
-        gameStateService.lobby = lobby;
-        callback();
-      });
+  Future<Lobby> whenLobbyJoined() async {
+    var completer = new Completer();
+    socket.once(SocketIoEvents.lobbyJoined, (String lobbyJson) {
+      Lobby lobby = new Lobby.fromJsonString(lobbyJson);
+      gameStateService.lobby = lobby;
+      completer.complete(lobby);
+    });
+    return completer.future;
+  }
 
   void whenGameStarted(VoidCallback callback) =>
       socket.once(SocketIoEvents.gameStarted, (String gameInfoJson) {
         GameInfo gameInfo = new GameInfo.fromJsonString(gameInfoJson);
         gameStateService.role = gameInfo.role;
         if (gameInfo.seperatistsIds != null) {
-          gameStateService.setFellowSeperatistByPlayerIds(gameInfo.seperatistsIds);
+          gameStateService
+              .setFellowSeperatistByPlayerIds(gameInfo.seperatistsIds);
         }
         if (gameInfo.palpatineId != null) {
           gameStateService.setPalpatineById(gameInfo.palpatineId);
@@ -106,9 +111,9 @@ class SocketIoService {
         policyCallback(policy);
       });
 
-  void whenChancellorIsPalpatine(BoolCallback isPalpatineCallback) => socket.once(
-      SocketIoEvents.chancellorIsPalpatine,
-      (bool isPalpatine) => isPalpatineCallback(isPalpatine));
+  void whenChancellorIsPalpatine(BoolCallback isPalpatineCallback) =>
+      socket.once(SocketIoEvents.chancellorIsPalpatine,
+          (bool isPalpatine) => isPalpatineCallback(isPalpatine));
 
   void whenViceChairChoosing(VoidCallback callback) =>
       socket.once(SocketIoEvents.viceChairChoosing, (_) => callback());

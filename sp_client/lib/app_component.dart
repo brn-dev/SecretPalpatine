@@ -1,5 +1,6 @@
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:sp_client/components/game/game.dart';
 import 'package:sp_client/services/game_state_service.dart';
 import 'package:sp_client/services/socket_io_service.dart';
 
@@ -8,9 +9,9 @@ import 'package:sp_client/services/socket_io_service.dart';
 
 @Component(
   selector: 'my-app',
-  styleUrls: const ['app_component.css'],
+  styleUrls: const ['app_component.scss.css'],
   templateUrl: 'app_component.html',
-  directives: const [materialDirectives],
+  directives: const [materialDirectives, GameComponent],
   providers: const [materialProviders, GameStateService, SocketIoService],
 )
 class AppComponent {
@@ -18,6 +19,6 @@ class AppComponent {
   AppComponent(SocketIoService service, GameStateService gameState) {
     service.setName('Test');
     service.createLobby('lob');
-    service.whenLobbyJoined(() => print(gameState.lobby));
+    Lobby l = await service.whenLobbyJoined();
   }
 }
