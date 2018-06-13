@@ -1,7 +1,12 @@
 import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:sp_client/components/board/board.dart';
 import 'package:sp_client/components/game/game.dart';
+import 'package:sp_client/components/player/player.dart';
+import 'package:sp_client/components/policy-board/policy-board.dart';
+import 'package:sp_client/components/policy-pile/policy-pile.dart';
+import 'package:sp_client/components/role/role.dart';
 import 'package:sp_client/services/game_state_service.dart';
 import 'package:sp_client/services/socket_io_service.dart';
 import 'package:sp_shared/sp_shared.dart';
@@ -13,7 +18,15 @@ import 'package:sp_shared/sp_shared.dart';
   selector: 'secret-palpatine',
   styleUrls: const ['app_component.scss.css'],
   templateUrl: 'app_component.html',
-  directives: const [materialDirectives, GameComponent],
+  directives: const [
+    materialDirectives,
+    GameComponent,
+    BoardComponent,
+    PolicyPileComponent,
+    PolicyBoardComponent,
+    PlayerComponent,
+    RoleComponent,
+  ],
   providers: const [materialProviders, GameStateService, SocketIoService],
 )
 class AppComponent implements OnInit {
