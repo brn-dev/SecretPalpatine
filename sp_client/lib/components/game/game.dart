@@ -9,8 +9,6 @@ import 'package:angular_components/angular_components.dart';
   providers: const [materialProviders],
 )
 class GameComponent implements OnInit {
-  bool customWidth = false;
-  bool end = false;
   @override
   ngOnInit() async {}
 }
