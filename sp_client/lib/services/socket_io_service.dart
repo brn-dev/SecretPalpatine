@@ -209,7 +209,7 @@ class SocketIoService {
     return _playerJoinedCompleter.future;
   }
 
-  void stopOnPlayerJoined() async {
+  Future<Null> stopOnPlayerJoined() async {
     socket.off(SocketIoEvents.playerJoined);
     if (_playerJoinedCompleter != null) {
       _playerJoinedCompleter.completeError(null);
