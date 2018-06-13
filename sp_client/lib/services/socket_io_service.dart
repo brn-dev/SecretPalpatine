@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:angular/core.dart';
 
@@ -55,110 +56,163 @@ class SocketIoService {
   void pickNextViceChair(int playerId) =>
       socket.emit(SocketIoEvents.pickNextViceChair, playerId);
 
-  void whenLobbyJoined(VoidCallback callback) =>
-      socket.once(SocketIoEvents.lobbyJoined, (String lobbyJson) {
-        Lobby lobby = new Lobby.fromJsonString(lobbyJson);
-        gameStateService.lobby = lobby;
-        callback();
-      });
+  Future<Lobby> whenLobbyJoined() async {
+    var completer = new Completer<Lobby>();
+    socket.once(SocketIoEvents.lobbyJoined, (String lobbyJson) {
+      Lobby lobby = new Lobby.fromJsonString(lobbyJson);
+      gameStateService.lobby = lobby;
+      completer.complete(lobby);
+    });
+    return completer.future;
+  }
 
-  void whenGameStarted(VoidCallback callback) =>
-      socket.once(SocketIoEvents.gameStarted, (String gameInfoJson) {
-        GameInfo gameInfo = new GameInfo.fromJsonString(gameInfoJson);
-        gameStateService.role = gameInfo.role;
-        if (gameInfo.seperatistsIds != null) {
-          gameStateService.setFellowSeperatistByPlayerIds(gameInfo.seperatistsIds);
-        }
-        if (gameInfo.palpatineId != null) {
-          gameStateService.setPalpatineById(gameInfo.palpatineId);
-        }
-      });
+  Future<Role> whenGameStarted() async {
+    var completer = new Completer<Role>();
+    socket.once(SocketIoEvents.gameStarted, (String gameInfoJson) {
+      GameInfo gameInfo = new GameInfo.fromJsonString(gameInfoJson);
+      gameStateService.role = gameInfo.role;
+      if (gameInfo.seperatistsIds != null) {
+        gameStateService
+            .setFellowSeperatistByPlayerIds(gameInfo.seperatistsIds);
+      }
+      if (gameInfo.palpatineId != null) {
+        gameStateService.setPalpatineById(gameInfo.palpatineId);
+      }
+      completer.complete(gameStateService.role);
+    });
+    return completer.future;
+  }
 
-  void whenViceChairSet(VoidCallback callback) =>
-      socket.once(SocketIoEvents.viceChairSet, (int viceChairId) {
-        gameStateService.setViceChairById(viceChairId);
-        callback();
-      });
+  Future<Player> whenViceChairSet() async {
+    var completer = new Completer<Player>();
+    socket.once(SocketIoEvents.viceChairSet, (int viceChairId) {
+      gameStateService.setViceChairById(viceChairId);
+      completer.complete(gameStateService.viceChair);
+    });
+    return completer.future;
+  }
 
-  void whenChancellorSet(VoidCallback callback) =>
-      socket.once(SocketIoEvents.chancellorSet, (int viceChairId) {
-        gameStateService.setChancellorById(viceChairId);
-        callback();
-      });
+  Future<Player> whenChancellorSet() async {
+    var completer = new Completer<Player>();
+    socket.once(SocketIoEvents.chancellorSet, (int viceChairId) {
+      gameStateService.setChancellorById(viceChairId);
+      completer.complete(gameStateService.chancellor);
+    });
+    return completer.future;
+  }
 
-  void whenVoteFinished(VoidCallback callback) =>
-      socket.once(SocketIoEvents.voteFinished, (String voteResultJson) {
-        Map<int, bool> voteResult = JSON.decode(voteResultJson);
-        Map<Player, bool> playerVotes = new Map<Player, bool>();
-        voteResult.forEach((playerId, vote) =>
-            playerVotes[gameStateService.getPlayerById(playerId)] = vote);
-        gameStateService.votes = playerVotes;
-        callback();
-      });
+  Future<bool> whenVoteFinished() async {
+    var completer = new Completer<bool>();
+    socket.once(SocketIoEvents.voteFinished, (String voteResultJson) {
+      Map<int, bool> voteResult = JSON.decode(voteResultJson);
+      Map<Player, bool> playerVotes = new Map<Player, bool>();
+      voteResult.forEach((playerId, vote) =>
+          playerVotes[gameStateService.getPlayerById(playerId)] = vote);
+      gameStateService.votes = playerVotes;
+      completer.complete(gameStateService.evaluateVote());
+    });
+    return completer.future;
+  }
 
-  void whenPolicyRevealed(BoolCallback policyCallback) =>
-      socket.once(SocketIoEvents.policyRevealed, (bool policy) {
-        if (policy) {
-          gameStateService.addLoyalistPolicy();
-        } else {
-          gameStateService.addSeperatistPolicy();
-        }
-        policyCallback(policy);
-      });
+  Future<bool> whenPolicyRevealed() async {
+    var completer = new Completer<bool>();
+    socket.once(SocketIoEvents.policyRevealed, (bool policy) {
+      if (policy) {
+        gameStateService.addLoyalistPolicy();
+      } else {
+        gameStateService.addSeperatistPolicy();
+      }
+      completer.complete(policy);
+    });
+    return completer.future;
+  }
 
-  void whenChancellorIsPalpatine(BoolCallback isPalpatineCallback) => socket.once(
-      SocketIoEvents.chancellorIsPalpatine,
-      (bool isPalpatine) => isPalpatineCallback(isPalpatine));
+  Future<bool> whenIsChancellorPalpatine() async {
+    var completer = new Completer<bool>();
+    socket.once(SocketIoEvents.chancellorIsPalpatine,
+        (bool isPalpatine) => completer.complete(isPalpatine));
+    return completer.future;
+  }
 
-  void whenViceChairChoosing(VoidCallback callback) =>
-      socket.once(SocketIoEvents.viceChairChoosing, (_) => callback());
+  Future<Null> whenViceChairChoosing() async {
+    var completer = new Completer<Null>();
+    socket.once(SocketIoEvents.viceChairChoosing, (_) => completer.complete());
+    return completer.future;
+  }
 
-  void whenChancellorChoosing(VoidCallback callback) =>
-      socket.once(SocketIoEvents.chancellorChoosing, (_) => callback());
+  Future<Null> whenChancellorChoosing() async {
+    var completer = new Completer<Null>();
+    socket.once(SocketIoEvents.chancellorChoosing, (_) => completer.complete());
+    return completer.future;
+  }
 
-  void whenPoliciesDrawn(PoliciesCallback callback) =>
-      socket.once(SocketIoEvents.policiesDrawn, (String policiesJson) {
-        List<bool> policies = JSON.decode(policiesJson);
-        callback(policies);
-      });
+  Future<List<bool>> whenPoliciesDrawn() async {
+    var completer = new Completer<List<bool>>();
+    socket.once(SocketIoEvents.policiesDrawn, (String policiesJson) {
+      List<bool> policies = JSON.decode(policiesJson);
+      completer.complete(policies);
+    });
+    return completer.future;
+  }
 
-  void whenPlayerKilled(PlayerCallback callback) =>
-      socket.once(SocketIoEvents.playerKilled, (int playerId) {
-        var killedPlayer = gameStateService.getPlayerById(playerId);
-        gameStateService.killPlayer(killedPlayer);
-        callback(killedPlayer);
-      });
+  Future<Player> whenPlayerKilled() async {
+    var completer = new Completer<Player>();
+    socket.once(SocketIoEvents.playerKilled, (int playerId) {
+      var killedPlayer = gameStateService.getPlayerById(playerId);
+      gameStateService.killPlayer(killedPlayer);
+      completer.complete(killedPlayer);
+    });
+    return completer.future;
+  }
 
-  void whenPlayerInvestigated(BoolCallback membershipCallback) =>
-      socket.once(SocketIoEvents.playerInvestigated, (bool membership) {
-        membershipCallback(membership);
-      });
+  Future<bool> whenMembershipInvestigated() async {
+    var completer = new Completer<bool>();
+    socket.once(SocketIoEvents.playerInvestigated, (bool membership) {
+      completer.complete(membership);
+    });
+    return completer.future;
+  }
 
-  void whenViceChairInvestigated(PlayerCallback callback) =>
-      socket.once(SocketIoEvents.viceChairInvestigated, (int playerId) {
-        var player = gameStateService.getPlayerById(playerId);
-        callback(player);
-      });
+  Future<Player> whenViceChairInvestigated() async {
+    var completer = new Completer();
+    socket.once(SocketIoEvents.viceChairInvestigated, (int playerId) {
+      var player = gameStateService.getPlayerById(playerId);
+      completer.complete(player);
+    });
+    return completer.future;
+  }
 
-  void getLobbies(LobbiesCallback callback) {
+  Future<List<Lobby>> getLobbies() async {
+    var completer = new Completer();
     socket.emit(SocketIoEvents.getLobbies);
     socket.once(SocketIoEvents.lobbies, (String lobbiesJson) {
       List<Lobby> lobbies = JSON
           .decode(lobbiesJson)
           .map((lobbyJson) => new Lobby.fromJsonString(lobbyJson))
           .toList();
-      callback(lobbies);
+      completer.complete(lobbies);
     });
+    return completer.future;
   }
 
-  void onPlayerJoined(PlayerCallback callback) =>
-      socket.on(SocketIoEvents.playerJoined, (String playerJson) {
-        Player player = new Player.fromJsonString(playerJson);
-        gameStateService.addPlayer(player);
-        callback(player);
-      });
+  Completer<Player> _playerJoinedCompleter;
 
-  void stopOnPlayerJoined() {
+  Future<Player> whenPlayerJoined() async {
+    stopOnPlayerJoined();
+    _playerJoinedCompleter = new Completer();
+    socket.once(SocketIoEvents.playerJoined, (String playerJson) {
+      Player player = new Player.fromJsonString(playerJson);
+      gameStateService.addPlayer(player);
+      _playerJoinedCompleter.complete(player);
+      _playerJoinedCompleter = null;
+    });
+    return _playerJoinedCompleter.future;
+  }
+
+  void stopOnPlayerJoined() async {
     socket.off(SocketIoEvents.playerJoined);
+    if (_playerJoinedCompleter != null) {
+      _playerJoinedCompleter.completeError(null);
+    }
   }
 }
