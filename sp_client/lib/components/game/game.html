@@ -1,10 +1,14 @@
 <material-drawer temporary #drawer="drawer" end>
-  <div *deferredContent class="drawer-content">
-    <app-role></app-role>
-  </div>
+    <div *deferredContent class="drawer-content">
+        <app-role></app-role>
+    </div>
 </material-drawer>
 <div class="material-content">
-  <material-button (trigger)="drawer.toggle()">Drawer</material-button>
-  <app-board></app-board>
-  <!--list of players-->
+    <div class="main-content">
+        <app-board></app-board>
+        <!--list of players-->
+    </div>
+    <div class="role-button-container">
+        <material-button (trigger)="drawer.toggle()" class="role-button"><div class="role-button-label">ROLE</div></material-button>
+    </div>
 </div>

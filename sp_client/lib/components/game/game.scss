@@ -5,3 +5,39 @@
   height: 100vh;
   background: #292929;
 }
+
+.role-button-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.role-button {
+  min-width: 0 !important;
+  width: 2em;
+  height: 90vh;
+}
+
+.role-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.role-button-label {
+  writing-mode: tb-rl;
+}
+
+.material-content {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  height: 100vh;
+}
+
