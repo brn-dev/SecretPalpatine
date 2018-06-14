@@ -3,8 +3,8 @@ import 'package:angular_components/angular_components.dart';
 
 @Component(
   selector: 'app-policy-board',
-  styleUrls: const ['policy-board.css'],
-  templateUrl: 'policy-board.html',
+  styleUrls: const ['policy_board.scss.css'],
+  templateUrl: 'policy_board.html',
   directives: const [materialDirectives],
   providers: const [materialProviders],
 )

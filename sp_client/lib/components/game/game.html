@@ -1,8 +1,10 @@
 <material-drawer temporary #drawer="drawer" end>
-  <div *deferredContent>
-    drawer content
+  <div *deferredContent class="drawer-content">
+    <app-role></app-role>
   </div>
 </material-drawer>
 <div class="material-content">
-  
+  <material-button (trigger)="drawer.toggle()">Drawer</material-button>
+  <app-board></app-board>
+  <!--list of players-->
 </div>

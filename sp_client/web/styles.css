@@ -4,6 +4,8 @@
 body {
   margin: 0;
   font-family: "Roboto";
+  background-color: #373737;
+  color: whitesmoke;
 }
 
 @font-face {

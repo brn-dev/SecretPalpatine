@@ -1,0 +1,11 @@
+@import "../../variables";
+
+:host {
+  width: $policy-board-width;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  width: 100%;
+}

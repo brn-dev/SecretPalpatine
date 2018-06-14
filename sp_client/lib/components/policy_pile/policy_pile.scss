@@ -1,0 +1,32 @@
+@import "../../variables";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.policy-pile-images {
+  position: relative;
+  height: $policy-background-height;
+  width: $policy-background-width;
+  top: 0;
+  left: 0;
+}
+
+.policy-pile-images > img {
+  position: absolute;
+}
+
+.policy-pile-background {
+  height: $policy-background-height;
+  top: 0;
+  left: 0;
+}
+
+.policy-pile-policy {
+  height: $policy-height;
+  top: $policy-policy-background-indent;
+  left: $policy-policy-background-indent;
+}

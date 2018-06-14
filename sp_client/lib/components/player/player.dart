@@ -3,7 +3,7 @@ import 'package:angular_components/angular_components.dart';
 
 @Component(
   selector: 'app-player',
-  styleUrls: const ['player.css'],
+  styleUrls: const ['player.scss.css'],
   templateUrl: 'player.html',
   directives: const [
     materialDirectives
