@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:angular/core.dart';
 
@@ -158,14 +159,14 @@ class SocketIoService {
         gameStateService.addPlayer(player);
         callback(player);
       });
-  void onLobbyCreated(LobbiesCallback callback) =>
-    socket.on(SocketIoEvents.lobbyCreated, (String lobbiesJson){
-      List<Lobby> lobbies = JSON
-          .decode(lobbiesJson)
-          .map((lobbyJson) => new Lobby.fromJson(lobbyJson))
-          .toList();
-      callback(lobbies);
+  Future<Lobby> whenLobbyCreated() async { // SERVER ÄNDERN!!
+    var completer = new Completer<Lobby>();
+    socket.on(SocketIoEvents.lobbyCreated, (String lobbyJson){
+      Lobby lobby = new Lobby.fromJsonString(lobbyJson);
+      completer.complete(lobby);
     });
+    return completer.future;
+  }
 
   void stopOnPlayerJoined() {
     socket.off(SocketIoEvents.playerJoined);
