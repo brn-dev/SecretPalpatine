@@ -1,5 +1,33 @@
+@import "../../variables";
+
 :host {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+}
+
+section {
+  flex-basis: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+section:first-of-type {
+  flex-grow: 3;
+}
+
+.star-wars-font {
+  font-family: $font-star-wars;
+}
+
+
+.role-img-container {
+  width: 80%;
+
+  .role-img {
+    width: 100%;
+  }
 }

@@ -1,7 +1,14 @@
-<div>You Are:</div>
-<div><img [src]="gameStateService.role?.imageUrl" [alt]="gameStateService.role?.name"></div>
-<div>{{ gameStateService.role?.name }}</div>
-<div>Your Allies:</div>
-<div>...</div>
-<div>Palpatine:</div>
-<div>...</div>
+<section>
+    <div class="header star-wars-font">You Are:</div>
+    <div class="role-img-container"><img [src]="gameStateService.role?.imageUrl" [alt]="gameStateService.role?.name"
+                                         class="role-img"></div>
+    <div class="star-wars-font">{{ gameStateService.role?.name }}</div>
+</section>
+<section>
+    <div class="header star-wars-font">Your Allies:</div>
+    <div>...</div>
+</section>
+<section>
+    <div class="header star-wars-font">Palpatine:</div>
+    <div>...</div>
+</section>
