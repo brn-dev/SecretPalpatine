@@ -4,6 +4,7 @@
 library sp_shared;
 
 // export 'src/models/serializable.dart';
+export 'src/models/identifiable.dart';
 export 'src/models/player.dart';
 export 'src/models/lobby.dart';
 export 'src/models/role.dart';

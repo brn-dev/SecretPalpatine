@@ -31,7 +31,13 @@ void main() {
       var player = new Player.fromJsonString(json);
       expect(player.id, null);
       expect(player.name, null);
-      
+    });
+
+    test('equals', () {
+      expect(testPerson == testPerson, true);
+      expect(testPerson == new Player(testPerson.id), true);
+      expect(testPerson == new Player(testPerson.id + 1), false);
+      expect(testPerson == new Lobby(testPerson.id), false);
     });
   });
 
@@ -70,6 +76,13 @@ void main() {
       expect(lobby.name, null);
       expect(lobby.players, []);
     });
+
+    test('equals', () {
+      expect(testLobby == testLobby, true);
+      expect(testLobby == new Lobby(testLobby.id), true);
+      expect(testLobby == new Lobby(testLobby.id + 1), false);
+      expect(testLobby == new Player(testLobby.id), false);
+    });
   });
 
   group('role', () {
@@ -100,6 +113,13 @@ void main() {
       expect(role.membership, null);
       expect(role.name, null);
       expect(role.imageUrl, null);
+    });
+
+    test('equals', () {
+      expect(testRole == testRole, true);
+      expect(testRole == new Role(testRole.id), true);
+      expect(testRole == new Role(testRole.id + 1), false);
+      expect(testRole == new Player(testRole.id), false);
     });
 
   });
