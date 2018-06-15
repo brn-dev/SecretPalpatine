@@ -8,25 +8,26 @@
 }
 
 .policy-pile-images {
+  max-width: 100%;
+  max-height: 100%;
   position: relative;
   height: $policy-background-height;
-  width: $policy-background-width;
   top: 0;
   left: 0;
 }
 
 .policy-pile-images > img {
-  position: absolute;
 }
 
 .policy-pile-background {
+  max-height: 100%;
   height: $policy-background-height;
-  top: 0;
-  left: 0;
 }
 
 .policy-pile-policy {
+  position: absolute;
+  max-height: calc(100% / #{$policy-policy-background-height-ratio});
   height: $policy-height;
-  top: $policy-policy-background-indent;
-  left: $policy-policy-background-indent;
+  top: calc(100% / #{$policy-policy-background-height-ratio} * #{$policy-height-policy-background-indent-ratio});
+  left: calc(100% / #{$policy-policy-background-height-ratio} * #{$policy-width-policy-background-indent-ratio});
 }
