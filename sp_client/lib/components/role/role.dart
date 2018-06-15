@@ -10,6 +10,7 @@ import 'package:sp_client/services/game_state_service.dart';
   providers: const [materialProviders, GameStateService],
 )
 class RoleComponent implements OnInit {
+
   GameStateService gameStateService;
 
   RoleComponent(this.gameStateService);

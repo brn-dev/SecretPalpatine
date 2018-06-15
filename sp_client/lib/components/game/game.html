@@ -7,7 +7,9 @@
     <div class="material-content">
         <div class="main-content">
             <app-board></app-board>
-            <!--list of players-->
+            <div class="players">
+                <app-player *ngFor="let player of gameStateService.lobby.players" [player]="player"></app-player>
+            </div>
         </div>
         <div class="role-button-container">
             <material-button (mousedown)="drawer.visible = true;" (touchstart)="drawer.visible = true;"  class="role-button">

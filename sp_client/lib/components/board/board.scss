@@ -19,7 +19,8 @@ app-policy-pile:last-of-type {
   }
 
   .policy-board {
-    flex-basis: 90%;
+    flex-basis: 100%;
+    max-width: 90vw;
     order: 1;
   }
 
