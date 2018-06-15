@@ -1,0 +1,14 @@
+<modal [visible]="showDialog">
+    <material-dialog class="transparent-dialog">
+        <div class="policy-container">
+            <div class="policy-image-container"
+                 *ngFor="let policy of policies"
+                 (click)="discardPolicy(policy);">
+                <img class=""
+                     [ngClass]="{'policy-image': true, 'loyalist-policy-image': policy, 'separatist-policy-image': !policy }"
+                     [src]="policy ? loyalistPolicyImgUrl : separatistPolicyImgUrl"
+                     [alt]="policy ? 'Loyalist Policy' : 'Seperatist Policy'">
+            </div>
+        </div>
+    </material-dialog>
+</modal>
