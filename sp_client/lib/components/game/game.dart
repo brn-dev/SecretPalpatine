@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:html';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:sp_client/components/board/board.dart';

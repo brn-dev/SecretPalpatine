@@ -6,7 +6,7 @@ import 'package:sp_client/services/game_state_service.dart';
   selector: 'app-role',
   styleUrls: const ['role.scss.css'],
   templateUrl: 'role.html',
-  directives: const [materialDirectives],
+  directives: const [CORE_DIRECTIVES, materialDirectives],
   providers: const [materialProviders, GameStateService],
 )
 class RoleComponent implements OnInit {

@@ -8,6 +8,11 @@ body {
   color: whitesmoke;
 }
 
+.star-wars-font {
+  text-transform: lowercase;
+  font-family: "Star Jedi";
+}
+
 @font-face {
   font-family: 'Star Jedi';
   src: url('assets/fonts/Star Jedi.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */

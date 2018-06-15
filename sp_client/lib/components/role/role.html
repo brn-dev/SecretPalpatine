@@ -6,9 +6,24 @@
 </section>
 <section>
     <div class="header star-wars-font">Your Allies:</div>
-    <div>...</div>
+    <div class="allies">
+        <div *ngIf="gameStateService.fellowSeperatists != null">
+            <div *ngFor="let seperatist of gameStateService.fellowSeperatists">{{ seperatist.name }}</div>
+        </div>
+        <div *ngIf="gameStateService.fellowSeperatists == null">
+            You don't know who your allies are. Try to find out and work together with them to emerge victorious.
+        </div>
+    </div>
 </section>
 <section>
     <div class="header star-wars-font">Palpatine:</div>
-    <div>...</div>
+    <div class="palpatine">
+        <div *ngIf="gameStateService.palpatine != null">
+            {{ gameStateService.palpatine.name }}
+        </div>
+        <div *ngIf="gameStateService.palpatine == null">
+            You don't know who palpatine is, he must not become chancellor once there are three or more seperatist
+            policies enacted.
+        </div>
+    </div>
 </section>

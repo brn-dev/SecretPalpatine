@@ -1,10 +1,41 @@
+@import "../../variables";
+
+$game-top-padding: 1em;
+
 :host {
 }
+
+.material-content {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.main-content {
+  padding-top: $game-top-padding;
+  flex: 1;
+  height: calc(100% - #{$game-top-padding});
+}
+
+// Role Drawer
 
 .drawer-content {
   height: 100vh;
   background: #292929;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.drawer-content > * {
+  width: 95%;
+}
+
+
+// Role Button
+$role-button-width: 2em;
+$role-button-height: 90vh;
+$role-button-tooltip-width: 10em;
 
 .role-button-container {
   height: 100vh;
@@ -14,9 +45,10 @@
 }
 
 .role-button {
+  position: relative;
   min-width: 0 !important;
-  width: 2em;
-  height: 90vh;
+  width: $role-button-width;
+  height: $role-button-height;
 }
 
 .role-button {
@@ -30,14 +62,15 @@
   writing-mode: tb-rl;
 }
 
-.material-content {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
+.role-button:hover::before {
+  content: "this shows your secret role - don't show this to anyone!";
+  font-family: $font-star-wars;
+  text-transform: lowercase;
+  position: absolute;
+  background-color: #a10403; // #e56343;
+  left: calc(#{-$role-button-tooltip-width} - #{$role-button-width} - 1em);
+  top: 0; //calc(0.4 * #{$role-button-height});
+  width: $role-button-tooltip-width;
+  padding: 1em;
+  border-radius: 0.5em;
 }
-
-.main-content {
-  flex: 1;
-  height: 100vh;
-}
-

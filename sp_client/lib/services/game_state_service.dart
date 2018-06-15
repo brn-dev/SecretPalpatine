@@ -48,7 +48,13 @@ class GameStateService {
     killedPlayers = new List<Player>();
 
     // DEBUG
-    role = Roles.loyalist1;
+    player = new Player(1, 'Brn');
+    role = Roles.seperatist1;
+    fellowSeperatists = [
+      new Player(1, 'Brn'),
+      new Player(2, 'Josh')
+    ];
+    palpatine = new Player(2, 'Josh');
   }
 
   void addSeperatistPolicy() => seperatistEnactedPolicies++;
