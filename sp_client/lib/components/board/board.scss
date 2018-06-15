@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+app-policy-pile:first-of-type {
+  margin-right: 3vw;
+}
+
+app-policy-pile:last-of-type {
+  margin-left: 3vw;
+}

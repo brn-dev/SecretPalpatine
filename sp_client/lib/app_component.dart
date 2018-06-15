@@ -10,10 +10,13 @@ import 'package:sp_shared/sp_shared.dart';
 // Components info: https://webdev.dartlang.org/components
 
 @Component(
-  selector: 'my-app',
+  selector: 'secret-palpatine',
   styleUrls: const ['app_component.scss.css'],
   templateUrl: 'app_component.html',
-  directives: const [materialDirectives, GameComponent],
+  directives: const [
+    materialDirectives,
+    GameComponent,
+  ],
   providers: const [materialProviders, GameStateService, SocketIoService],
 )
 class AppComponent implements OnInit {

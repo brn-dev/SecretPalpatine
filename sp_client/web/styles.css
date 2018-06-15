@@ -2,7 +2,15 @@
 @import url(https://fonts.googleapis.com/css?family=Material+Icons);
 
 body {
+  margin: 0;
   font-family: "Roboto";
+  background-color: #373737;
+  color: whitesmoke;
+}
+
+.star-wars-font {
+  text-transform: lowercase;
+  font-family: "Star Jedi";
 }
 
 @font-face {

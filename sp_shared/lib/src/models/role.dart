@@ -1,17 +1,16 @@
 import 'dart:convert';
+import 'identifiable.dart';
 
-class Role {
-  int id;
+class Role extends Identifiable {
   bool membership; //true=loyalist, false=seperatist
   String name;
   String imageUrl;
 
-  Role([this.id, this.membership, this.name, this.imageUrl]);
+  Role([int id, this.membership, this.name, this.imageUrl]) : super(id);
 
   Role.fromJsonString(String json) : this.fromJson(JSON.decode(json));
 
-  Role.fromJson(Map<String, dynamic> jsonMap) {
-    id = jsonMap['id'];
+  Role.fromJson(Map<String, dynamic> jsonMap) : super(jsonMap['id']) {
     membership = jsonMap['membership'];
     name = jsonMap['name'];
     imageUrl = jsonMap['imageUrl'];

@@ -1,0 +1,5 @@
+<div class="policy-pile-images">
+    <img [src]="backgroundImgUrl" class="policy-pile-background">
+    <img *ngIf="policyCount > 0" src="assets/images/policy/galacticPolicy.gif" class="policy-pile-policy">
+</div>
+<span class="policy-pile-count">{{ policyCount }}</span>

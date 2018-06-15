@@ -1,20 +1,19 @@
 import 'dart:convert';
+import 'identifiable.dart';
 import 'player.dart';
 
-class Lobby {
-  int id;
+class Lobby extends Identifiable {
   String name;
   List<Player> players = new List<Player>();
   bool open = true;
 
-  Lobby([this.id, this.name]);
+  Lobby([int id, this.name]) : super(id);
 
-  Lobby.withPlayers(this.id, this.name, this.players);
+  Lobby.withPlayers(int id, this.name, this.players) : super(id);
 
   Lobby.fromJsonString(String json) : this.fromJson(JSON.decode(json));
 
-  Lobby.fromJson(Map<String, dynamic> jsonMap) {
-    id = jsonMap['id'];
+  Lobby.fromJson(Map<String, dynamic> jsonMap) : super(jsonMap['id']) {
     name = jsonMap['name'];
     open = jsonMap['open'];
     if (jsonMap['players'] != null) {

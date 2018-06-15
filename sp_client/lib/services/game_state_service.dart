@@ -11,6 +11,8 @@ class GameStateService {
   // Board State
   int seperatistEnactedPolicies;
   int loyalistEnactedPolicies;
+  int policyDrawCount;
+  int policyDiscardCount;
 
   // Information
   Role role;
@@ -36,12 +38,23 @@ class GameStateService {
     player = null;
     seperatistEnactedPolicies = 0;
     loyalistEnactedPolicies = 0;
+    policyDrawCount = 17;
+    policyDiscardCount = 0;
     role = null;
     fellowSeperatists = null;
     palpatine = null;
     viceChair = null;
     chancellor = null;
     killedPlayers = new List<Player>();
+
+    // DEBUG
+    player = new Player(1, 'Brn');
+    role = Roles.seperatist1;
+    fellowSeperatists = [
+      new Player(1, 'Brn'),
+      new Player(2, 'Josh')
+    ];
+    palpatine = new Player(2, 'Josh');
   }
 
   void addSeperatistPolicy() => seperatistEnactedPolicies++;
