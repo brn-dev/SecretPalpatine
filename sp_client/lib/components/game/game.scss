@@ -18,6 +18,20 @@ $game-top-padding: 1em;
   flex: 1;
   min-width: 0;
   height: calc(100% - #{$game-top-padding});
+  display: flex;
+  flex-direction: column;
+}
+
+app-board {
+  flex: 1;
+}
+
+.players {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-bottom: 3vh;
 }
 
 // Role Drawer
@@ -33,7 +47,6 @@ $game-top-padding: 1em;
 .drawer-content > * {
   width: 95%;
 }
-
 
 // Role Button
 $role-button-width: 2em;
@@ -60,7 +73,6 @@ $role-button-tooltip-width: 10em;
   justify-content: center;
 }
 
-
 .role-button-label {
   writing-mode: tb-rl;
 }
@@ -76,4 +88,5 @@ $role-button-tooltip-width: 10em;
   width: $role-button-tooltip-width;
   padding: 1em;
   border-radius: 0.5em;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
 }

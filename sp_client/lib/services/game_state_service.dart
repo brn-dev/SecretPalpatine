@@ -22,9 +22,11 @@ class GameStateService {
   // Players
   Player viceChair;
   Player chancellor;
+  Player prevViceChair;
+  Player prevChancellor;
   List<Player> killedPlayers;
-  List<Player> get players => lobby?.players ?? null;
-  List<Player> get alivePlayers => players?.where((player) => !killedPlayers.contains(player)) ?? null;
+  List<Player> get players => lobby?.players;
+  List<Player> get alivePlayers => players?.where((player) => !killedPlayers.contains(player));
 
   // Vote
   Map<Player, bool> votes;
@@ -45,16 +47,33 @@ class GameStateService {
     palpatine = null;
     viceChair = null;
     chancellor = null;
+    prevViceChair = null;
+    prevChancellor = null;
     killedPlayers = new List<Player>();
 
     // DEBUG
     player = new Player(1, 'Brn');
     role = Roles.seperatist1;
     fellowSeperatists = [
-      new Player(1, 'Brn'),
       new Player(2, 'Josh')
     ];
     palpatine = new Player(2, 'Josh');
+    lobby = new Lobby.withPlayers(1, 'Lob', [
+      new Player(1, 'Brn'),
+      new Player(2, 'Josh'),
+      new Player(3, 'Dnl'),
+      new Player(4, 'Kevin'),
+      new Player(5, 'Martin'),
+      new Player(6, 'Kruki'),
+      new Player(7, 'Thomas'),
+      new Player(8, 'Jess'),
+      new Player(9, 'Seiberl'),
+      new Player(10, 'Christian Krause'),
+    ]);
+    viceChair = lobby.players[0];
+    chancellor = lobby.players[1];
+    prevViceChair = lobby.players[2];
+    prevChancellor = lobby.players[0];
   }
 
   void addSeperatistPolicy() => seperatistEnactedPolicies++;

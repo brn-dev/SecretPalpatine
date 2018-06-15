@@ -1,1 +1,13 @@
-<h1>Player</h1>
+<div class="player-card">
+    <div class="player-name">{{ player.name }}</div>
+    <div class="player-positions">
+        <div *ngIf="currentPositionImgUrl != null"
+             class="position curr-position"
+             [ngStyle]="{ 'background-image': 'url(' + currentPositionImgUrl + ')'}"
+             [attr.data-tooltip-text]="currentPositionTooltip"></div>
+        <div *ngIf="previousPositionImgUrl != null"
+             class="position prev-position"
+             [ngStyle]="{ 'background-image': 'url(' + previousPositionImgUrl + ')'}"
+             [attr.data-tooltip-text]="previousPositionTooltip"></div>
+    </div>
+</div>
