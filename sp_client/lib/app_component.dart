@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:sp_client/components/game/game.dart';
 import 'package:sp_client/services/game_state_service.dart';
 import 'package:sp_client/services/socket_io_service.dart';
-import 'package:sp_shared/sp_shared.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components
@@ -27,10 +25,6 @@ class AppComponent implements OnInit {
   AppComponent(this.service, this.gameState) {
   }
 
-  Future ngOnInit() async {
-    service.setName('Test');
-    service.createLobby('lob');
-    Lobby l = await service.whenLobbyJoined();
-    print(l);
+  ngOnInit() async {
   }
 }
