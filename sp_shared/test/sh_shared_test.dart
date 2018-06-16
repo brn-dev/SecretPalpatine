@@ -132,7 +132,7 @@ void main() {
     setUp(() {
       testRole = new Role(1, false, 'Palpatine', '');
       testGameInfo = new GameInfo(testRole, [2, 3], 3);
-      testGameInfoJson = '{"role":{"id":1,"membership":false,"name":"Palpatine","imageUrl":""},"seperatistsIds":[2,3],"palpatineId":3}';
+      testGameInfoJson = '{"role":{"id":1,"membership":false,"name":"Palpatine","imageUrl":""},"separatistsIds":[2,3],"palpatineId":3}';
     });
 
     test('serialization', () {
@@ -146,9 +146,9 @@ void main() {
       expect(gi.role.membership, testRole.membership);
       expect(gi.role.name, testRole.name);
       expect(gi.role.imageUrl, testRole.imageUrl);
-      expect(gi.seperatistsIds.length, testGameInfo.seperatistsIds.length);
-      for (var i = 0; i < gi.seperatistsIds.length; i++) {
-        expect(gi.seperatistsIds[i], testGameInfo.seperatistsIds[i]);
+      expect(gi.separatistsIds.length, testGameInfo.separatistsIds.length);
+      for (var i = 0; i < gi.separatistsIds.length; i++) {
+        expect(gi.separatistsIds[i], testGameInfo.separatistsIds[i]);
       }
       expect(gi.palpatineId, testGameInfo.palpatineId);
     });
@@ -156,7 +156,7 @@ void main() {
     test('deserialization empty', () {
       var gi = new GameInfo.fromJsonString('{}');
       expect(gi.role, null);
-      expect(gi.seperatistsIds, null);
+      expect(gi.separatistsIds, null);
       expect(gi.palpatineId, null);
     });
   });

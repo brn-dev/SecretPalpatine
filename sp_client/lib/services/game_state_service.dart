@@ -9,14 +9,14 @@ class GameStateService {
   Lobby lobby;
 
   // Board State
-  int seperatistEnactedPolicies;
+  int separatistEnactedPolicies;
   int loyalistEnactedPolicies;
   int policyDrawCount;
   int policyDiscardCount;
 
   // Information
   Role role;
-  List<Player> fellowSeperatists;
+  List<Player> fellowSeparatists;
   Player palpatine;
 
   // Players
@@ -38,12 +38,12 @@ class GameStateService {
 
   void reset() {
     player = null;
-    seperatistEnactedPolicies = 0;
+    separatistEnactedPolicies = 0;
     loyalistEnactedPolicies = 0;
     policyDrawCount = 17;
     policyDiscardCount = 0;
     role = null;
-    fellowSeperatists = null;
+    fellowSeparatists = null;
     palpatine = null;
     viceChair = null;
     chancellor = null;
@@ -53,8 +53,8 @@ class GameStateService {
 
     // DEBUG
     player = new Player(1, 'Brn');
-    role = Roles.seperatist1;
-    fellowSeperatists = [
+    role = Roles.separatist1;
+    fellowSeparatists = [
       new Player(2, 'Josh')
     ];
     palpatine = new Player(2, 'Josh');
@@ -76,7 +76,7 @@ class GameStateService {
     prevChancellor = lobby.players[0];
   }
 
-  void addSeperatistPolicy() => seperatistEnactedPolicies++;
+  void addSeparatistPolicy() => separatistEnactedPolicies++;
 
   void addLoyalistPolicy() => loyalistEnactedPolicies++;
 
@@ -89,12 +89,12 @@ class GameStateService {
 
   void setPalpatineById(int playerId) => palpatine = getPlayerById(playerId);
 
-  void setFellowSeperatistByPlayerIds(List<int> playerIds) {
+  void setFellowSeparatistByPlayerIds(List<int> playerIds) {
     if (playerIds == null) {
-      fellowSeperatists = null;
+      fellowSeparatists = null;
       return;
     }
-    fellowSeperatists =
+    fellowSeparatists =
         playerIds.map((playerId) => getPlayerById(playerId)).toList();
   }
 
