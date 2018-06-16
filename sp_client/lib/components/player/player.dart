@@ -25,24 +25,40 @@ class PlayerComponent {
 
   String _viceChairTooltip = 'This player is currently the Vice Chair of the government';
   String _chancellorTooltip = 'This player is currently the Supreme Chancellor of the government';
-  String _termLimitedTooltip = 'This player is currently not eligible to be Supreme Chancellor';
+  String _termLimitedTooltip = 'This player is not eligible to be Supreme Chancellor in the next legislative session';
 
   String _yesVoteImgUrl = '/assets/images/vote/arrow_up_icon.gif';
   String _noVoteImgUrl = '/assets/images/vote/arrow_down_icon.gif';
+  String _unknownVoteImgUrl = '/assets/images/vote/unknown_icon.gif';
 
   String _yesVoteTooltip = 'this player voted yes in the last election';
   String _noVoteTooltip = 'this player voted no in the last election';
+  String _unknownVoteTooltip = 'this player has finished voting';
 
   String get voteImgUrl {
     if (gameStateService.votes.containsKey(player)) {
-      return gameStateService.votes[player] ? _yesVoteImgUrl : _noVoteImgUrl;
+        var voteOfPlayer = gameStateService.votes[player];
+        if (voteOfPlayer == null) {
+          return _unknownVoteImgUrl;
+        }
+        if (voteOfPlayer) {
+          return _yesVoteImgUrl;
+        }
+        return _noVoteImgUrl;
     }
     return null;
   }
 
   String get voteTooltip {
     if (gameStateService.votes.containsKey(player)) {
-      return gameStateService.votes[player] ? _yesVoteTooltip : _noVoteTooltip;
+      var voteOfPlayer = gameStateService.votes[player];
+      if (voteOfPlayer == null) {
+        return _unknownVoteTooltip;
+      }
+      if (voteOfPlayer) {
+        return _yesVoteTooltip;
+      }
+      return _noVoteTooltip;
     }
     return null;
   }

@@ -25,12 +25,22 @@ class GameStateService {
   Player prevViceChair;
   Player prevChancellor;
   List<Player> killedPlayers;
+
   List<Player> get players => lobby?.players;
-  List<Player> get alivePlayers => players?.where((player) => !killedPlayers.contains(player));
+
+  List<Player> get alivePlayers =>
+      players?.where((p) => !killedPlayers.contains(p));
+
+  List<Player> get eligiblePlayers =>
+      players?.where((p) => p != viceChair && p != prevChancellor &&
+          p != prevViceChair && !killedPlayers.contains(p));
 
   // Vote
   Map<Player, bool> votes;
   bool get voteResult => evaluateVote();
+  int failedGovernmentCounter;
+
+  bool palpatineWin;
 
   GameStateService() {
     reset();
@@ -50,6 +60,8 @@ class GameStateService {
     prevViceChair = null;
     prevChancellor = null;
     killedPlayers = new List<Player>();
+    failedGovernmentCounter = 0;
+    palpatineWin = false;
 
     // DEBUG
     player = new Player(1, 'Brn');
@@ -83,8 +95,8 @@ class GameStateService {
       lobby.players[5]: false,
       lobby.players[6]: true,
       lobby.players[7]: false,
-      lobby.players[8]: true,
-      lobby.players[9]: false,
+      lobby.players[8]: null,
+      lobby.players[9]: null,
     };
   }
 
@@ -130,5 +142,11 @@ class GameStateService {
     return yesCount > noCount;
   }
 
+  bool get hasGameEnded => loyalistEnactedPolicies == 5 || separatistEnactedPolicies == 6 || palpatineWin;
+
   void killPlayer(Player player) => killedPlayers.add(player);
+
+  void resetVotes() {
+    votes = new Map<Player, bool>();
+  }
 }

@@ -1,4 +1,6 @@
-<div class="game-container" (mouseup)="drawer.visible = false;" (touchend)="drawer.visible = false;">
+<div class="game-container"
+     (mouseup)="drawer.visible = false;"
+     (touchend)="drawer.visible = false;">
     <material-drawer temporary #drawer="drawer" end>
         <div *deferredContent class="drawer-content">
             <app-role></app-role>
@@ -7,14 +9,29 @@
     <div class="material-content">
         <div class="main-content">
             <app-board></app-board>
-            <div class="players">
-                <app-player *ngFor="let player of gameStateService.lobby.players" [player]="player"></app-player>
+            <div [ngClass]="{'players' : true, 'player-chooser-dialog' : isPlayerChooser }">
+                <app-player *ngFor="let player of gameStateService.lobby.players"
+                            [player]="player"
+                            [ngClass]="{ 'selectable-player' : isPlayerChooser && isPlayerSelectable(player) }"
+                            (click)="onSelectablePlayerClick(player)">
+                </app-player>
             </div>
         </div>
         <div class="role-button-container">
-            <material-button (mousedown)="drawer.visible = true;" (touchstart)="drawer.visible = true;"  class="role-button">
+            <material-button (mousedown)="drawer.visible = true;" (touchstart)="drawer.visible = true;"
+                             class="role-button">
                 <div class="role-button-label star-wars-font">role</div>
             </material-button>
         </div>
     </div>
+    <!-- dialogs -->
+    <app-vote-dialog [showDialog]="showVoteDialog"
+                     (finishedVoting)="onFinishedVoting($event)">
+    </app-vote-dialog>
+    <app-policy-discard-dialog [showDialog]="showPolicyDialog"
+                               [policies]="shownPolicies"
+                               [isPolicyPeek]="isPolicyPeek"
+                               (finishedDiscarding)="onPolicyDialogFinished($event)">
+
+    </app-policy-discard-dialog>
 </div>

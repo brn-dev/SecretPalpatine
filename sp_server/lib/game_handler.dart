@@ -57,7 +57,7 @@ class GameHandler {
   PlayerSocket get chancellor => _chancellor;
   set chancellor(PlayerSocket player) {
     _chancellor = player;
-    room.emit(SocketIoEvents.chancellorSet, player.player.id);
+    player.socket.to(roomId).emit(SocketIoEvents.chancellorSet, player.player.id);
   }
 
   GameHandler(this.io, this.lobby, this.host, {Function whenEmpty = null}) {
@@ -261,7 +261,7 @@ class GameHandler {
 
   void handleVote() {
     Map<int, bool> votePerPlayer = new Map<int, bool>();
-    players.forEach((player) {
+    alivePlayers.forEach((player) {
       player.socket.once(SocketIoEvents.vote, (bool vote) {
         votePerPlayer[player.player.id] = vote;
         player.socket.to(roomId).emit(
@@ -335,9 +335,11 @@ class GameHandler {
 
   void handleLegislativeSession() {
     if (isPalpatineWin()) {
-      room.emit(SocketIoEvents.chancellorIsPalpatine);
+      room.emit(SocketIoEvents.chancellorIsPalpatine, true);
       separatistWin();
       return;
+    } else {
+      room.emit(SocketIoEvents.chancellorIsPalpatine, false);
     }
     List<bool> drawnPolicies = policyDrawPile.drawMany(3);
     refillPoliciesIfNecessary();

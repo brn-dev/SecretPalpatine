@@ -16,10 +16,10 @@ class PolicyDiscardDialogComponent implements OnInit {
 
   bool showPolicies = false;
 
-  final _finishedDiscarding = new StreamController<List<bool>>();
+  final _finished = new StreamController<bool>();
 
   @Output()
-  Stream<List<bool>> get finishedDiscarding => _finishedDiscarding.stream;
+  Stream<bool> get finished => _finished.stream;
 
   @Input()
   List<bool> policies;
@@ -41,16 +41,7 @@ class PolicyDiscardDialogComponent implements OnInit {
       return;
     }
 
-    var found = false;
-    var remainingPolicies = policies.sublist(0);
-    remainingPolicies.removeWhere((bool policyElem) {
-      if (!found && policyElem == policy) {
-        found = true;
-        return true;
-      }
-      return false;
-    });
-    _finishedDiscarding.add(remainingPolicies);
+    _finished.add(policy);
 
     if (hideOnFinished) {
       showDialog = false;
@@ -59,5 +50,6 @@ class PolicyDiscardDialogComponent implements OnInit {
 
   void onOk() {
     showDialog = false;
+    _finished.add(null);
   }
 }

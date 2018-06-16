@@ -5,6 +5,9 @@ $game-top-padding: 1em;
 :host {
 }
 
+.game-container {
+}
+
 .material-content {
   width: 100vw;
   max-width: 100vw;
@@ -27,11 +30,49 @@ app-board {
 }
 
 .players {
+  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
   margin-bottom: 3vh;
+}
+
+.player-chooser-dialog::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33,33,33,.8);
+}
+
+app-player {
+  margin-left: 1vw;
+  margin-right: 1vw;
+  margin-top: 2vh;
+}
+
+.selectable-player {
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(128, 128, 128, 0.5);
+}
+
+.selectable-player:hover {
+  cursor: pointer;
+}
+
+.selectable-player:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 // Role Drawer

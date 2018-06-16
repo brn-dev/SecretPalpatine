@@ -39,16 +39,23 @@ class SocketIoService {
 
   void startGame() => socket.emit(SocketIoEvents.startGame);
 
-  void chooseChancellor(int playerId) =>
-      socket.emit(SocketIoEvents.chooseChancellor, playerId);
+  void chooseChancellor(int playerId) {
+    gameStateService.setChancellorById(playerId);
+    socket.emit(SocketIoEvents.chooseChancellor, playerId);
+  }
 
-  void vote(bool vote) => socket.emit(SocketIoEvents.vote, vote);
+  void vote(bool vote) {
+    gameStateService.votes[gameStateService.player] = vote;
+    socket.emit(SocketIoEvents.vote, vote);
+  }
 
   void discardPolicy(bool policy) =>
       socket.emit(SocketIoEvents.discardPolicy, policy);
 
-  void killPlayer(int playerId) =>
-      socket.emit(SocketIoEvents.killPlayer, playerId);
+  void killPlayer(int playerId) {
+    gameStateService.killPlayer(gameStateService.getPlayerById(playerId));
+    socket.emit(SocketIoEvents.killPlayer, playerId);
+  }
 
   void investigatePlayer(int playerId) =>
       socket.emit(SocketIoEvents.investigatePlayer, playerId);
@@ -129,8 +136,10 @@ class SocketIoService {
 
   Future<bool> whenIsChancellorPalpatine() async {
     var completer = new Completer<bool>();
-    socket.once(SocketIoEvents.chancellorIsPalpatine,
-        (bool isPalpatine) => completer.complete(isPalpatine));
+    socket.once(SocketIoEvents.chancellorIsPalpatine, (bool isPalpatine) {
+      gameStateService.palpatineWin = isPalpatine;
+      completer.complete(isPalpatine);
+    });
     return completer.future;
   }
 
@@ -180,6 +189,15 @@ class SocketIoService {
       completer.complete(player);
     });
     return completer.future;
+  }
+  
+  void listenForPlayersVoting() {
+    socket.on(SocketIoEvents.playerFinishedVoting, (int playerId) {
+      gameStateService.votes[gameStateService.getPlayerById(playerId)] = null;
+      if (gameStateService.votes.length == gameStateService.alivePlayers.length) {
+        socket.off(SocketIoEvents.playerFinishedVoting);
+      }
+    });
   }
 
   Future<List<Lobby>> getLobbies() async {
