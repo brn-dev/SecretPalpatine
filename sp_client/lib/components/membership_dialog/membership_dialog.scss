@@ -30,7 +30,13 @@
   box-shadow: 0 0 30px rgba(254, 195, 75, 0.5);
 }
 
-.ok-button {
-  text-transform: lowercase !important;
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.actions > material-button {
   font-size: 30px;
 }

@@ -7,6 +7,7 @@ import 'package:sp_shared/sp_shared.dart';
   styleUrls: const ['membership_dialog.scss.css'],
   templateUrl: 'membership_dialog.html',
   directives: const [
+    CORE_DIRECTIVES,
     materialDirectives
   ],
   providers: const [
@@ -17,6 +18,9 @@ class MembershipDialogComponent implements OnInit {
 
   String loyalistMembershipImgUrl = '/assets/images/membership/loyalistMembership.gif';
   String separatistMembershipImgUrl = '/assets/images/membership/seperatistMembership.gif';
+  String hiddenMembershipImgUrl = '/assets/images/membership/partyMember.gif';
+
+  bool showMembership = false;
 
   @Input()
   bool showDialog;

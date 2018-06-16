@@ -3,13 +3,21 @@
         <div class="membership-container">
             <div class="membership-text">
                 <div>{{ player.name }}</div>
-                <div class="star-wars-font">is a {{ membership ? 'loyalist' : 'separatist' }}</div>
+                <div *ngIf="showMembership" class="star-wars-font" >is a {{ membership ? 'loyalist' : 'separatist' }}</div>
             </div>
             <div class="membership-img-container">
-                <img [src]="membership ? loyalistMembershipImgUrl : separatistMembershipImgUrl" alt=""
+                <img *ngIf="showMembership"
+                     [src]="membership ? loyalistMembershipImgUrl : separatistMembershipImgUrl" alt=""
+                     class="membership-img">
+                <img *ngIf="!showMembership"
+                     [src]="hiddenMembershipImgUrl"
+                     alt="hidden membership"
                      class="membership-img">
             </div>
-            <material-button class="ok-button star-wars-font" (click)="onOk()">ok</material-button>
+            <div class="actions">
+                <material-button (click)="showMembership = !showMembership">{{ showMembership ? 'hide' : 'show' }}</material-button>
+                <material-button (click)="onOk()">ok</material-button>
+            </div>
         </div>
     </material-dialog>
 </modal>
