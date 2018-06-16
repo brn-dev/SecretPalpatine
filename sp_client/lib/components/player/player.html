@@ -1,13 +1,17 @@
 <div class="player-card">
     <div class="player-name">{{ player.name }}</div>
-    <div class="player-positions">
+    <div class="player-states">
         <div *ngIf="currentPositionImgUrl != null"
-             class="position curr-position"
+             class="state curr-position"
              [ngStyle]="{ 'background-image': 'url(' + currentPositionImgUrl + ')'}"
              [attr.data-tooltip-text]="currentPositionTooltip"></div>
         <div *ngIf="previousPositionImgUrl != null"
-             class="position prev-position"
+             class="state prev-position"
              [ngStyle]="{ 'background-image': 'url(' + previousPositionImgUrl + ')'}"
              [attr.data-tooltip-text]="previousPositionTooltip"></div>
+        <div *ngIf="voteImgUrl != null"
+             class="state"
+             [ngStyle]="{ 'background-image': 'url(' + voteImgUrl + ')'}"
+             [attr.data-tooltip-text]="voteTooltip"></div>
     </div>
 </div>

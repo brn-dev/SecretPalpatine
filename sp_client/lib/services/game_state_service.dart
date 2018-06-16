@@ -74,6 +74,18 @@ class GameStateService {
     chancellor = lobby.players[1];
     prevViceChair = lobby.players[2];
     prevChancellor = lobby.players[0];
+    votes = {
+      lobby.players[0]: true,
+      lobby.players[1]: true,
+      lobby.players[2]: false,
+      lobby.players[3]: false,
+      lobby.players[4]: true,
+      lobby.players[5]: false,
+      lobby.players[6]: true,
+      lobby.players[7]: false,
+      lobby.players[8]: true,
+      lobby.players[9]: false,
+    };
   }
 
   void addSeparatistPolicy() => separatistEnactedPolicies++;
