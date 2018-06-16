@@ -71,9 +71,9 @@ class SocketIoService {
     socket.once(SocketIoEvents.gameStarted, (String gameInfoJson) {
       GameInfo gameInfo = new GameInfo.fromJsonString(gameInfoJson);
       gameStateService.role = gameInfo.role;
-      if (gameInfo.seperatistsIds != null) {
+      if (gameInfo.separatistsIds != null) {
         gameStateService
-            .setFellowSeperatistByPlayerIds(gameInfo.seperatistsIds);
+            .setFellowSeparatistByPlayerIds(gameInfo.separatistsIds);
       }
       if (gameInfo.palpatineId != null) {
         gameStateService.setPalpatineById(gameInfo.palpatineId);
@@ -120,7 +120,7 @@ class SocketIoService {
       if (policy) {
         gameStateService.addLoyalistPolicy();
       } else {
-        gameStateService.addSeperatistPolicy();
+        gameStateService.addSeparatistPolicy();
       }
       completer.complete(policy);
     });

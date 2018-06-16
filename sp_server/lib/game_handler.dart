@@ -34,16 +34,16 @@ class GameHandler {
   PolicyPile policyDiscardPile = new PolicyPile();
   int failedGovernmentCounter = 0;
   int loyalistEnactedPolicyCount = 0;
-  int seperatistEnactedPolicyCount = 0;
+  int separatistEnactedPolicyCount = 0;
   List<SpecialPowerFunction> specialPowers;
 
   Map<int, SpecialPowerFunction> specialPowersFunctionMapping;
 
   static const int loyalistPolicyWinCount = 5;
-  static const int seperatistPolicyWinCount = 6;
+  static const int separatistPolicyWinCount = 6;
   static final int palpatineRoleId = Roles.palpatine.id;
 
-  bool get palpatineKnowsSeperatists => players.length <= 6;
+  bool get palpatineKnowsSeparatists => players.length <= 6;
 
   List<PlayerSocket> get alivePlayers =>
       players.where((player) => !killedPlayers.contains(player)).toList();
@@ -100,7 +100,7 @@ class GameHandler {
   }
 
   bool isPalpatineWin() {
-    return seperatistEnactedPolicyCount >= 3 &&
+    return separatistEnactedPolicyCount >= 3 &&
         rolesForPlayers[chancellor].id == palpatineRoleId;
   }
 
@@ -124,10 +124,10 @@ class GameHandler {
   }
 
   GameInfo createGameInfo(
-      Role role, List<int> seperatistPlayerIds, int palpatinePlayerId) {
+      Role role, List<int> separatistPlayerIds, int palpatinePlayerId) {
     var gameInfo = new GameInfo(role, [], null);
-    if (!role.membership && (role.id != palpatineRoleId || palpatineKnowsSeperatists)) {
-      gameInfo.seperatistsIds = seperatistPlayerIds;
+    if (!role.membership && (role.id != palpatineRoleId || palpatineKnowsSeparatists)) {
+      gameInfo.separatistsIds = separatistPlayerIds;
     }
     if (!role.membership) {
       gameInfo.palpatineId = palpatinePlayerId;
@@ -196,9 +196,9 @@ class GameHandler {
 
   void setupPolicies() {
     policyDrawPile = new PolicyPile();
-    var seperatistPolicyCount = 11;
+    var separatistPolicyCount = 11;
     var loyalistPolicyCount = 6;
-    for (var i = 0; i < seperatistPolicyCount; i++) {
+    for (var i = 0; i < separatistPolicyCount; i++) {
       policyDrawPile.add(false);
     }
     for (var i = 0; i < loyalistPolicyCount; i++) {
@@ -221,18 +221,18 @@ class GameHandler {
 
   void assignRoles() {
     rolesForPlayers = randomlyAssignRoles();
-    var seperatistPlayerIds = new List<int>();
+    var separatistPlayerIds = new List<int>();
     var palpatinePlayerId = -1;
     rolesForPlayers.forEach((player, role) {
       if (!role.membership) {
-        seperatistPlayerIds.add(player.player.id);
+        separatistPlayerIds.add(player.player.id);
       }
       if (role.id == palpatineRoleId) {
         palpatinePlayerId = player.player.id;
       }
     });
     rolesForPlayers.forEach((player, role) {
-      var gameInfo = createGameInfo(role, seperatistPlayerIds, palpatinePlayerId);
+      var gameInfo = createGameInfo(role, separatistPlayerIds, palpatinePlayerId);
       player.socket.emit(SocketIoEvents.gameStarted, gameInfo);
     });
   }
@@ -319,7 +319,7 @@ class GameHandler {
     if (policy) {
       enactLoyalistPolicy();
     } else {
-      enactSeperatistPolicy(true);
+      enactSeparatistPolicy(true);
     }
     refillPoliciesIfNecessary();
   }
@@ -336,7 +336,7 @@ class GameHandler {
   void handleLegislativeSession() {
     if (isPalpatineWin()) {
       room.emit(SocketIoEvents.chancellorIsPalpatine);
-      seperatistWin();
+      separatistWin();
       return;
     }
     List<bool> drawnPolicies = policyDrawPile.drawMany(3);
@@ -373,7 +373,7 @@ class GameHandler {
     if (policy) {
       enactLoyalistPolicy();
     } else {
-      enactSeperatistPolicy();
+      enactSeparatistPolicy();
     }
   }
 
@@ -387,10 +387,10 @@ class GameHandler {
     formGovernment();
   }
 
-  void enactSeperatistPolicy([bool ingnoreViceChairalSpecialPower = false]) {
-    seperatistEnactedPolicyCount++;
-    if (seperatistEnactedPolicyCount == seperatistPolicyWinCount) {
-      seperatistWin();
+  void enactSeparatistPolicy([bool ingnoreViceChairalSpecialPower = false]) {
+    separatistEnactedPolicyCount++;
+    if (separatistEnactedPolicyCount == separatistPolicyWinCount) {
+      separatistWin();
       return;
     }
     var callback = () {
@@ -404,7 +404,7 @@ class GameHandler {
   }
 
   void handleSpecialPower(Function callback) {
-    var specialPower = specialPowers[seperatistEnactedPolicyCount];
+    var specialPower = specialPowers[separatistEnactedPolicyCount];
     if (specialPower != null) {
       specialPower(callback);
     }
@@ -445,8 +445,8 @@ class GameHandler {
     });
   }
 
-  void seperatistWin() {
-    room.emit(SocketIoEvents.seperatistsWon);
+  void separatistWin() {
+    room.emit(SocketIoEvents.separatistsWon);
   }
 
   void loyalistWin() {

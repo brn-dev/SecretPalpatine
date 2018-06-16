@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'identifiable.dart';
 
 class Role extends Identifiable {
-  bool membership; //true=loyalist, false=seperatist
+  bool membership; //true=loyalist, false=separatist
   String name;
   String imageUrl;
 

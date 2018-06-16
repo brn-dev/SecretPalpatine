@@ -5,9 +5,9 @@ class Roles {
 
   static final Role palpatine = new Role(1, false, 'Palpatine', _roleImageFolderPath + 'palpatine.gif');
 
-  static final Role seperatist1 = new Role(11, false, 'Seperatist', _roleImageFolderPath + 'seperatist1.gif');
-  static final Role seperatist2 = new Role(12, false, 'Seperatist', _roleImageFolderPath + 'seperatist2.gif');
-  static final Role seperatist3 = new Role(13, false, 'Seperatist', _roleImageFolderPath + 'seperatist3.gif');
+  static final Role separatist1 = new Role(11, false, 'Separatist', _roleImageFolderPath + 'separatist1.gif');
+  static final Role separatist2 = new Role(12, false, 'Separatist', _roleImageFolderPath + 'separatist2.gif');
+  static final Role separatist3 = new Role(13, false, 'Separatist', _roleImageFolderPath + 'separatist3.gif');
 
   static final Role loyalist1 = new Role(21, true, 'Loyalist', _roleImageFolderPath + 'loyalist1.gif');
   static final Role loyalist2 = new Role(22, true, 'Loyalist', _roleImageFolderPath + 'loyalist2.gif');
@@ -18,7 +18,7 @@ class Roles {
 
   static final List<Role> roles5Players = [
     palpatine,
-    seperatist1,
+    separatist1,
     loyalist1,
     loyalist2,
     loyalist3,
@@ -26,7 +26,7 @@ class Roles {
 
   static final List<Role> roles6Players = [
     palpatine,
-    seperatist1,
+    separatist1,
     loyalist1,
     loyalist2,
     loyalist3,
@@ -35,8 +35,8 @@ class Roles {
 
   static final List<Role> roles7Players = [
     palpatine,
-    seperatist1,
-    seperatist2,
+    separatist1,
+    separatist2,
     loyalist1,
     loyalist2,
     loyalist3,
@@ -45,8 +45,8 @@ class Roles {
 
   static final List<Role> roles8Players = [
     palpatine,
-    seperatist1,
-    seperatist2,
+    separatist1,
+    separatist2,
     loyalist1,
     loyalist2,
     loyalist3,
@@ -56,9 +56,9 @@ class Roles {
 
   static final List<Role> roles9Players = [
     palpatine,
-    seperatist1,
-    seperatist2,
-    seperatist3,
+    separatist1,
+    separatist2,
+    separatist3,
     loyalist1,
     loyalist2,
     loyalist3,
@@ -68,9 +68,9 @@ class Roles {
 
   static final List<Role> roles10Players = [
     palpatine,
-    seperatist1,
-    seperatist2,
-    seperatist3,
+    separatist1,
+    separatist2,
+    separatist3,
     loyalist1,
     loyalist2,
     loyalist3,

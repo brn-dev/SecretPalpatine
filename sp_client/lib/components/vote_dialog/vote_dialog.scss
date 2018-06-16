@@ -1,0 +1,49 @@
+:host {
+    /* This is equivalent of the 'body' selector of a page. */
+}
+
+.votes-container {
+  width: 80vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.vote-img {
+  display: block;
+  max-width: 100%;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.vote-img-container {
+  position: relative;
+  width: 70vw;
+}
+
+.vote-img-container:hover {
+  cursor: pointer;
+}
+
+.vote-img-container:hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+@media (min-aspect-ratio: 5/7) {
+  .vote-img-container {
+    width: unset;
+    height: 40vh;
+  }
+
+  .vote-img {
+    max-width: unset;
+    max-height: 100%;
+  }
+}
