@@ -12,6 +12,9 @@ import 'package:angular_components/angular_components.dart';
 class PolicyDiscardDialogComponent implements OnInit {
   String loyalistPolicyImgUrl = '/assets/images/policy/loyalistPolicy.gif';
   String separatistPolicyImgUrl = '/assets/images/policy/separatistPolicy.gif';
+  String hiddenPolicyImgUrl = '/assets/images/policy/galacticPolicy.gif';
+
+  bool showPolicies = false;
 
   final _finishedDiscarding = new StreamController<List<bool>>();
 
@@ -27,10 +30,17 @@ class PolicyDiscardDialogComponent implements OnInit {
   @Input()
   bool hideOnFinished = true;
 
+  @Input()
+  bool isPolicyPeek = false;
+
   @override
   ngOnInit() async {}
 
   void discardPolicy(bool policy) {
+    if (isPolicyPeek || !showPolicies) {
+      return;
+    }
+
     var found = false;
     var remainingPolicies = policies.sublist(0);
     remainingPolicies.removeWhere((bool policyElem) {
@@ -45,5 +55,9 @@ class PolicyDiscardDialogComponent implements OnInit {
     if (hideOnFinished) {
       showDialog = false;
     }
+  }
+
+  void onOk() {
+    showDialog = false;
   }
 }

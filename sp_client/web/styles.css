@@ -9,7 +9,7 @@ body {
 }
 
 .star-wars-font {
-  text-transform: lowercase;
+  text-transform: lowercase !important;
   font-family: "Star Jedi";
 }
 
