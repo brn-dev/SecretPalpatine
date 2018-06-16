@@ -24,6 +24,9 @@ class PolicyChooserDialogComponent implements OnInit {
   @Input()
   bool showDialog = false;
 
+  @Input()
+  bool hideOnFinished = true;
+
   @override
   ngOnInit() async {}
 
@@ -40,5 +43,9 @@ class PolicyChooserDialogComponent implements OnInit {
       return false;
     });
     _finishedDiscarding.add(remainingPolicies);
+
+    if (hideOnFinished) {
+      showDialog = false;
+    }
   }
 }
