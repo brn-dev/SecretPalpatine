@@ -1,0 +1,36 @@
+:host {
+    /* This is equivalent of the 'body' selector of a page. */
+}
+
+.membership-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: xx-large;
+}
+
+.membership-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.membership-img-container {
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+  height: 50vh;
+}
+
+.membership-img {
+  display: block;
+  max-height: 100%;
+  box-shadow: 0 0 30px rgba(254, 195, 75, 0.5);
+}
+
+.ok-button {
+  text-transform: lowercase !important;
+  font-size: 30px;
+}
