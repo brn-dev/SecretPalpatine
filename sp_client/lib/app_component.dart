@@ -6,6 +6,7 @@ import 'package:sp_client/services/socket_io_service.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:sp_client/components/name_input_component/name_input_component.dart';
 import 'package:sp_client/components/lobbies_page_component/lobbies_page_component.dart';
+import 'package:sp_client/components/game/game.dart';
 
 import 'package:sp_shared/sp_shared.dart';
 
@@ -15,7 +16,8 @@ import 'package:sp_shared/sp_shared.dart';
 @RouteConfig(const
   [
     const Route(path: '/lobbies', name: 'Lobbies', component: LobbiesPageComponent, data: const{'name': 'PlayerName'}),
-    const Route(path: '/', name: 'Home', component: NameInputComponent)
+    const Route(path: '/', name: 'Home', component: NameInputComponent),
+    const Route(path: '/game', name: 'Game', component: GameComponent)
   ]
 )
 

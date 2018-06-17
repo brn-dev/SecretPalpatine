@@ -35,7 +35,7 @@ class GameHandler {
   int failedGovernmentCounter = 0;
   int loyalistEnactedPolicyCount = 0;
   int separatistEnactedPolicyCount = 0;
-  List<SpecialPowerFunction> specialPowers;
+  List<SpecialPowerFunction> specialPowers = new List<SpecialPowerFunction>();
 
   Map<int, SpecialPowerFunction> specialPowersFunctionMapping;
 
@@ -126,7 +126,8 @@ class GameHandler {
   GameInfo createGameInfo(
       Role role, List<int> separatistPlayerIds, int palpatinePlayerId) {
     var gameInfo = new GameInfo(role, [], null);
-    if (!role.membership && (role.id != palpatineRoleId || palpatineKnowsSeparatists)) {
+    if (!role.membership &&
+        (role.id != palpatineRoleId || palpatineKnowsSeparatists)) {
       gameInfo.separatistsIds = separatistPlayerIds;
     }
     if (!role.membership) {
@@ -191,7 +192,6 @@ class GameHandler {
     assignRoles();
     viceChair = players[random.nextInt(players.length)];
     formGovernment();
-    
   }
 
   void setupPolicies() {
@@ -232,8 +232,9 @@ class GameHandler {
       }
     });
     rolesForPlayers.forEach((player, role) {
-      var gameInfo = createGameInfo(role, separatistPlayerIds, palpatinePlayerId);
-      player.socket.emit(SocketIoEvents.gameStarted, gameInfo);
+      var gameInfo =
+          createGameInfo(role, separatistPlayerIds, palpatinePlayerId);
+      player.socket.emit(SocketIoEvents.gameStarted, JSON.encode(gameInfo));
     });
   }
 
@@ -241,7 +242,7 @@ class GameHandler {
     var roles = Roles.getRolesForPlayerAmount(players.length);
     var map = new Map<PlayerSocket, Role>();
     players.forEach((player) {
-      var randomRole = roles.removeAt(random.nextInt(roles.length));
+      var randomRole = roles.removeAt(roles.length > 0 ? random.nextInt(roles.length) : 0);
       map[player] = randomRole;
     });
     return map;
