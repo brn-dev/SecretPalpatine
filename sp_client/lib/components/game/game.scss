@@ -1,22 +1,92 @@
-@import 'package:angular_components/app_layout/mixins';
+@import "../../variables";
+
+$game-top-padding: 1em;
 
 :host {
-  border: 1px solid;
-  display: block;
-  height: 400px;
-  margin: 16px;
-  overflow: hidden;
-  position: relative;
-  width: 800px;
 }
 
-.controls {
-  align-items: flex-start;
+.material-content {
+  width: 100vw;
+  max-width: 100vw;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.main-content {
+  padding-top: $game-top-padding;
+  flex: 1;
+  min-width: 0;
+  height: calc(100% - #{$game-top-padding});
   display: flex;
   flex-direction: column;
 }
 
-// .custom-width {
-//   @include mat-drawer-width(50%);
-//   @include mat-temporary-drawer-width(50%);
-// }
+app-board {
+  flex: 1;
+}
+
+.players {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-bottom: 3vh;
+}
+
+// Role Drawer
+
+.drawer-content {
+  height: 100vh;
+  background: #292929;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.drawer-content > * {
+  width: 95%;
+}
+
+// Role Button
+$role-button-width: 2em;
+$role-button-height: 90vh;
+$role-button-tooltip-width: 10em;
+
+.role-button-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.role-button {
+  position: relative;
+  min-width: 0 !important;
+  width: $role-button-width;
+  height: $role-button-height;
+}
+
+.role-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.role-button-label {
+  writing-mode: tb-rl;
+}
+
+.role-button:hover::before {
+  content: "this shows your secret role - don't show this to anyone!";
+  font-family: $font-star-wars;
+  text-transform: lowercase;
+  position: absolute;
+  background-color: #a10403; // #e56343;
+  left: calc(#{-$role-button-tooltip-width} - #{$role-button-width} - 1em);
+  top: 0; //calc(0.4 * #{$role-button-height});
+  width: $role-button-tooltip-width;
+  padding: 1em;
+  border-radius: 0.5em;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+}

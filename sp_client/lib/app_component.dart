@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:sp_client/components/game/game.dart';
@@ -21,14 +20,20 @@ import 'package:sp_shared/sp_shared.dart';
 )
 
 @Component(
-  selector: 'my-app',
+  selector: 'secret-palpatine',
   styleUrls: const ['app_component.scss.css'],
   templateUrl: 'app_component.html',
-  directives: const [ROUTER_DIRECTIVES, NameInputComponent],
+  directives: const [ROUTER_DIRECTIVES, NameInputComponent, materialDirectives,
+    GameComponent],
   providers: const [materialProviders, GameStateService, SocketIoService],
 )
 class AppComponent {
   SocketIoService service;
-  GameStateService gameState;
-  AppComponent(this.service, this.gameState) {}
+  SocketIoService gameState;
+
+  AppComponent(this.service, this.gameState) {
+  }
+
+  ngOnInit() async {
+  }
 }

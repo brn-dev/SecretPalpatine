@@ -31,7 +31,13 @@ void main() {
       var player = new Player.fromJsonString(json);
       expect(player.id, null);
       expect(player.name, null);
-      
+    });
+
+    test('equals', () {
+      expect(testPerson == testPerson, true);
+      expect(testPerson == new Player(testPerson.id), true);
+      expect(testPerson == new Player(testPerson.id + 1), false);
+      expect(testPerson == new Lobby(testPerson.id), false);
     });
   });
 
@@ -70,6 +76,13 @@ void main() {
       expect(lobby.name, null);
       expect(lobby.players, []);
     });
+
+    test('equals', () {
+      expect(testLobby == testLobby, true);
+      expect(testLobby == new Lobby(testLobby.id), true);
+      expect(testLobby == new Lobby(testLobby.id + 1), false);
+      expect(testLobby == new Player(testLobby.id), false);
+    });
   });
 
   group('role', () {
@@ -102,6 +115,13 @@ void main() {
       expect(role.imageUrl, null);
     });
 
+    test('equals', () {
+      expect(testRole == testRole, true);
+      expect(testRole == new Role(testRole.id), true);
+      expect(testRole == new Role(testRole.id + 1), false);
+      expect(testRole == new Player(testRole.id), false);
+    });
+
   });
 
   group('game-info', () {
@@ -112,7 +132,7 @@ void main() {
     setUp(() {
       testRole = new Role(1, false, 'Palpatine', '');
       testGameInfo = new GameInfo(testRole, [2, 3], 3);
-      testGameInfoJson = '{"role":{"id":1,"membership":false,"name":"Palpatine","imageUrl":""},"seperatistsIds":[2,3],"palpatineId":3}';
+      testGameInfoJson = '{"role":{"id":1,"membership":false,"name":"Palpatine","imageUrl":""},"separatistsIds":[2,3],"palpatineId":3}';
     });
 
     test('serialization', () {
@@ -126,9 +146,9 @@ void main() {
       expect(gi.role.membership, testRole.membership);
       expect(gi.role.name, testRole.name);
       expect(gi.role.imageUrl, testRole.imageUrl);
-      expect(gi.seperatistsIds.length, testGameInfo.seperatistsIds.length);
-      for (var i = 0; i < gi.seperatistsIds.length; i++) {
-        expect(gi.seperatistsIds[i], testGameInfo.seperatistsIds[i]);
+      expect(gi.separatistsIds.length, testGameInfo.separatistsIds.length);
+      for (var i = 0; i < gi.separatistsIds.length; i++) {
+        expect(gi.separatistsIds[i], testGameInfo.separatistsIds[i]);
       }
       expect(gi.palpatineId, testGameInfo.palpatineId);
     });
@@ -136,7 +156,7 @@ void main() {
     test('deserialization empty', () {
       var gi = new GameInfo.fromJsonString('{}');
       expect(gi.role, null);
-      expect(gi.seperatistsIds, null);
+      expect(gi.separatistsIds, null);
       expect(gi.palpatineId, null);
     });
   });

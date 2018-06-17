@@ -1,0 +1,17 @@
+$font-default: "Roboto";
+$font-star-wars: "Star Jedi";
+
+$policy-height: 13vh;
+$policy-height-policy-background-indent-ratio: 0.1374;
+$policy-width-policy-background-indent-ratio: 0.1951;
+$policy-policy-background-height-ratio: 1.4;
+$policy-policy-board-height-ratio: 1.9;
+$policy-background-height-width-ratio: 0.7;
+$policy-height-width-ratio: 0.7;
+$policy-board-height-width-ratio: 3.02;
+$policy-policy-background-indent: calc(#{$policy-height} * #{$policy-height-policy-background-indent-ratio});
+$policy-background-height: calc(#{$policy-height} * #{$policy-policy-background-height-ratio});
+$policy-width: calc(#{$policy-height} * #{$policy-height-width-ratio});
+$policy-board-height: calc(#{$policy-height} * #{$policy-policy-board-height-ratio});
+$policy-board-width: calc(#{$policy-board-height} * #{$policy-board-height-width-ratio});
+$policy-background-width: calc(#{$policy-background-height} * #{$policy-background-height-width-ratio});

@@ -1,0 +1,29 @@
+<section>
+    <div class="header star-wars-font">You Are:</div>
+    <div class="role-img-container"><img [src]="gameStateService.role?.imageUrl" [alt]="gameStateService.role?.name"
+                                         class="role-img"></div>
+    <div class="star-wars-font">{{ gameStateService.role?.name }}</div>
+</section>
+<section>
+    <div class="header star-wars-font">Your Allies:</div>
+    <div class="allies">
+        <div *ngIf="gameStateService.fellowSeparatists != null">
+            <div *ngFor="let separatist of gameStateService.fellowSeparatists">{{ separatist.name }}</div>
+        </div>
+        <div *ngIf="gameStateService.fellowSeparatists == null">
+            You don't know who your allies are. Try to find out and work together with them to emerge victorious.
+        </div>
+    </div>
+</section>
+<section>
+    <div class="header star-wars-font">Palpatine:</div>
+    <div class="palpatine">
+        <div *ngIf="gameStateService.palpatine != null">
+            {{ gameStateService.palpatine.name }}
+        </div>
+        <div *ngIf="gameStateService.palpatine == null">
+            You don't know who palpatine is, he must not become chancellor once there are three or more separatist
+            policies enacted.
+        </div>
+    </div>
+</section>

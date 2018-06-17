@@ -1,0 +1,28 @@
+<modal [visible]="showDialog">
+    <material-dialog class="transparent-dialog">
+        <div class="container">
+
+            <div class="policy-container">
+                <div [ngClass]="{'policy-image-container' : true, 'selectable-policy-image-container' : showPolicies && !isPolicyPeek }"
+                     *ngFor="let policy of policies"
+                     (click)="discardPolicy(policy);">
+                    <img *ngIf="showPolicies"
+                         [ngClass]="{'policy-image': true, 'loyalist-policy-image': policy, 'separatist-policy-image': !policy }"
+                         [src]="policy ? loyalistPolicyImgUrl : separatistPolicyImgUrl"
+                         [alt]="policy ? 'Loyalist Policy' : 'Separatist Policy'">
+                    <img *ngIf="!showPolicies"
+                         class="policy-image"
+                         [src]="hiddenPolicyImgUrl"
+                         alt="hidden policy">
+                </div>
+            </div>
+
+            <div class="actions">
+                <material-button class="star-wars-font" (click)="showPolicies = !showPolicies">{{ showPolicies ? 'hide'
+                    : 'show'}}
+                </material-button>
+                <material-button *ngIf="isPolicyPeek" class="star-wars-font" (click)="onOk()">ok</material-button>
+            </div>
+        </div>
+    </material-dialog>
+</modal>

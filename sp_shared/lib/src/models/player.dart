@@ -1,15 +1,14 @@
 import 'dart:convert';
+import 'identifiable.dart';
 
-class Player {
-  int id;
+class Player extends Identifiable {
   String name;
 
-  Player([this.id, this.name]);
+  Player([int id, this.name]) : super(id);
 
   Player.fromJsonString(String json) : this.fromJson(JSON.decode(json));
 
-  Player.fromJson(Map<String, dynamic> jsonMap) {
-    this.id = jsonMap['id'];
+  Player.fromJson(Map<String, dynamic> jsonMap) : super(jsonMap['id']) {
     this.name = jsonMap['name'];
   }
 

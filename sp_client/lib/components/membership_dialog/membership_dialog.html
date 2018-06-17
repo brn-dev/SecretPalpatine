@@ -1,0 +1,23 @@
+<modal [visible]="showDialog">
+    <material-dialog class="transparent-dialog">
+        <div class="membership-container">
+            <div class="membership-text">
+                <div>{{ player.name }}</div>
+                <div *ngIf="showMembership" class="star-wars-font" >is a {{ membership ? 'loyalist' : 'separatist' }}</div>
+            </div>
+            <div class="membership-img-container">
+                <img *ngIf="showMembership"
+                     [src]="membership ? loyalistMembershipImgUrl : separatistMembershipImgUrl" alt=""
+                     class="membership-img">
+                <img *ngIf="!showMembership"
+                     [src]="hiddenMembershipImgUrl"
+                     alt="hidden membership"
+                     class="membership-img">
+            </div>
+            <div class="actions star-wars-font">
+                <material-button (click)="showMembership = !showMembership">{{ showMembership ? 'hide' : 'show' }}</material-button>
+                <material-button (click)="onOk()">ok</material-button>
+            </div>
+        </div>
+    </material-dialog>
+</modal>

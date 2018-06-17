@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+app-policy-pile:first-of-type {
+  margin-right: 3vw;
+}
+
+app-policy-pile:last-of-type {
+  margin-left: 3vw;
+}
+
+@media (max-width: 1024px) {
+  :host {
+    flex-wrap: wrap;
+  }
+
+  .policy-board {
+    flex-basis: 100%;
+    max-width: 90vw;
+    order: 1;
+  }
+
+  $policy-pile-margin-top: 2vh;
+
+  .draw-pile,
+  .discard-pile {
+    margin: $policy-pile-margin-top 0 0 0;
+    height: 13vh;
+  }
+
+  .draw-pile {
+    order: 2;
+  }
+
+  .discard-pile {
+    order: 3;
+  }
+}

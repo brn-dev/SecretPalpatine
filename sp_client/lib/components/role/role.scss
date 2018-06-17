@@ -1,0 +1,33 @@
+@import "../../variables";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+section {
+  flex-basis: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+section:first-of-type {
+  flex-grow: 3;
+}
+
+
+.role-img-container {
+  max-height: 70%;
+  max-width: 80%;
+
+  .role-img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
