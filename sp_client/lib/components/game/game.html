@@ -8,7 +8,7 @@
         <div class="main-content">
             <app-board></app-board>
             <div class="players">
-                <app-player *ngFor="let player of gameStateService.lobby.players" [player]="player"></app-player>
+                <app-player *ngFor="let player of gameStateService.players" [player]="player"></app-player>
             </div>
         </div>
         <div class="role-button-container">

@@ -2,8 +2,6 @@
 class PolicyPile {
   List<bool> policies = new List<bool>();
 
-  PolicyPile([this.policies]);
-
   void add(bool policy) => policies.add(policy);
 
   void addAll(List<bool> policies) => this.policies.addAll(policies);

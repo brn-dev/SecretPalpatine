@@ -10,6 +10,7 @@ environment:
 dependencies:
   angular: ^4.0.0
   angular_components: ^0.8.0
+  angular_router: ^1.0.2
   socket_io_client:
     git: git://github.com/rikulo/socket.io-client-dart.git
   sp_shared:
@@ -21,6 +22,7 @@ dev_dependencies:
   browser: ^0.10.0
   dart_to_js_script_rewriter: ^1.0.1
   test: ^0.12.0
+
 
 transformers:
 - sass_builder:
