@@ -1,38 +1,41 @@
 
+enum SpecialPower {
+  PolicyPeek,
+  LoyaltyInvestigation,
+  SpecialElection,
+  Execution,
+}
+
 class SpecialPowers {
-  static const int policyPeek = 1;
-  static const int loyaltyInvestigation = 2;
-  static const int specialElection = 3;
-  static const int execution = 4;
 
-  static final List<int> specialPowers5And6Players = [
+  static final List<SpecialPower> specialPowers5And6Players = [
     null,
     null,
-    policyPeek,
-    execution,
-    execution,
+    SpecialPower.PolicyPeek,
+    SpecialPower.Execution,
+    SpecialPower.Execution,
     null
   ];
 
-  static final List<int> specialPowers7And8Players = [
+  static final List<SpecialPower> specialPowers7And8Players = [
     null,
-    loyaltyInvestigation,
-    specialElection,
-    execution,
-    execution,
+    SpecialPower.LoyaltyInvestigation,
+    SpecialPower.SpecialElection,
+    SpecialPower.Execution,
+    SpecialPower.Execution,
     null
   ];
 
-  static final List<int> specialPowers9And10Players = [
-    loyaltyInvestigation,
-    loyaltyInvestigation,
-    specialElection,
-    execution,
-    execution,
+  static final List<SpecialPower> specialPowers9And10Players = [
+    SpecialPower.LoyaltyInvestigation,
+    SpecialPower.LoyaltyInvestigation,
+    SpecialPower.SpecialElection,
+    SpecialPower.Execution,
+    SpecialPower.Execution,
     null
   ];
 
-  static List<int> getSpecialPowersForPlayerAmount(int amountOfPlayers) {
+  static List<SpecialPower> getSpecialPowersForPlayerAmount(int amountOfPlayers) {
     if (amountOfPlayers < 7) {
       return specialPowers5And6Players;
     } 

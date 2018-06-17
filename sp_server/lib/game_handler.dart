@@ -19,6 +19,7 @@ class GameHandler {
   Function whenEmpty;
 
   String roomId;
+
   Namespace get room => io.to(roomId);
 
   Random random = new Random();
@@ -37,7 +38,7 @@ class GameHandler {
   int separatistEnactedPolicyCount = 0;
   List<SpecialPowerFunction> specialPowers;
 
-  Map<int, SpecialPowerFunction> specialPowersFunctionMapping;
+  Map<SpecialPower, SpecialPowerFunction> specialPowersFunctionMapping;
 
   static const int loyalistPolicyWinCount = 5;
   static const int separatistPolicyWinCount = 6;
@@ -49,15 +50,19 @@ class GameHandler {
       players.where((player) => !killedPlayers.contains(player)).toList();
 
   PlayerSocket get viceChair => _viceChair;
+
   set viceChair(PlayerSocket player) {
     _viceChair = player;
     room.emit(SocketIoEvents.viceChairSet, player.player.id);
   }
 
   PlayerSocket get chancellor => _chancellor;
+
   set chancellor(PlayerSocket player) {
     _chancellor = player;
-    player.socket.to(roomId).emit(SocketIoEvents.chancellorSet, player.player.id);
+    player.socket
+        .to(roomId)
+        .emit(SocketIoEvents.chancellorSet, player.player.id);
   }
 
   GameHandler(this.io, this.lobby, this.host, {Function whenEmpty = null}) {
@@ -67,10 +72,10 @@ class GameHandler {
     host.socket.once(SocketIoEvents.startGame, (_) => startGame());
 
     specialPowersFunctionMapping = {
-      SpecialPowers.policyPeek: handlePolicyPeek,
-      SpecialPowers.loyaltyInvestigation: handleLoyaltyInvestigation,
-      SpecialPowers.specialElection: handleSpecialElection,
-      SpecialPowers.execution: handleExecution
+      SpecialPower.PolicyPeek: handlePolicyPeek,
+      SpecialPower.LoyaltyInvestigation: handleLoyaltyInvestigation,
+      SpecialPower.SpecialElection: handleSpecialElection,
+      SpecialPower.Execution: handleExecution
     };
   }
 
@@ -126,7 +131,8 @@ class GameHandler {
   GameInfo createGameInfo(
       Role role, List<int> separatistPlayerIds, int palpatinePlayerId) {
     var gameInfo = new GameInfo(role, [], null);
-    if (!role.membership && (role.id != palpatineRoleId || palpatineKnowsSeparatists)) {
+    if (!role.membership &&
+        (role.id != palpatineRoleId || palpatineKnowsSeparatists)) {
       gameInfo.separatistsIds = separatistPlayerIds;
     }
     if (!role.membership) {
@@ -180,8 +186,8 @@ class GameHandler {
 
   void startGame() {
     if (!isValidPlayerCount()) {
-      print(
-          'Error: lobby ${lobby.id} tried to start with ${players.length} players');
+      print('Error: lobby ${lobby.id} tried to start with ${players
+              .length} players');
       host.socket.on(SocketIoEvents.startGame, (_) => startGame());
       return;
     }
@@ -191,7 +197,6 @@ class GameHandler {
     assignRoles();
     viceChair = players[random.nextInt(players.length)];
     formGovernment();
-    
   }
 
   void setupPolicies() {
@@ -208,7 +213,7 @@ class GameHandler {
   }
 
   void setupSpecialPowers() {
-    List<int> specialPowersForCurrPlayerCount =
+    List<SpecialPower> specialPowersForCurrPlayerCount =
         SpecialPowers.getSpecialPowersForPlayerAmount(players.length);
     for (var specialPower in specialPowersForCurrPlayerCount) {
       if (specialPower == null) {
@@ -232,13 +237,14 @@ class GameHandler {
       }
     });
     rolesForPlayers.forEach((player, role) {
-      var gameInfo = createGameInfo(role, separatistPlayerIds, palpatinePlayerId);
+      var gameInfo =
+          createGameInfo(role, separatistPlayerIds, palpatinePlayerId);
       player.socket.emit(SocketIoEvents.gameStarted, gameInfo);
     });
   }
 
   Map<PlayerSocket, Role> randomlyAssignRoles() {
-    var roles = Roles.getRolesForPlayerAmount(players.length);
+    var roles = new List<Role>.from(Roles.getRolesForPlayerAmount(players.length));
     var map = new Map<PlayerSocket, Role>();
     players.forEach((player) {
       var randomRole = roles.removeAt(random.nextInt(roles.length));
@@ -251,8 +257,9 @@ class GameHandler {
     viceChair.socket.once(SocketIoEvents.chooseChancellor, (int playerId) {
       var selectedChancellor = getPlayerById(playerId);
       if (!isPlayerValidForChancellor(selectedChancellor)) {
-        print(
-            'Error: Player ${selectedChancellor.player.name} (id: ${selectedChancellor.player.id} is not allowed to be chancellor!');
+        print('Error: Player ${selectedChancellor.player
+                .name} (id: ${selectedChancellor.player
+                .id} is not allowed to be chancellor!');
       }
       chancellor = selectedChancellor;
       handleVote();
@@ -406,7 +413,7 @@ class GameHandler {
   }
 
   void handleSpecialPower(Function callback) {
-    var specialPower = specialPowers[separatistEnactedPolicyCount];
+    var specialPower = specialPowers[separatistEnactedPolicyCount - 1];
     if (specialPower != null) {
       specialPower(callback);
     }
@@ -424,7 +431,9 @@ class GameHandler {
       PlayerSocket chosenPlayer = getPlayerById(playerId);
       viceChair.socket.emit(SocketIoEvents.playerInvestigated,
           JSON.encode(rolesForPlayers[chosenPlayer].membership));
-      viceChair.socket.to(roomId).emit(SocketIoEvents.viceChairInvestigated);
+      viceChair.socket
+          .to(roomId)
+          .emit(SocketIoEvents.viceChairInvestigated, playerId);
       callback();
     });
   }

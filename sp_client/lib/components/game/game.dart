@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:angular/angular.dart' show CORE_DIRECTIVES, Component, OnInit;
 import 'package:angular_components/angular_components.dart';
 import 'package:sp_client/components/board/board.dart';
@@ -39,6 +40,34 @@ class GameComponent implements OnInit {
   @override
   ngOnInit() async {
     handleGame();
+  }
+
+  Future<Null> createLobby() async {
+    String name = new Random().nextInt(1000).toString();
+    socketIoService.setName(name);
+    socketIoService.createLobby('Test');
+    whenInLobby(name);
+  }
+
+  void startGame() {
+    socketIoService.startGame();
+  }
+
+  Future<Null> joinLobby() async {
+    String name = new Random().nextInt(1000).toString();
+    socketIoService.setName(name);
+    socketIoService.joinLobby(1);
+    whenInLobby(name);
+  }
+
+  Future<Null> whenInLobby(String name) async {
+    await socketIoService.whenLobbyJoined();
+    print('joined lobby with name ${name}');
+//    while (gameStateService.players.length < 6) {
+//      await socketIoService.whenPlayerJoined();
+//    }
+//    await socketIoService.whenGameStarted();
+
   }
 
   //player chooser dialog
@@ -86,8 +115,7 @@ class GameComponent implements OnInit {
   bool isPolicyPeek;
   Completer<bool> policyDialogCompleter;
 
-  Future<bool> doPolicyDialog(
-      List<bool> shownPolicies, bool isPolicyPeek) {
+  Future<bool> doPolicyDialog(List<bool> shownPolicies, bool isPolicyPeek) {
     this.shownPolicies = shownPolicies;
     this.isPolicyPeek = isPolicyPeek;
     policyDialogCompleter = new Completer<bool>();
@@ -98,6 +126,17 @@ class GameComponent implements OnInit {
   void onPolicyDialogFinished(bool resultPolicies) {
     showPolicyDialog = false;
     policyDialogCompleter.complete(resultPolicies);
+  }
+
+  // membership dialog
+  bool showMembershipDialog;
+  bool membershipDialogMembership;
+  Player membershipDialogPlayer;
+
+  void doMembershipDialog(Player p, bool membership) {
+    membershipDialogPlayer = p;
+    membershipDialogMembership = membership;
+    showMembershipDialog = true;
   }
 
   // game logic
@@ -121,7 +160,7 @@ class GameComponent implements OnInit {
 
   Future<Null> formGovernment() async {
     await socketIoService.whenViceChairSet();
-    if (gameStateService.viceChair == gameStateService.player) {
+    if (gameStateService.isPlayerViceChair) {
       var chosenChancellor =
           await doPlayerChooserDialog(gameStateService.eligiblePlayers);
       socketIoService.chooseChancellor(chosenChancellor.id);
@@ -142,8 +181,10 @@ class GameComponent implements OnInit {
 
   Future<bool> voteForGovernment() async {
     socketIoService.listenForPlayersVoting();
-    bool vote = await getVote();
-    socketIoService.vote(vote);
+    if (gameStateService.isPlayerAlive) {
+      bool vote = await getVote();
+      socketIoService.vote(vote);
+    }
     return socketIoService.whenVoteFinished();
   }
 
@@ -180,11 +221,69 @@ class GameComponent implements OnInit {
   Future<Null> handleLegislativeSessionResult() async {
     var resultPolicy = await socketIoService.whenPolicyRevealed();
     if (!resultPolicy) {
-      await handleSpecialAction();
+      await handleSpecialPower();
     }
   }
 
-  Future<Null> handleSpecialAction() async {
+  Future<Null> handleSpecialPower() async {
+    var specialPowers = SpecialPowers
+        .getSpecialPowersForPlayerAmount(gameStateService.players.length);
+    var currSpecialPower =
+        specialPowers[gameStateService.separatistEnactedPolicies - 1];
+    switch (currSpecialPower) {
+      case SpecialPower.PolicyPeek:
+        await handlePolicyPeek();
+        break;
+      case SpecialPower.LoyaltyInvestigation:
+        await handleLoyaltyInvestigation();
+        break;
+      case SpecialPower.SpecialElection:
+        await handleSpecialElection();
+        break;
+      case SpecialPower.Execution:
+        await handleExecution();
+        break;
+    }
+  }
 
+  Future<Null> handlePolicyPeek() async {
+    if (gameStateService.isPlayerViceChair) {
+      var peekedPolicies = await socketIoService.whenPoliciesDrawn();
+      await doPolicyDialog(peekedPolicies, true);
+    }
+  }
+
+  Future<Null> handleLoyaltyInvestigation() async {
+    if (gameStateService.isPlayerViceChair) {
+      var playerForInvestigation =
+          await doPlayerChooserDialog(gameStateService.alivePlayers);
+      socketIoService.investigatePlayer(playerForInvestigation.id);
+      var membership = await socketIoService.whenMembershipInvestigated();
+      doMembershipDialog(playerForInvestigation, membership);
+    } else {
+      var investigatedPlayer =
+          await socketIoService.whenViceChairInvestigated();
+      print('player "${investigatedPlayer.name}" got investigated');
+      // display investigated player
+    }
+  }
+
+  Future<Null> handleSpecialElection() async {
+    if (gameStateService.isPlayerViceChair) {
+      var nextViceChair =
+          await doPlayerChooserDialog(gameStateService.alivePlayers);
+      socketIoService.pickNextViceChair(nextViceChair.id);
+    }
+  }
+
+  Future<Null> handleExecution() async {
+    if (gameStateService.isPlayerViceChair) {
+      var playerToBeKilled = await doPlayerChooserDialog(gameStateService
+          .alivePlayers
+          .where((p) => p != gameStateService.player));
+      socketIoService.killPlayer(playerToBeKilled.id);
+    } else {
+      await socketIoService.whenPlayerKilled();
+    }
   }
 }

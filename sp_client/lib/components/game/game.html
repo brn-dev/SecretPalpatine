@@ -1,3 +1,8 @@
+<div>
+    <material-button (click)="createLobby()" >create</material-button>
+    <material-button (click)="joinLobby()">join</material-button>
+    <material-button (click)="startGame()">start</material-button>
+</div>
 <div class="game-container"
      (mouseup)="drawer.visible = false;"
      (touchend)="drawer.visible = false;">
@@ -10,7 +15,8 @@
         <div class="main-content">
             <app-board></app-board>
             <div [ngClass]="{'players' : true, 'player-chooser-dialog' : isPlayerChooser }">
-                <app-player *ngFor="let player of gameStateService.lobby.players"
+                {{ gameStateService.players.length}}
+                <app-player *ngFor="let player of gameStateService.players"
                             [player]="player"
                             [ngClass]="{ 'selectable-player' : isPlayerChooser && isPlayerSelectable(player) }"
                             (click)="onSelectablePlayerClick(player)">
@@ -34,4 +40,8 @@
                                (finishedDiscarding)="onPolicyDialogFinished($event)">
 
     </app-policy-discard-dialog>
+    <app-membership-dialog [showDialog]="showMembershipDialog"
+                           [membership]="membershipDialogMembership"
+                           [player]="membershipDialogPlayer">
+    </app-membership-dialog>
 </div>
