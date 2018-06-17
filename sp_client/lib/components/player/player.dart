@@ -25,7 +25,7 @@ class PlayerComponent {
 
   String _viceChairTooltip = 'This player is currently the Vice Chair of the government';
   String _chancellorTooltip = 'This player is currently the Supreme Chancellor of the government';
-  String _termLimitedTooltip = 'This player is not eligible to be Supreme Chancellor in the next legislative session';
+  String _termLimitedTooltip = 'This player is term-limited for the next legislative session';
 
   String _yesVoteImgUrl = '/assets/images/vote/arrow_up_icon.gif';
   String _noVoteImgUrl = '/assets/images/vote/arrow_down_icon.gif';

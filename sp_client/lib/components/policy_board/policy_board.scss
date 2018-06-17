@@ -12,16 +12,33 @@
 
 .policy-container {
   position: absolute;
-  top: 20%;
-  left: 7%;
   display: flex;
   flex-direction: row;
-  height: 55%;
+  top: 27%;
+  height: 43%;
 }
 
 .policy-container > img {
   width: unset;
-  height: 100%
+  height: 100%;
+}
+
+.separatist-policy-container {
+  left: 8.5%;
+  width: 83%;
+}
+
+.separatist-policy-container > img {
+  margin-right: 4.2%;
+}
+
+.loyalist-policy-container {
+  left: 15.5%;
+  width: 70%;
+}
+
+.loyalist-policy-container > img {
+  margin-right: 5.25%;
 }
 
 img {

@@ -195,6 +195,7 @@ class GameComponent implements OnInit {
 
   Future<Null> handleViceChairPhase() async {
     if (gameStateService.isPlayerViceChair) {
+      print('discarding as vice chair');
       await drawAndDiscardPolicy();
     } else {
 //      await socketIoService.whenViceChairChoosing();
@@ -204,6 +205,7 @@ class GameComponent implements OnInit {
 
   Future<Null> handleChancellorPhase() async {
     if (gameStateService.player == gameStateService.chancellor) {
+      print('discarding as chancellor');
       await drawAndDiscardPolicy();
     } else {
 //      await socketIoService.whenChancellorChoosing();
@@ -214,7 +216,7 @@ class GameComponent implements OnInit {
   Future<Null> drawAndDiscardPolicy() async {
     var drawnPolicies = await socketIoService.whenPoliciesDrawn();
     var discardedPolicy = await doPolicyDialog(drawnPolicies, false);
-    print('discarding policy: ${discardedPolicy}');
+    print('discarded policy: ${discardedPolicy}');
     socketIoService.discardPolicy(discardedPolicy);
   }
 
