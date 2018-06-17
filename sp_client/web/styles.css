@@ -3,9 +3,8 @@
 
 body {
   margin: 0 auto;
-
-  font-family: "Star Jedi";
   height: 100%;
+  font-family: "Roboto";
 }
 
 @font-face {

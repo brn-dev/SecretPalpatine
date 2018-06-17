@@ -191,6 +191,7 @@ class GameHandler {
     assignRoles();
     viceChair = players[random.nextInt(players.length)];
     formGovernment();
+    
   }
 
   void setupPolicies() {

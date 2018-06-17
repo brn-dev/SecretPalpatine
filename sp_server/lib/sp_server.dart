@@ -6,7 +6,7 @@ import 'package:sp_shared/sp_shared.dart';
 import 'package:socket_io/socket_io.dart';
 import 'player_manager.dart';
 
-class SHServer {
+class SPServer {
   final int port;
   Server io;
 
@@ -14,7 +14,7 @@ class SHServer {
   final LobbyManager _lobbyManager = new LobbyManager();
   final Map<int, GameHandler> _gameHandlers = new Map<int, GameHandler>();
 
-  SHServer([this.port = 88]) {
+  SPServer([this.port = 88]) {
     createServer();
   }
 
@@ -37,7 +37,7 @@ class SHServer {
           new PlayerSocket(_playerManager.createPlayer(playerName), client);
       client.once(SocketIoEvents.createLobby, (String lobbyName) {
         createLobby(playerSocket, lobbyName);
-        io.emit(SocketIoEvents.lobbyCreated, JSON.encode(_lobbyManager.openLobbies));
+        io.emit(SocketIoEvents.lobbyCreated, JSON.encode(_lobbyManager.openLobbies.last));
         client.off(SocketIoEvents.joinLobby);
       });
       client.once(SocketIoEvents.joinLobby, (int lobbyId) {
