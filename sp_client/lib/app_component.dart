@@ -27,14 +27,9 @@ import 'package:sp_shared/sp_shared.dart';
   templateUrl: 'app_component.html',
   directives: const [ROUTER_DIRECTIVES, NameInputComponent, materialDirectives,
     GameComponent],
-  providers: const [materialProviders, GameStateService, SocketIoService],
+  providers: const [materialProviders],
 )
 class AppComponent {
-  SocketIoService service;
-  SocketIoService gameState;
-
-  AppComponent(this.service, this.gameState) {
-  }
 
   ngOnInit() async {
   }

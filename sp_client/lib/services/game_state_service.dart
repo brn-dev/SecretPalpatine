@@ -33,6 +33,7 @@ class GameStateService {
   bool get voteResult => evaluateVote();
 
   GameStateService() {
+    print('in constructor');
     reset();
   }
 
@@ -50,6 +51,7 @@ class GameStateService {
     prevViceChair = null;
     prevChancellor = null;
     killedPlayers = new List<Player>();
+    votes = new Map<Player, bool>();
   }
 
   void addSeparatistPolicy() => separatistEnactedPolicies++;
@@ -68,7 +70,7 @@ class GameStateService {
   void setPalpatineById(int playerId) => palpatine = getPlayerById(playerId);
 
   void setFellowSeparatistByPlayerIds(List<int> playerIds) {
-    if (playerIds == null) {
+    if (playerIds == null || playerIds.length == 0) {
       fellowSeparatists = null;
       return;
     }

@@ -24,32 +24,49 @@ class LobbiesPageComponent {
 
   ngOnInit() async {
     this.lobbies = await this.socketService.getLobbies();
-    this.gameStateService.lobby = this.socketService.whenLobbyJoined();
     this.socketService.whenGameStarted().then((role) {
       print("E");
       this.gameStateService.role = role;
       this.router.navigate(['Game']);
     });
-    while (true) {
-      var stream = await this.socketService.whenLobbyCreated();
-      this.lobbies.add(await stream.first);
+    listenForCreatedLobbies();
+    listenForJoinedPlayers();
+  }
+
+  Future<Null> listenForCreatedLobbies() async {
+    await for (var lobby in socketService.whenLobbyCreated()) {
+      lobbies.add(lobby);
     }
   }
 
-  LobbiesPageComponent(this.routeParams, this.gameStateService, this.router) {
-    this.socketService = new SocketIoService(gameStateService);
+  Future<Null> listenForJoinedPlayers() async {
+    await for (var player in socketService.whenPlayerJoined()) {
+      gameStateService.players.add(player);
+    }
+  }
+
+  LobbiesPageComponent(this.routeParams, this.router, this.gameStateService, this.socketService) {
     this.socketService.setName(routeParams.get('name'));
     ngOnInit();
   }
-  void createLobby() {
+
+  Future createLobby() async {
     print(this.lobbyName);
     this.socketService.createLobby(this.lobbyName);
+    var createdLobby = await this.socketService.whenLobbyJoined();
+    lobbies.add(createdLobby);
     showDialog = false;
   }
 
   Future joinLobby(Lobby lobby) async {
     this.socketService.joinLobby(lobby.id);
-    this.lobbies = await this.socketService.getLobbies();
+    var joinedLobby = await this.socketService.whenLobbyJoined();
+    for (var i = 0; i < lobbies.length; i++) {
+      if (lobbies[i].id == joinedLobby.id) {
+        lobbies[i] = joinedLobby;
+        break;
+      }
+    }
   }
 
   void startGame() {

@@ -201,7 +201,7 @@ class SocketIoService {
         gameStateService.addPlayer(player);
         callback(player);
       });
-  Stream<Lobby> whenLobbyCreated() async {
+  Stream<Lobby> whenLobbyCreated() {
     var controller = new StreamController<Lobby>();
     socket.on(SocketIoEvents.lobbyCreated, (String lobbyJson) {
       Lobby lobby = new Lobby.fromJsonString(lobbyJson);
@@ -210,24 +210,12 @@ class SocketIoService {
     return controller.stream;
   }
 
-  Completer<Player> _playerJoinedCompleter;
-
-  Future<Null> stopOnPlayerJoined() async {
-    socket.off(SocketIoEvents.playerJoined);
-    if (_playerJoinedCompleter != null) {
-      _playerJoinedCompleter.completeError(null);
-    }
-  }
-
-  Future<Player> whenPlayerJoined() async {
-    stopOnPlayerJoined();
-    _playerJoinedCompleter = new Completer();
-    socket.once(SocketIoEvents.playerJoined, (String playerJson) {
+  Stream<Player> whenPlayerJoined() {
+    var controller = new StreamController<Player>();
+    socket.on(SocketIoEvents.playerJoined, (String playerJson) {
       Player player = new Player.fromJsonString(playerJson);
-      gameStateService.addPlayer(player);
-      _playerJoinedCompleter.complete(player);
-      _playerJoinedCompleter = null;
+      controller.add(player);
     });
-    return _playerJoinedCompleter.future;
+    return controller.stream;
   }
 }

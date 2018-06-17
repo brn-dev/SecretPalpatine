@@ -239,7 +239,7 @@ class GameHandler {
   }
 
   Map<PlayerSocket, Role> randomlyAssignRoles() {
-    var roles = Roles.getRolesForPlayerAmount(players.length);
+    var roles = new List<Role>.from(Roles.getRolesForPlayerAmount(players.length));
     var map = new Map<PlayerSocket, Role>();
     players.forEach((player) {
       var randomRole = roles.removeAt(roles.length > 0 ? random.nextInt(roles.length) : 0);

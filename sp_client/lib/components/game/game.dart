@@ -25,7 +25,7 @@ import 'package:sp_client/services/game_state_service.dart';
     VoteDialogComponent,
     MembershipDialogComponent
   ],
-  providers: const [materialProviders, GameStateService],
+  providers: const [materialProviders],
 )
 class GameComponent implements OnInit {
   GameStateService gameStateService;

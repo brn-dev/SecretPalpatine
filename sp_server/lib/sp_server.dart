@@ -37,7 +37,7 @@ class SPServer {
           new PlayerSocket(_playerManager.createPlayer(playerName), client);
       client.once(SocketIoEvents.createLobby, (String lobbyName) {
         createLobby(playerSocket, lobbyName);
-        io.emit(SocketIoEvents.lobbyCreated, JSON.encode(_lobbyManager.openLobbies.last));
+        playerSocket.socket.broadcast.emit(SocketIoEvents.lobbyCreated, JSON.encode(_lobbyManager.openLobbies.last));
         client.off(SocketIoEvents.joinLobby);
       });
       client.once(SocketIoEvents.joinLobby, (int lobbyId) {
