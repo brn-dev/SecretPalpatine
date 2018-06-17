@@ -13,16 +13,18 @@ import 'package:angular_forms/angular_forms.dart';
     styleUrls: const ['lobbies_page_component.scss.css'],
     directives: const [CORE_DIRECTIVES, materialDirectives],
     providers: const [materialProviders])
-class LobbiesPageComponent {
+class LobbiesPageComponent implements OnInit {
   RouteParams routeParams;
   GameStateService gameStateService;
   SocketIoService socketService;
-  List<Lobby> lobbies;
+  List<Lobby> lobbies = new List<Lobby>();
   bool showDialog = false;
   String lobbyName = "";
   Router router;
 
   ngOnInit() async {
+    this.socketService.setName(routeParams.get('name'));
+    await socketService.whenPlayerCreated();
     this.lobbies = await this.socketService.getLobbies();
     this.socketService.whenGameStarted().then((role) {
       print("E");
@@ -45,10 +47,7 @@ class LobbiesPageComponent {
     }
   }
 
-  LobbiesPageComponent(this.routeParams, this.router, this.gameStateService, this.socketService) {
-    this.socketService.setName(routeParams.get('name'));
-    ngOnInit();
-  }
+  LobbiesPageComponent(this.routeParams, this.router, this.gameStateService, this.socketService);
 
   Future createLobby() async {
     print(this.lobbyName);

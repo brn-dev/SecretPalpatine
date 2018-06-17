@@ -10,7 +10,6 @@
         <div class="main-content">
             <app-board></app-board>
             <div [ngClass]="{'players' : true, 'player-chooser-dialog' : isPlayerChooser }">
-                {{ gameStateService.players.length}}
                 <app-player *ngFor="let player of gameStateService.players"
                             [player]="player"
                             [ngClass]="{ 'selectable-player' : isPlayerChooser && isPlayerSelectable(player) }"
@@ -32,7 +31,7 @@
     <app-policy-discard-dialog [showDialog]="showPolicyDialog"
                                [policies]="shownPolicies"
                                [isPolicyPeek]="isPolicyPeek"
-                               (finishedDiscarding)="onPolicyDialogFinished($event)">
+                               (finished)="onPolicyDialogFinished($event)">
 
     </app-policy-discard-dialog>
     <app-membership-dialog [showDialog]="showMembershipDialog"

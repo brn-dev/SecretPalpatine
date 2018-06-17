@@ -1,6 +1,7 @@
 
 class SocketIoEvents {
   // Server to Client
+  static const String playerCreated = 'player-created';
   static const String lobbyJoined = 'lobby-joined';
   static const String lobbies = 'lobbies';
   static const String playerJoined = 'player-joined';
@@ -34,4 +35,5 @@ class SocketIoEvents {
   static const String killPlayer = 'kill-player';
   static const String investigatePlayer = 'investigate-player';
   static const String pickNextViceChair = 'pick-next-viceChair';
+  static const String finishedPolicyPeek = 'finished-policy-peek';
 }

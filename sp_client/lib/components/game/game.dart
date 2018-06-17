@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:angular/angular.dart' show CORE_DIRECTIVES, Component, OnInit;
 import 'package:angular_components/angular_components.dart';
 import 'package:sp_client/components/board/board.dart';
@@ -60,10 +59,12 @@ class GameComponent implements OnInit {
   }
 
   void onSelectablePlayerClick(Player p) {
+    if (!isPlayerChooser || !selectablePlayers.contains(p)) {
+      return;
+    }
     isPlayerChooser = false;
     selectablePlayers = null;
     playerChooserCompleter.complete(p);
-    print(p.name);
   }
 
   // vote dialog
@@ -98,6 +99,7 @@ class GameComponent implements OnInit {
   void onPolicyDialogFinished(bool resultPolicies) {
     showPolicyDialog = false;
     policyDialogCompleter.complete(resultPolicies);
+    print('policy dialog completed');
   }
 
   // membership dialog
@@ -128,14 +130,20 @@ class GameComponent implements OnInit {
       } while (!voteResult);
       await handleGovernment();
     }
+    print('game ended');
   }
 
   Future<Null> formGovernment() async {
+    print('waiting for setting vice chair');
     await socketIoService.whenViceChairSet();
+    gameStateService.chancellor = null;
+    print('vice chair set: ${gameStateService.viceChair.id} - ${gameStateService
+        .viceChair.name}');
     if (gameStateService.isPlayerViceChair) {
       var chosenChancellor =
           await doPlayerChooserDialog(gameStateService.eligiblePlayers);
       socketIoService.chooseChancellor(chosenChancellor.id);
+      await socketIoService.whenChancellorSet();
     } else {
       await socketIoService.whenChancellorSet();
     }
@@ -145,6 +153,9 @@ class GameComponent implements OnInit {
     gameStateService.failedGovernmentCounter++;
     if (gameStateService.failedGovernmentCounter == 4) {
       await socketIoService.whenPolicyRevealed();
+      if (gameStateService.policyDrawCount < 3) {
+        gameStateService.mergePolicyPiles();
+      }
       gameStateService.failedGovernmentCounter = 0;
       gameStateService.prevViceChair = null;
       gameStateService.prevChancellor = null;
@@ -161,16 +172,32 @@ class GameComponent implements OnInit {
   }
 
   Future<Null> handleGovernment() async {
+    bool isChancellorPalpatine =
+        await socketIoService.whenIsChancellorPalpatine();
+    if (isChancellorPalpatine) {
+      // TODO: display  something
+      print('chancellor is palpatine');
+      return;
+    }
+
+    gameStateService.prevChancellor = gameStateService.chancellor;
+    gameStateService.prevViceChair = gameStateService.viceChair;
+    gameStateService.policyDrawCount -= 3;
     await handleViceChairPhase();
+    gameStateService.policyDiscardCount += 1;
     await handleChancellorPhase();
+    gameStateService.policyDiscardCount += 1;
+    if (gameStateService.policyDrawCount < 3) {
+      gameStateService.mergePolicyPiles();
+    }
     await handleLegislativeSessionResult();
   }
 
   Future<Null> handleViceChairPhase() async {
-    if (gameStateService.player == gameStateService.viceChair) {
+    if (gameStateService.isPlayerViceChair) {
       await drawAndDiscardPolicy();
     } else {
-      await socketIoService.whenViceChairChoosing();
+//      await socketIoService.whenViceChairChoosing();
       // TODO: display something
     }
   }
@@ -179,7 +206,7 @@ class GameComponent implements OnInit {
     if (gameStateService.player == gameStateService.chancellor) {
       await drawAndDiscardPolicy();
     } else {
-      await socketIoService.whenChancellorChoosing();
+//      await socketIoService.whenChancellorChoosing();
       // TODO: display something
     }
   }
@@ -187,11 +214,13 @@ class GameComponent implements OnInit {
   Future<Null> drawAndDiscardPolicy() async {
     var drawnPolicies = await socketIoService.whenPoliciesDrawn();
     var discardedPolicy = await doPolicyDialog(drawnPolicies, false);
+    print('discarding policy: ${discardedPolicy}');
     socketIoService.discardPolicy(discardedPolicy);
   }
 
   Future<Null> handleLegislativeSessionResult() async {
     var resultPolicy = await socketIoService.whenPolicyRevealed();
+    print('policy revealed: ${resultPolicy}');
     if (!resultPolicy) {
       await handleSpecialPower();
     }
@@ -204,15 +233,19 @@ class GameComponent implements OnInit {
         specialPowers[gameStateService.separatistEnactedPolicies - 1];
     switch (currSpecialPower) {
       case SpecialPower.PolicyPeek:
+        print('policy peek');
         await handlePolicyPeek();
         break;
       case SpecialPower.LoyaltyInvestigation:
+        print('loyalty investigation');
         await handleLoyaltyInvestigation();
         break;
       case SpecialPower.SpecialElection:
+        print('special election');
         await handleSpecialElection();
         break;
       case SpecialPower.Execution:
+        print('execution');
         await handleExecution();
         break;
     }
@@ -222,6 +255,7 @@ class GameComponent implements OnInit {
     if (gameStateService.isPlayerViceChair) {
       var peekedPolicies = await socketIoService.whenPoliciesDrawn();
       await doPolicyDialog(peekedPolicies, true);
+      socketIoService.finishPolicyPeek();
     }
   }
 

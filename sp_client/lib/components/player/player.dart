@@ -99,5 +99,7 @@ class PlayerComponent {
     return null;
   }
 
+  bool get isAlive => gameStateService.alivePlayers.contains(player);
+
   PlayerComponent(this.gameStateService);
 }

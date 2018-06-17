@@ -24,14 +24,21 @@ class GameStateService {
   Player prevViceChair;
   Player prevChancellor;
   List<Player> killedPlayers;
-  List<Player> get players => lobby?.players?? new List<Player>();
-  List<Player> get alivePlayers => players?.where((p) => !killedPlayers.contains(p));
 
-  List<Player> get eligiblePlayers => players?.where((p) => p != viceChair && p != prevChancellor &&
-          p != prevViceChair && !killedPlayers.contains(p));
+  List<Player> get players => lobby?.players ?? new List<Player>();
+
+  List<Player> get alivePlayers =>
+      players?.where((p) => !killedPlayers.contains(p));
+
+  List<Player> get eligiblePlayers => players?.where((p) =>
+      p != viceChair &&
+      p != prevChancellor &&
+      p != prevViceChair &&
+      !killedPlayers.contains(p));
 
   // Vote
   Map<Player, bool> votes;
+
   bool get voteResult => evaluateVote();
   int failedGovernmentCounter;
 
@@ -102,9 +109,8 @@ class GameStateService {
   void addLoyalistPolicy() => loyalistEnactedPolicies++;
 
   Player getPlayerById(int playerId) {
-      print(playerId);
-      players.singleWhere((player) => player.id == playerId);
-      }
+    return players.singleWhere((player) => player.id == playerId);
+  }
 
   void setViceChairById(int playerId) => viceChair = getPlayerById(playerId);
 
@@ -141,7 +147,10 @@ class GameStateService {
     return yesCount > noCount;
   }
 
-  bool get hasGameEnded => loyalistEnactedPolicies == 5 || separatistEnactedPolicies == 6 || palpatineWin;
+  bool get hasGameEnded =>
+      loyalistEnactedPolicies == 5 ||
+      separatistEnactedPolicies == 6 ||
+      palpatineWin;
 
   bool get isPlayerViceChair => player == viceChair;
 
@@ -149,8 +158,10 @@ class GameStateService {
 
   void killPlayer(Player player) => killedPlayers.add(player);
 
-  void resetVotes() {
-    votes = new Map<Player, bool>();
-  }
+  void resetVotes() => votes = new Map<Player, bool>();
 
+  void mergePolicyPiles() {
+    policyDrawCount += policyDiscardCount;
+    policyDiscardCount = 0;
+  }
 }

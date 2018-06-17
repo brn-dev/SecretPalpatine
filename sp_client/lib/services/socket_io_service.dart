@@ -63,6 +63,18 @@ class SocketIoService {
   void pickNextViceChair(int playerId) =>
       socket.emit(SocketIoEvents.pickNextViceChair, playerId);
 
+  void finishPolicyPeek() => socket.emit(SocketIoEvents.finishedPolicyPeek);
+
+  Future<Player> whenPlayerCreated() async {
+    var completer = new Completer<Player>();
+    socket.once(SocketIoEvents.playerCreated, (String playerJson) {
+      var player = new Player.fromJsonString(playerJson);
+      gameStateService.player = player;
+      completer.complete(player);
+    });
+    return completer.future;
+  }
+
   Future<Lobby> whenLobbyJoined() async {
     var completer = new Completer<Lobby>();
     socket.once(SocketIoEvents.lobbyJoined, (String lobbyJson) {
@@ -111,10 +123,10 @@ class SocketIoService {
   Future<bool> whenVoteFinished() async {
     var completer = new Completer<bool>();
     socket.once(SocketIoEvents.voteFinished, (String voteResultJson) {
-      Map<int, bool> voteResult = JSON.decode(voteResultJson);
+      Map<String, bool> voteResult = JSON.decode(voteResultJson);
       Map<Player, bool> playerVotes = new Map<Player, bool>();
       voteResult.forEach((playerId, vote) =>
-          playerVotes[gameStateService.getPlayerById(playerId)] = vote);
+          playerVotes[gameStateService.getPlayerById(int.parse(playerId))] = vote);
       gameStateService.votes = playerVotes;
       completer.complete(gameStateService.evaluateVote());
     });

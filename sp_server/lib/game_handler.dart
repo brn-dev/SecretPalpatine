@@ -52,6 +52,7 @@ class GameHandler {
   PlayerSocket get viceChair => _viceChair;
 
   set viceChair(PlayerSocket player) {
+    log('new vice chair: ${player.player.id} - ${player.player.name}');
     _viceChair = player;
     room.emit(SocketIoEvents.viceChairSet, player.player.id);
   }
@@ -59,10 +60,9 @@ class GameHandler {
   PlayerSocket get chancellor => _chancellor;
 
   set chancellor(PlayerSocket player) {
+    log('new chancellor: ${player.player.id} - ${player.player.name}');
     _chancellor = player;
-    player.socket
-        .to(roomId)
-        .emit(SocketIoEvents.chancellorSet, player.player.id);
+    room.emit(SocketIoEvents.chancellorSet, player.player.id);
   }
 
   GameHandler(this.io, this.lobby, this.host, {Function whenEmpty = null}) {
@@ -187,10 +187,11 @@ class GameHandler {
   void startGame() {
     if (!isValidPlayerCount()) {
       print('Error: lobby ${lobby.id} tried to start with ${players
-              .length} players');
+          .length} players');
       host.socket.on(SocketIoEvents.startGame, (_) => startGame());
       return;
     }
+    log('game started');
     failedGovernmentCounter = 0;
     setupPolicies();
     setupSpecialPowers();
@@ -244,10 +245,12 @@ class GameHandler {
   }
 
   Map<PlayerSocket, Role> randomlyAssignRoles() {
-    var roles = new List<Role>.from(Roles.getRolesForPlayerAmount(players.length));
+    var roles =
+        new List<Role>.from(Roles.getRolesForPlayerAmount(players.length));
     var map = new Map<PlayerSocket, Role>();
     players.forEach((player) {
-      var randomRole = roles.removeAt(roles.length > 0 ? random.nextInt(roles.length) : 0);
+      var randomRole =
+          roles.removeAt(roles.length > 0 ? random.nextInt(roles.length) : 0);
       map[player] = randomRole;
     });
     return map;
@@ -258,8 +261,8 @@ class GameHandler {
       var selectedChancellor = getPlayerById(playerId);
       if (!isPlayerValidForChancellor(selectedChancellor)) {
         print('Error: Player ${selectedChancellor.player
-                .name} (id: ${selectedChancellor.player
-                .id} is not allowed to be chancellor!');
+            .name} (id: ${selectedChancellor.player
+            .id} is not allowed to be chancellor!');
       }
       chancellor = selectedChancellor;
       handleVote();
@@ -270,10 +273,12 @@ class GameHandler {
     Map<int, bool> votePerPlayer = new Map<int, bool>();
     alivePlayers.forEach((player) {
       player.socket.once(SocketIoEvents.vote, (bool vote) {
+        log('${player.player.id} - ${player.player.name} voted ${vote}, ${votePerPlayer.length}/${alivePlayers.length}');
         votePerPlayer[player.player.id] = vote;
-        player.socket.to(roomId).emit(
-            SocketIoEvents.playerFinishedVoting, JSON.encode(player.player.id));
-        if (votePerPlayer.length == players.length) {
+        player.socket
+            .to(roomId)
+            .emit(SocketIoEvents.playerFinishedVoting, player.player.id);
+        if (votePerPlayer.length == alivePlayers.length) {
           finishVote(votePerPlayer);
         }
       });
@@ -281,8 +286,12 @@ class GameHandler {
   }
 
   void finishVote(Map<int, bool> votePerPlayer) {
-    room.emit(SocketIoEvents.voteFinished, votePerPlayer);
+    var encodeableMap = new Map<String, bool>();
+    votePerPlayer
+        .forEach((key, value) => encodeableMap[key.toString()] = value);
+    room.emit(SocketIoEvents.voteFinished, JSON.encode(encodeableMap));
     bool voteResult = evaluateVote(votePerPlayer);
+    log('vote finished, result: ${voteResult}');
     if (voteResult) {
       previousViceChair = viceChair;
       previousChancellor = chancellor;
@@ -344,6 +353,7 @@ class GameHandler {
     if (isPalpatineWin()) {
       room.emit(SocketIoEvents.chancellorIsPalpatine, true);
       separatistWin();
+      log('separatist win through palpatine');
       return;
     } else {
       room.emit(SocketIoEvents.chancellorIsPalpatine, false);
@@ -357,10 +367,11 @@ class GameHandler {
     viceChair.socket
         .emit(SocketIoEvents.policiesDrawn, JSON.encode(drawnPolicies));
     viceChair.socket.to(roomId).emit(SocketIoEvents.viceChairChoosing);
+    log('vice chair discarding');
     viceChair.socket.once(SocketIoEvents.discardPolicy, (bool policy) {
       drawnPolicies.remove(policy);
       policyDiscardPile.add(policy);
-
+      log('vice chair discarded: ${policy}');
       handleChancellorDiscard(drawnPolicies);
     });
   }
@@ -369,16 +380,19 @@ class GameHandler {
     chancellor.socket
         .emit(SocketIoEvents.policiesDrawn, JSON.encode(drawnPolicies));
     chancellor.socket.to(roomId).emit(SocketIoEvents.chancellorChoosing);
+    log('chancellor discarding');
     chancellor.socket.once(SocketIoEvents.discardPolicy, (bool policy) {
       drawnPolicies.remove(policy);
       policyDiscardPile.add(policy);
-
+      log('chancellor discarded: ${policy}');
       bool finalPolicy = drawnPolicies[0];
       handlePolicy(finalPolicy);
     });
   }
 
   void handlePolicy(bool policy) {
+    room.emit(SocketIoEvents.policyRevealed, policy);
+    log('policy revealed: ${policy}');
     if (policy) {
       enactLoyalistPolicy();
     } else {
@@ -388,7 +402,9 @@ class GameHandler {
 
   void enactLoyalistPolicy() {
     loyalistEnactedPolicyCount++;
+    log('loyalist policy count: ${loyalistEnactedPolicyCount}');
     if (loyalistEnactedPolicyCount == loyalistPolicyWinCount) {
+      log('loyalist win');
       loyalistWin();
       return;
     }
@@ -396,39 +412,51 @@ class GameHandler {
     formGovernment();
   }
 
-  void enactSeparatistPolicy([bool ingnoreViceChairalSpecialPower = false]) {
+  void enactSeparatistPolicy([bool ignoreViceChairSpecialPower = false]) {
     separatistEnactedPolicyCount++;
+    log('separatist policy count: ${separatistEnactedPolicyCount}');
     if (separatistEnactedPolicyCount == separatistPolicyWinCount) {
+      log('separatist win through policies');
       separatistWin();
       return;
     }
     var callback = () {
+      log('separatist callback');
       setNextPlayerAsViceChair();
       formGovernment();
     };
-    if (!ingnoreViceChairalSpecialPower) {
+    if (!ignoreViceChairSpecialPower) {
       handleSpecialPower(callback);
+    } else {
+      callback();
     }
-    callback();
   }
 
   void handleSpecialPower(Function callback) {
     var specialPower = specialPowers[separatistEnactedPolicyCount - 1];
     if (specialPower != null) {
       specialPower(callback);
+    } else {
+      callback();
     }
   }
 
   void handlePolicyPeek(Function callback) {
+    log('policy peek');
     List<bool> peekedPolicies = policyDrawPile.peekMany(3);
     viceChair.socket
         .emit(SocketIoEvents.policiesDrawn, JSON.encode(peekedPolicies));
-    callback();
+    viceChair.socket.once(SocketIoEvents.finishedPolicyPeek, (_) => callback());
+
   }
 
   void handleLoyaltyInvestigation(Function callback) {
+    log('loyalty investigation');
     viceChair.socket.once(SocketIoEvents.investigatePlayer, (int playerId) {
       PlayerSocket chosenPlayer = getPlayerById(playerId);
+      log('investigated player: ${chosenPlayer.player.id} - ${chosenPlayer
+          .player.name}, membership: ${rolesForPlayers[chosenPlayer]
+          .membership}');
       viceChair.socket.emit(SocketIoEvents.playerInvestigated,
           JSON.encode(rolesForPlayers[chosenPlayer].membership));
       viceChair.socket
@@ -439,19 +467,24 @@ class GameHandler {
   }
 
   void handleSpecialElection(Function callback) {
+    log('special election');
     viceChair.socket.once(SocketIoEvents.pickNextViceChair, (int playerId) {
       viceChairBeforeSpecialElection = viceChair;
       viceChair = getPlayerById(playerId);
+      log('vice chair chose ${viceChair.player.id} - ${viceChair.player.name}');
       formGovernment();
     });
   }
 
   void handleExecution(Function callback) {
+    log('execution');
     viceChair.socket.once(SocketIoEvents.killPlayer, (int playerId) {
       var killedPlayer = getPlayerById(playerId);
+      log('killed player ${killedPlayer.player.id} - ${killedPlayer.player
+          .name}');
       killedPlayers.add(killedPlayer);
       viceChair.socket.to(roomId).emit(
-          SocketIoEvents.playerKilled, JSON.encode(killedPlayer.player.id));
+          SocketIoEvents.playerKilled, killedPlayer.player.id);
       callback();
     });
   }
@@ -462,5 +495,9 @@ class GameHandler {
 
   void loyalistWin() {
     room.emit(SocketIoEvents.loyalistsWon);
+  }
+
+  void log(String msg) {
+    print('Game ${lobby.id}: ${msg}');
   }
 }

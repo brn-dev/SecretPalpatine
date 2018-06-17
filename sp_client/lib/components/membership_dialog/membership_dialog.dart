@@ -22,8 +22,14 @@ class MembershipDialogComponent implements OnInit {
 
   bool showMembership = false;
 
+  bool _showDialog = false;
+
   @Input()
-  bool showDialog;
+  set showDialog(bool value) {
+    showMembership = false;
+    _showDialog = value;
+  }
+  bool get showDialog => _showDialog;
 
   @Input()
   bool membership;

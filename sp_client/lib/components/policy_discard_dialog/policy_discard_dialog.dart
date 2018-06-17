@@ -25,13 +25,19 @@ class PolicyDiscardDialogComponent implements OnInit {
   List<bool> policies;
 
   @Input()
-  bool showDialog = false;
-
-  @Input()
   bool hideOnFinished = true;
 
   @Input()
   bool isPolicyPeek = false;
+
+  bool _showDialog = false;
+
+  @Input()
+  set showDialog(bool value) {
+    showPolicies = false;
+    _showDialog = value;
+  }
+  get showDialog => _showDialog;
 
   @override
   ngOnInit() async {}
