@@ -36,7 +36,7 @@ class GameHandler {
   int failedGovernmentCounter = 0;
   int loyalistEnactedPolicyCount = 0;
   int separatistEnactedPolicyCount = 0;
-  List<SpecialPowerFunction> specialPowers;
+  List<SpecialPowerFunction> specialPowers = new List<SpecialPowerFunction>();
 
   Map<SpecialPower, SpecialPowerFunction> specialPowersFunctionMapping;
 
@@ -239,7 +239,7 @@ class GameHandler {
     rolesForPlayers.forEach((player, role) {
       var gameInfo =
           createGameInfo(role, separatistPlayerIds, palpatinePlayerId);
-      player.socket.emit(SocketIoEvents.gameStarted, gameInfo);
+      player.socket.emit(SocketIoEvents.gameStarted, JSON.encode(gameInfo));
     });
   }
 
@@ -247,7 +247,7 @@ class GameHandler {
     var roles = new List<Role>.from(Roles.getRolesForPlayerAmount(players.length));
     var map = new Map<PlayerSocket, Role>();
     players.forEach((player) {
-      var randomRole = roles.removeAt(random.nextInt(roles.length));
+      var randomRole = roles.removeAt(roles.length > 0 ? random.nextInt(roles.length) : 0);
       map[player] = randomRole;
     });
     return map;

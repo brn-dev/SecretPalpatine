@@ -1,0 +1,28 @@
+<div id=mainDiv>
+    <section>
+        <material-expansionpanel-set>
+            <material-expansionpanel autoDismissable *ngFor="let lobby of lobbies" [name]="lobby.name" showSaveCancel="false">
+                <p *ngFor="let player of lobby.players">
+                    <material-icon icon="person"></material-icon> {{player.name}}
+                </p>
+                <material-button class="button" (click)="joinLobby(lobby)">
+                    <material-icon icon="person_add"></material-icon> join lobby</material-button>
+                <material-button class="button" (click)="startGame()">
+                    <material-icon icon="play_arrow"></material-icon> start game</material-button>
+            </material-expansionpanel>
+        </material-expansionpanel-set>
+        <material-button class="button" (click)="showDialog = !showDialog">
+            <material-icon icon="playlist_add"></material-icon> create lobby</material-button>
+    </section>
+    <modal [visible]="showDialog">
+        <material-dialog>
+            <div header>
+                Choose Lobby Name
+            </div>
+            <material-input [(ngModel)]="lobbyName" label="Lobby Name"></material-input>
+            <div fooder>
+                <material-button class="button" (click)="createLobby()">Save</material-button>
+            </div>
+        </material-dialog>
+    </modal>
+</div>

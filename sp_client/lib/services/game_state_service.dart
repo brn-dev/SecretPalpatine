@@ -2,7 +2,6 @@ import 'package:angular/core.dart';
 
 import 'package:sp_shared/sp_shared.dart';
 
-
 @Injectable()
 class GameStateService {
   Player player;
@@ -25,14 +24,10 @@ class GameStateService {
   Player prevViceChair;
   Player prevChancellor;
   List<Player> killedPlayers;
+  List<Player> get players => lobby?.players?? new List<Player>();
+  List<Player> get alivePlayers => players?.where((p) => !killedPlayers.contains(p));
 
-  List<Player> get players => lobby?.players;
-
-  List<Player> get alivePlayers =>
-      players?.where((p) => !killedPlayers.contains(p));
-
-  List<Player> get eligiblePlayers =>
-      players?.where((p) => p != viceChair && p != prevChancellor &&
+  List<Player> get eligiblePlayers => players?.where((p) => p != viceChair && p != prevChancellor &&
           p != prevViceChair && !killedPlayers.contains(p));
 
   // Vote
@@ -43,6 +38,7 @@ class GameStateService {
   bool palpatineWin;
 
   GameStateService() {
+    print('in constructor');
     reset();
   }
 
@@ -60,6 +56,7 @@ class GameStateService {
     prevViceChair = null;
     prevChancellor = null;
     killedPlayers = new List<Player>();
+    votes = new Map<Player, bool>();
     failedGovernmentCounter = 0;
     palpatineWin = false;
 
@@ -104,8 +101,10 @@ class GameStateService {
 
   void addLoyalistPolicy() => loyalistEnactedPolicies++;
 
-  Player getPlayerById(int playerId) =>
+  Player getPlayerById(int playerId) {
+      print(playerId);
       players.singleWhere((player) => player.id == playerId);
+      }
 
   void setViceChairById(int playerId) => viceChair = getPlayerById(playerId);
 
@@ -114,7 +113,7 @@ class GameStateService {
   void setPalpatineById(int playerId) => palpatine = getPlayerById(playerId);
 
   void setFellowSeparatistByPlayerIds(List<int> playerIds) {
-    if (playerIds == null) {
+    if (playerIds == null || playerIds.length == 0) {
       fellowSeparatists = null;
       return;
     }

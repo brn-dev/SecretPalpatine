@@ -3,27 +3,33 @@ import 'package:angular_components/angular_components.dart';
 import 'package:sp_client/components/game/game.dart';
 import 'package:sp_client/services/game_state_service.dart';
 import 'package:sp_client/services/socket_io_service.dart';
+import 'package:angular_router/angular_router.dart';
+import 'package:sp_client/components/name_input_component/name_input_component.dart';
+import 'package:sp_client/components/lobbies_page_component/lobbies_page_component.dart';
+import 'package:sp_client/components/game/game.dart';
+
+import 'package:sp_shared/sp_shared.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components
+
+@RouteConfig(const
+  [
+    const Route(path: '/lobbies', name: 'Lobbies', component: LobbiesPageComponent, data: const{'name': 'PlayerName'}),
+    const Route(path: '/', name: 'Home', component: NameInputComponent),
+    const Route(path: '/game', name: 'Game', component: GameComponent)
+  ]
+)
 
 @Component(
   selector: 'secret-palpatine',
   styleUrls: const ['app_component.scss.css'],
   templateUrl: 'app_component.html',
-  directives: const [
-    materialDirectives,
-    GameComponent,
-  ],
-  providers: const [materialProviders, GameStateService, SocketIoService],
+  directives: const [ROUTER_DIRECTIVES, NameInputComponent, materialDirectives,
+    GameComponent],
+  providers: const [materialProviders],
 )
-class AppComponent implements OnInit {
-
-  SocketIoService service;
-  SocketIoService gameState;
-
-  AppComponent(this.service, this.gameState) {
-  }
+class AppComponent {
 
   ngOnInit() async {
   }

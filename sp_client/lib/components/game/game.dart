@@ -29,7 +29,7 @@ import 'package:sp_shared/sp_shared.dart';
     VoteDialogComponent,
     MembershipDialogComponent
   ],
-  providers: const [materialProviders, GameStateService, SocketIoService],
+  providers: const [materialProviders],
 )
 class GameComponent implements OnInit {
   GameStateService gameStateService;
@@ -40,34 +40,6 @@ class GameComponent implements OnInit {
   @override
   ngOnInit() async {
     handleGame();
-  }
-
-  Future<Null> createLobby() async {
-    String name = new Random().nextInt(1000).toString();
-    socketIoService.setName(name);
-    socketIoService.createLobby('Test');
-    whenInLobby(name);
-  }
-
-  void startGame() {
-    socketIoService.startGame();
-  }
-
-  Future<Null> joinLobby() async {
-    String name = new Random().nextInt(1000).toString();
-    socketIoService.setName(name);
-    socketIoService.joinLobby(1);
-    whenInLobby(name);
-  }
-
-  Future<Null> whenInLobby(String name) async {
-    await socketIoService.whenLobbyJoined();
-    print('joined lobby with name ${name}');
-//    while (gameStateService.players.length < 6) {
-//      await socketIoService.whenPlayerJoined();
-//    }
-//    await socketIoService.whenGameStarted();
-
   }
 
   //player chooser dialog
