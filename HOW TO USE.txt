@@ -1,0 +1,6 @@
+1. Install Dart (http://www.gekorm.com/dart-windows/)
+
+2. Run 'pub get' in sp_shared, sp_client, sp_server
+
+3. a) In sp_client: pub serve
+   b) In sp_server: dart ./bin/main.dart
