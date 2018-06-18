@@ -72,6 +72,7 @@ class SocketIoService {
     socket.once(SocketIoEvents.playerCreated, (String playerJson) {
       var player = new Player.fromJsonString(playerJson);
       gameStateService.player = player;
+      print('created player - id: ${player.id}, name: ${player.name}');
       completer.complete(player);
     });
     return completer.future;

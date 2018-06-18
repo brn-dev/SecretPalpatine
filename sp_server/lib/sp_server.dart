@@ -33,8 +33,11 @@ class SPServer {
     });
 
     client.once(SocketIoEvents.setName, (String playerName) {
+      playerName = JSON.decode(playerName);
+      print('player set name: ${playerName}');
       PlayerSocket playerSocket =
           new PlayerSocket(_playerManager.createPlayer(playerName), client);
+      print('created player - id: ${playerSocket.player.id}, name: ${playerSocket.player.name}');
       client.emit(SocketIoEvents.playerCreated, JSON.encode(playerSocket.player));
       client.once(SocketIoEvents.createLobby, (String lobbyName) {
         createLobby(playerSocket, lobbyName);

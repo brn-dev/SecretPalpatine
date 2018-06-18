@@ -14,11 +14,14 @@ import 'package:angular_router/angular_router.dart';
 class NameInputComponent {
   String name;
   Router router;
-  NameInputComponent(this.router) {
-  }
 
-  setName() => this.router.navigate([
-        'Lobbies',
-        {'name': name}
-      ]);
+  NameInputComponent(this.router);
+
+  setName() {
+    print('setting name ${name}');
+    this.router.navigate([
+      'Lobbies',
+      {'name': name}
+    ]);
+  }
 }

@@ -5,11 +5,11 @@
         </div>
     </div>
     <div id="inputDiv">
-        <h1>Secret Palpatine</h1>
-        <material-input label="Your Name" [(ngModel)]="name"></material-input>
-        <material-button (click)="setName()">
+        <h1 class="star-wars-font">Secret <br> Palpatine</h1>
+        <material-input label="Your Name" [(ngModel)]="name" class="name-input"></material-input>
+        <material-button (click)="setName()" class="star-wars-font">
             <material-icon icon="play_arrow"></material-icon>
-            Set Name
+            play
         </material-button>
     </div>
     <div class="pic">

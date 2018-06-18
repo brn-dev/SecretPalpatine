@@ -11,6 +11,7 @@
   position: fixed;
   display: flex;
   width: 100vw;
+  margin-top: 5vh;
   height: 80vh;
   top: 0;
   left: 0;
@@ -66,5 +67,6 @@
   .vote-img-container {
     width: unset;
     height: 30vh;
+    margin-top: 2.5vh;
   }
 }
