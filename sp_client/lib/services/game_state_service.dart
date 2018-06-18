@@ -156,6 +156,8 @@ class GameStateService {
 
   bool get isPlayerAlive => !killedPlayers.contains(player);
 
+  bool get vetoEnabled => separatistEnactedPolicies == 5;
+
   void killPlayer(Player player) => killedPlayers.add(player);
 
   void resetVotes() => votes = new Map<Player, bool>();
