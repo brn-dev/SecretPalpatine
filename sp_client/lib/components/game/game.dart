@@ -54,6 +54,7 @@ class GameComponent implements OnInit {
 
   Future<Player> doPlayerChooserDialog(
       List<Player> selectablePlayers, String actionText) async {
+    print('showing player chooser');
     this.selectablePlayers = selectablePlayers;
     playerChooserActionText = actionText;
     isPlayerChooser = true;
@@ -75,6 +76,7 @@ class GameComponent implements OnInit {
   Completer<bool> voteCompleter;
 
   Future<bool> getVote() {
+    print('showing vote dialog');
     voteCompleter = new Completer<bool>();
     showVoteDialog = true;
     return voteCompleter.future;
@@ -89,19 +91,23 @@ class GameComponent implements OnInit {
   bool showPolicyDialog = false;
   List<bool> shownPolicies;
   bool isPolicyPeek;
-  Completer<bool> policyDialogCompleter;
+  Completer<DiscardResult> policyDialogCompleter;
 
-  Future<bool> doPolicyDialog(List<bool> shownPolicies, bool isPolicyPeek) {
+  Future<DiscardResult> doPolicyDialog(
+      List<bool> shownPolicies, bool isPolicyPeek) {
+    print(
+        'showing policy dialog, isPolicyPeek: ${isPolicyPeek}, vetoEnabled: '
+            '${gameStateService.vetoEnabled}');
     this.shownPolicies = shownPolicies;
     this.isPolicyPeek = isPolicyPeek;
-    policyDialogCompleter = new Completer<bool>();
+    policyDialogCompleter = new Completer<DiscardResult>();
     showPolicyDialog = true;
     return policyDialogCompleter.future;
   }
 
-  void onPolicyDialogFinished(bool resultPolicies) {
+  void onPolicyDialogFinished(DiscardResult result) {
     showPolicyDialog = false;
-    policyDialogCompleter.complete(resultPolicies);
+    policyDialogCompleter.complete(result);
     print('policy dialog completed');
   }
 
@@ -132,6 +138,7 @@ class GameComponent implements OnInit {
         }
       } while (!voteResult);
       await handleGovernment();
+      print('government finished');
     }
     print('game ended');
   }
@@ -187,13 +194,16 @@ class GameComponent implements OnInit {
     gameStateService.prevViceChair = gameStateService.viceChair;
     gameStateService.policyDrawCount -= 3;
     await handleViceChairPhase();
+    print('vice chair phase finished');
     gameStateService.policyDiscardCount += 1;
     await handleChancellorPhase();
+    print('chancellor phase finished');
     gameStateService.policyDiscardCount += 1;
+    await handleLegislativeSessionResult();
+    print('legislative session finished');
     if (gameStateService.policyDrawCount < 3) {
       gameStateService.mergePolicyPiles();
     }
-    await handleLegislativeSessionResult();
   }
 
   Future<Null> handleViceChairPhase() async {
@@ -218,16 +228,24 @@ class GameComponent implements OnInit {
 
   Future<Null> drawAndDiscardPolicy() async {
     var drawnPolicies = await socketIoService.whenPoliciesDrawn();
-    var discardedPolicy = await doPolicyDialog(drawnPolicies, false);
-    print('discarded policy: ${discardedPolicy}');
-    socketIoService.discardPolicy(discardedPolicy);
+    var discardResult = await doPolicyDialog(drawnPolicies, false);
+    print('discarded policy: ${discardResult
+        .discardedPolicy}, veto: ${discardResult.veto}');
+    socketIoService.discardPolicy(discardResult.discardedPolicy);
+    socketIoService.veto(discardResult.veto);
   }
 
   Future<Null> handleLegislativeSessionResult() async {
-    var resultPolicy = await socketIoService.whenPolicyRevealed();
-    print('policy revealed: ${resultPolicy}');
-    if (!resultPolicy) {
-      await handleSpecialPower();
+    var governmentVetoed = await socketIoService.whenGovernmentVetoed();
+    print('government vetoed: ${governmentVetoed}');
+    if (governmentVetoed) {
+      gameStateService.policyDiscardCount++;
+    } else {
+      var resultPolicy = await socketIoService.whenPolicyRevealed();
+      print('policy revealed: ${resultPolicy}');
+      if (!resultPolicy) {
+        await handleSpecialPower();
+      }
     }
   }
 

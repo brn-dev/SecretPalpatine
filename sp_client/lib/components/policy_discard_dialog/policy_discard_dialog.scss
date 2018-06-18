@@ -11,6 +11,10 @@
   align-items: center;
 }
 
+.action-text {
+  color: white;
+}
+
 .actions {
   margin-top: 4vh;
   display: flex;
@@ -19,7 +23,7 @@
   align-items: center;
 }
 
-.actions > material-button {
+.actions > * {
   color: white;
   font-size: 30px;
 }

@@ -2,6 +2,13 @@ import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 
+class DiscardResult {
+  bool discardedPolicy;
+  bool veto;
+
+  DiscardResult(this.discardedPolicy, this.veto);
+}
+
 @Component(
   selector: 'app-policy-discard-dialog',
   styleUrls: const ['policy_discard_dialog.scss.css'],
@@ -20,12 +27,13 @@ class PolicyDiscardDialogComponent implements OnInit {
 
   bool showPolicies = false;
 
-  final _finished = new StreamController<bool>();
+  final _finished = new StreamController<DiscardResult>();
   bool _showDialog = false;
+  bool veto = false;
 
 
   @Output()
-  Stream<bool> get finished => _finished.stream;
+  Stream<DiscardResult> get finished => _finished.stream;
 
   @Input()
   List<bool> policies;
@@ -36,10 +44,13 @@ class PolicyDiscardDialogComponent implements OnInit {
   @Input()
   bool isPolicyPeek = false;
 
+  @Input()
+  bool vetoEnabled = false;
 
   @Input()
   set showDialog(bool value) {
     showPolicies = false;
+    veto = false;
     _showDialog = value;
   }
   get showDialog => _showDialog;
@@ -54,7 +65,7 @@ class PolicyDiscardDialogComponent implements OnInit {
       return;
     }
 
-    _finished.add(policy);
+    _finished.add(new DiscardResult(policy, veto));
 
     if (hideOnFinished) {
       showDialog = false;
