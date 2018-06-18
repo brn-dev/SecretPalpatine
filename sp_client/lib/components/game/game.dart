@@ -76,7 +76,8 @@ class GameComponent implements OnInit {
   Completer<bool> voteCompleter;
 
   Future<bool> getVote() {
-    print('showing vote dialog');
+    print('showing vote dialog with vice-chair: ${gameStateService
+        .viceChair}, chancellor: ${gameStateService.chancellor}');
     voteCompleter = new Completer<bool>();
     showVoteDialog = true;
     return voteCompleter.future;
@@ -95,9 +96,8 @@ class GameComponent implements OnInit {
 
   Future<DiscardResult> doPolicyDialog(
       List<bool> shownPolicies, bool isPolicyPeek) {
-    print(
-        'showing policy dialog, isPolicyPeek: ${isPolicyPeek}, vetoEnabled: '
-            '${gameStateService.vetoEnabled}');
+    print('showing policy dialog, isPolicyPeek: ${isPolicyPeek}, vetoEnabled: '
+        '${gameStateService.vetoEnabled}');
     this.shownPolicies = shownPolicies;
     this.isPolicyPeek = isPolicyPeek;
     policyDialogCompleter = new Completer<DiscardResult>();

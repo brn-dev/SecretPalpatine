@@ -1,12 +1,20 @@
 <modal [visible]="showDialog">
     <material-dialog class="transparent-dialog">
-        <div class="votes-container">
-            <div class="vote-img-container  star-wars-font" (click)="vote(true)">
-                <img src="/assets/images/vote/yes_horizontal.gif" alt="yes" class="vote-img">
+        <div class="container">
+            <div class="positions">
+                <h2><label class="star-wars-font">Vice Chair: </label>{{ gameStateService.viceChair != null ?
+                    gameStateService.viceChair.name : '' }}</h2>
+                <h2><label class="star-wars-font">Chancellor: </label>{{ gameStateService.chancellor != null ?
+                    gameStateService.chancellor.name : '' }}</h2>
             </div>
+            <div class="votes-container">
+                <div class="vote-img-container  star-wars-font" (click)="vote(true)">
+                    <img src="/assets/images/vote/yes_horizontal.gif" alt="yes" class="vote-img">
+                </div>
 
-            <div class="vote-img-container  star-wars-font" (click)="vote(false)">
-                <img src="/assets/images/vote/no_horizontal.gif" alt="no" class="vote-img">
+                <div class="vote-img-container  star-wars-font" (click)="vote(false)">
+                    <img src="/assets/images/vote/no_horizontal.gif" alt="no" class="vote-img">
+                </div>
             </div>
         </div>
     </material-dialog>

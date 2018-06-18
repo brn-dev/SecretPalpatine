@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:sp_client/services/game_state_service.dart';
 
 @Component(
   selector: 'app-vote-dialog',
@@ -11,6 +12,9 @@ import 'package:angular_components/angular_components.dart';
 )
 class VoteDialogComponent implements OnInit {
   final _finishedVoting = new StreamController<bool>();
+  GameStateService gameStateService;
+
+  VoteDialogComponent(this.gameStateService);
 
   @Output()
   Stream<bool> get finishedVoting => _finishedVoting.stream;

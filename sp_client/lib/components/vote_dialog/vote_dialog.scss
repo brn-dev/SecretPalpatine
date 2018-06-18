@@ -1,25 +1,42 @@
 :host {
-    /* This is equivalent of the 'body' selector of a page. */
+  color: white;
+}
+
+.positions {
+  color: white;
+  text-align: center;
+}
+
+.container {
+  position: fixed;
+  display: flex;
+  width: 100vw;
+  height: 80vh;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .votes-container {
   width: 80vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
 }
 
 .vote-img {
   display: block;
-  max-width: 100%;
+  max-width: 30vw;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .vote-img-container {
   position: relative;
-  width: 70vw;
+  width: 30vw;
 }
 
 .vote-img-container:hover {
@@ -36,14 +53,18 @@
   background-color: rgba(0, 0, 0, 0.25);
 }
 
-@media (min-aspect-ratio: 5/7) {
-  .vote-img-container {
-    width: unset;
-    height: 40vh;
+@media (max-aspect-ratio: 1/1) {
+  .votes-container {
+    flex-direction: column;
   }
 
   .vote-img {
     max-width: unset;
-    max-height: 100%;
+    max-height: 30vh;
+  }
+
+  .vote-img-container {
+    width: unset;
+    height: 30vh;
   }
 }
