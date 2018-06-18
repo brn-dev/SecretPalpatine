@@ -1,4 +1,23 @@
 :host {
+  position: relative;
+}
+
+.palpatine-image-hidden {
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  height: 60vh;
+  max-height: 819px;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 1s ease-out;
+}
+
+.palpatine-image-shown {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.board-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -14,7 +33,7 @@ app-policy-pile:last-of-type {
 }
 
 @media (max-width: 1024px) {
-  :host {
+  .board-container {
     flex-wrap: wrap;
   }
 

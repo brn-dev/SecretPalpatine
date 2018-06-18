@@ -9,12 +9,17 @@
     <div class="material-content">
         <div class="main-content">
             <app-board></app-board>
-            <div [ngClass]="{'players' : true, 'player-chooser-dialog' : isPlayerChooser }">
-                <app-player *ngFor="let player of gameStateService.players"
-                            [player]="player"
-                            [ngClass]="{ 'selectable-player' : isPlayerChooser && isPlayerSelectable(player) }"
-                            (click)="onSelectablePlayerClick(player)">
-                </app-player>
+            <div>
+                <div *ngIf="isPlayerChooser" class="player-chooser-action-text star-wars-font">
+                    <h1>{{ playerChooserActionText }}</h1>
+                </div>
+                <div [ngClass]="{'players' : true, 'player-chooser-dialog' : isPlayerChooser }">
+                    <app-player *ngFor="let player of gameStateService.players"
+                                [player]="player"
+                                [ngClass]="{ 'selectable-player' : isPlayerChooser && isPlayerSelectable(player) }"
+                                (click)="onSelectablePlayerClick(player)">
+                    </app-player>
+                </div>
             </div>
         </div>
         <div class="role-button-container">

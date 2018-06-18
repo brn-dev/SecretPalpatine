@@ -17,7 +17,7 @@ import 'package:sp_shared/sp_shared.dart';
 class MembershipDialogComponent implements OnInit {
 
   String loyalistMembershipImgUrl = '/assets/images/membership/loyalistMembership.gif';
-  String separatistMembershipImgUrl = '/assets/images/membership/seperatistMembership.gif';
+  String separatistMembershipImgUrl = '/assets/images/membership/separatistMembership.gif';
   String hiddenMembershipImgUrl = '/assets/images/membership/partyMember.gif';
 
   bool showMembership = false;

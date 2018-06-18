@@ -10,13 +10,19 @@ import 'package:angular_components/angular_components.dart';
   providers: const [materialProviders],
 )
 class PolicyDiscardDialogComponent implements OnInit {
+
   String loyalistPolicyImgUrl = '/assets/images/policy/loyalistPolicy.gif';
   String separatistPolicyImgUrl = '/assets/images/policy/separatistPolicy.gif';
   String hiddenPolicyImgUrl = '/assets/images/policy/galacticPolicy.gif';
 
+  String discardActionText =  'choose a policy to discard';
+  String peekActionText = 'have a look at the top 3 policies';
+
   bool showPolicies = false;
 
   final _finished = new StreamController<bool>();
+  bool _showDialog = false;
+
 
   @Output()
   Stream<bool> get finished => _finished.stream;
@@ -30,7 +36,6 @@ class PolicyDiscardDialogComponent implements OnInit {
   @Input()
   bool isPolicyPeek = false;
 
-  bool _showDialog = false;
 
   @Input()
   set showDialog(bool value) {
@@ -38,6 +43,8 @@ class PolicyDiscardDialogComponent implements OnInit {
     _showDialog = value;
   }
   get showDialog => _showDialog;
+
+  String get actionText => isPolicyPeek ? peekActionText : discardActionText;
 
   @override
   ngOnInit() async {}

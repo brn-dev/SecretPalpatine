@@ -1,7 +1,11 @@
-<app-policy-pile [policyCount]="gameStateService.policyDrawCount"
-                 backgroundImgUrl="assets/images/board/drawPileBlue.gif"
-                 class="draw-pile"></app-policy-pile>
-<app-policy-board class="policy-board"></app-policy-board>
-<app-policy-pile [policyCount]="gameStateService.policyDiscardCount"
-                 backgroundImgUrl="assets/images/board/discardPileBlue.gif"
-                 class="discard-pile"></app-policy-pile>
+<div class="board-container">
+    <app-policy-pile [policyCount]="gameStateService.policyDrawCount"
+                     backgroundImgUrl="assets/images/board/drawPileBlue.gif"
+                     class="draw-pile"></app-policy-pile>
+    <app-policy-board class="policy-board"></app-policy-board>
+    <app-policy-pile [policyCount]="gameStateService.policyDiscardCount"
+                     backgroundImgUrl="assets/images/board/discardPileBlue.gif"
+                     class="discard-pile"></app-policy-pile>
+</div>
+<img [ngClass]=" { 'palpatine-image-hidden' : true, 'palpatine-image-shown' : gameStateService.palpatineWin }"
+     src="/assets/images/roles/palpatine.gif">

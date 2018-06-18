@@ -322,16 +322,19 @@ class GameHandler {
     failedGovernmentCounter++;
     if (failedGovernmentCounter == 4) {
       resetTermLimits();
-      revealFirstPolicy();
       failedGovernmentCounter = 0;
+      log('government failed 4 times in a row');
+      revealFirstPolicy();
+    } else {
+      setNextPlayerAsViceChair();
+      formGovernment();
     }
-    setNextPlayerAsViceChair();
-    formGovernment();
   }
 
   void revealFirstPolicy() {
     bool policy = policyDrawPile.draw();
     room.emit(SocketIoEvents.policyRevealed, JSON.encode(policy));
+    log('revealed topmost policy - ${policy}');
     if (policy) {
       enactLoyalistPolicy();
     } else {
@@ -428,6 +431,7 @@ class GameHandler {
     if (!ignoreViceChairSpecialPower) {
       handleSpecialPower(callback);
     } else {
+      log('ignoring special power');
       callback();
     }
   }

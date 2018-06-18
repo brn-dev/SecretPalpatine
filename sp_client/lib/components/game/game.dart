@@ -46,13 +46,16 @@ class GameComponent implements OnInit {
   bool isPlayerChooser = false;
   List<Player> selectablePlayers = null;
   Completer<Player> playerChooserCompleter;
+  String playerChooserActionText;
 
   bool isPlayerSelectable(Player p) {
     return selectablePlayers.contains(p);
   }
 
-  Future<Player> doPlayerChooserDialog(List<Player> selectablePlayers) async {
+  Future<Player> doPlayerChooserDialog(
+      List<Player> selectablePlayers, String actionText) async {
     this.selectablePlayers = selectablePlayers;
+    playerChooserActionText = actionText;
     isPlayerChooser = true;
     playerChooserCompleter = new Completer<Player>();
     return playerChooserCompleter.future;
@@ -140,8 +143,8 @@ class GameComponent implements OnInit {
     print('vice chair set: ${gameStateService.viceChair.id} - ${gameStateService
         .viceChair.name}');
     if (gameStateService.isPlayerViceChair) {
-      var chosenChancellor =
-          await doPlayerChooserDialog(gameStateService.eligiblePlayers);
+      var chosenChancellor = await doPlayerChooserDialog(
+          gameStateService.eligiblePlayers, 'choose your chancellor');
       socketIoService.chooseChancellor(chosenChancellor.id);
       await socketIoService.whenChancellorSet();
     } else {
@@ -263,8 +266,9 @@ class GameComponent implements OnInit {
 
   Future<Null> handleLoyaltyInvestigation() async {
     if (gameStateService.isPlayerViceChair) {
-      var playerForInvestigation =
-          await doPlayerChooserDialog(gameStateService.alivePlayers);
+      var playerForInvestigation = await doPlayerChooserDialog(
+          gameStateService.alivePlayers,
+          'choose a player to investigte his membership');
       socketIoService.investigatePlayer(playerForInvestigation.id);
       var membership = await socketIoService.whenMembershipInvestigated();
       doMembershipDialog(playerForInvestigation, membership);
@@ -278,17 +282,20 @@ class GameComponent implements OnInit {
 
   Future<Null> handleSpecialElection() async {
     if (gameStateService.isPlayerViceChair) {
-      var nextViceChair =
-          await doPlayerChooserDialog(gameStateService.alivePlayers);
+      var nextViceChair = await doPlayerChooserDialog(
+          gameStateService.alivePlayers
+              .where((p) => p != gameStateService.player),
+          'choose a player to become the next vice chair');
       socketIoService.pickNextViceChair(nextViceChair.id);
     }
   }
 
   Future<Null> handleExecution() async {
     if (gameStateService.isPlayerViceChair) {
-      var playerToBeKilled = await doPlayerChooserDialog(gameStateService
-          .alivePlayers
-          .where((p) => p != gameStateService.player));
+      var playerToBeKilled = await doPlayerChooserDialog(
+          gameStateService.alivePlayers
+              .where((p) => p != gameStateService.player),
+          'kill a player');
       socketIoService.killPlayer(playerToBeKilled.id);
     } else {
       await socketIoService.whenPlayerKilled();

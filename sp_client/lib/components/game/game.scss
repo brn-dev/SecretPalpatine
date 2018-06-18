@@ -49,6 +49,16 @@ app-board {
   background: rgba(33,33,33,.8);
 }
 
+.player-chooser-action-text {
+  position: absolute;
+  top: 10vh;
+  width: 80vw;
+  left: 10vw;
+  right: 10vw;
+  text-align: center;
+  z-index: 5;
+}
+
 app-player {
   margin-left: 1vw;
   margin-right: 1vw;
