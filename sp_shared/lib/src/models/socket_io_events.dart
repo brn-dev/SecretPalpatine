@@ -22,6 +22,7 @@ class SocketIoEvents {
   static const String viceChairInvestigated = 'viceChair-investigated';
   static const String viceChairPickingNextViceChair = 'viceChair-picking-next-viceChair';
   static const String lobbyCreated = "lobby-created";
+  static const String governmentVetoed = 'government-vetoed';
 
   // Client to Server 
   static const String setName = 'set-name';
@@ -36,4 +37,5 @@ class SocketIoEvents {
   static const String investigatePlayer = 'investigate-player';
   static const String pickNextViceChair = 'pick-next-viceChair';
   static const String finishedPolicyPeek = 'finished-policy-peek';
+  static const String veto = 'veto';
 }

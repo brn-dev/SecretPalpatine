@@ -65,6 +65,8 @@ class SocketIoService {
 
   void finishPolicyPeek() => socket.emit(SocketIoEvents.finishedPolicyPeek);
 
+  void veto(bool shouldVeto) => socket.emit(SocketIoEvents.veto, shouldVeto);
+
   Future<Player> whenPlayerCreated() async {
     var completer = new Completer<Player>();
     socket.once(SocketIoEvents.playerCreated, (String playerJson) {
@@ -202,6 +204,14 @@ class SocketIoService {
     });
     return completer.future;
   }
+
+  Future<bool> whenGovernmentVetoed() async {
+    var completer = new Completer();
+    socket.once(SocketIoEvents.governmentVetoed, (bool didVeto) {
+      completer.complete(didVeto);
+    });
+    return completer.future;
+  }
   
   void listenForPlayersVoting() {
     socket.on(SocketIoEvents.playerFinishedVoting, (int playerId) {
@@ -225,12 +235,6 @@ class SocketIoService {
     return completer.future;
   }
 
-  void onPlayerJoined(PlayerCallback callback) =>
-      socket.on(SocketIoEvents.playerJoined, (String playerJson) {
-        Player player = new Player.fromJsonString(playerJson);
-        gameStateService.addPlayer(player);
-        callback(player);
-      });
   Stream<Lobby> whenLobbyCreated() {
     var controller = new StreamController<Lobby>();
     socket.on(SocketIoEvents.lobbyCreated, (String lobbyJson) {

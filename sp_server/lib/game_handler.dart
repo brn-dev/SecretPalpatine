@@ -273,7 +273,9 @@ class GameHandler {
     Map<int, bool> votePerPlayer = new Map<int, bool>();
     alivePlayers.forEach((player) {
       player.socket.once(SocketIoEvents.vote, (bool vote) {
-        log('${player.player.id} - ${player.player.name} voted ${vote}, ${votePerPlayer.length}/${alivePlayers.length}');
+        log('${player.player.id} - ${player.player
+            .name} voted ${vote}, ${votePerPlayer.length}/${alivePlayers
+            .length}');
         votePerPlayer[player.player.id] = vote;
         player.socket
             .to(roomId)
@@ -375,11 +377,13 @@ class GameHandler {
       drawnPolicies.remove(policy);
       policyDiscardPile.add(policy);
       log('vice chair discarded: ${policy}');
-      handleChancellorDiscard(drawnPolicies);
+      viceChair.socket.once(SocketIoEvents.veto, (bool shouldVeto) {
+        handleChancellorDiscard(drawnPolicies, shouldVeto);
+      });
     });
   }
 
-  void handleChancellorDiscard(List<bool> drawnPolicies) {
+  void handleChancellorDiscard(List<bool> drawnPolicies, bool viceChairVetoed) {
     chancellor.socket
         .emit(SocketIoEvents.policiesDrawn, JSON.encode(drawnPolicies));
     chancellor.socket.to(roomId).emit(SocketIoEvents.chancellorChoosing);
@@ -388,8 +392,22 @@ class GameHandler {
       drawnPolicies.remove(policy);
       policyDiscardPile.add(policy);
       log('chancellor discarded: ${policy}');
-      bool finalPolicy = drawnPolicies[0];
-      handlePolicy(finalPolicy);
+      chancellor.socket.once(SocketIoEvents.veto, (bool shouldVeto) {
+        bool finalPolicy = drawnPolicies[0];
+        bool vetoValid =
+            separatistEnactedPolicyCount == separatistPolicyWinCount - 1 &&
+                viceChairVetoed &&
+                shouldVeto;
+        print('veto - vice chair: ${viceChairVetoed}, chancellor: '
+            '${shouldVeto}, vetoValid: ${vetoValid}');
+        room.emit(SocketIoEvents.governmentVetoed, vetoValid);
+        if (!vetoValid) {
+          handlePolicy(finalPolicy);
+        } else {
+          setNextPlayerAsViceChair();
+          formGovernment();
+        }
+      });
     });
   }
 
@@ -451,7 +469,6 @@ class GameHandler {
     viceChair.socket
         .emit(SocketIoEvents.policiesDrawn, JSON.encode(peekedPolicies));
     viceChair.socket.once(SocketIoEvents.finishedPolicyPeek, (_) => callback());
-
   }
 
   void handleLoyaltyInvestigation(Function callback) {
@@ -487,8 +504,9 @@ class GameHandler {
       log('killed player ${killedPlayer.player.id} - ${killedPlayer.player
           .name}');
       killedPlayers.add(killedPlayer);
-      viceChair.socket.to(roomId).emit(
-          SocketIoEvents.playerKilled, killedPlayer.player.id);
+      viceChair.socket
+          .to(roomId)
+          .emit(SocketIoEvents.playerKilled, killedPlayer.player.id);
       callback();
     });
   }

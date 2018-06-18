@@ -36,6 +36,7 @@
     <app-policy-discard-dialog [showDialog]="showPolicyDialog"
                                [policies]="shownPolicies"
                                [isPolicyPeek]="isPolicyPeek"
+                               [vetoEnabled]="gameStateService.vetoEnabled"
                                (finished)="onPolicyDialogFinished($event)">
 
     </app-policy-discard-dialog>
