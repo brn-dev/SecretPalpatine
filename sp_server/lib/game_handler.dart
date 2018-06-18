@@ -186,7 +186,7 @@ class GameHandler {
 
   void startGame() {
     if (!isValidPlayerCount()) {
-      print('Error: lobby ${lobby.id} tried to start with ${players
+      log('Error: lobby ${lobby.id} tried to start with ${players
           .length} players');
       host.socket.on(SocketIoEvents.startGame, (_) => startGame());
       return;
@@ -260,7 +260,7 @@ class GameHandler {
     viceChair.socket.once(SocketIoEvents.chooseChancellor, (int playerId) {
       var selectedChancellor = getPlayerById(playerId);
       if (!isPlayerValidForChancellor(selectedChancellor)) {
-        print('Error: Player ${selectedChancellor.player
+        log('Error: Player ${selectedChancellor.player
             .name} (id: ${selectedChancellor.player
             .id} is not allowed to be chancellor!');
       }
