@@ -39,22 +39,41 @@ class SocketIoService {
 
   void startGame() => socket.emit(SocketIoEvents.startGame);
 
-  void chooseChancellor(int playerId) =>
-      socket.emit(SocketIoEvents.chooseChancellor, playerId);
+  void chooseChancellor(int playerId) {
+    gameStateService.setChancellorById(playerId);
+    socket.emit(SocketIoEvents.chooseChancellor, playerId);
+  }
 
-  void vote(bool vote) => socket.emit(SocketIoEvents.vote, vote);
+  void vote(bool vote) {
+    gameStateService.votes[gameStateService.player] = vote;
+    socket.emit(SocketIoEvents.vote, vote);
+  }
 
   void discardPolicy(bool policy) =>
       socket.emit(SocketIoEvents.discardPolicy, policy);
 
-  void killPlayer(int playerId) =>
-      socket.emit(SocketIoEvents.killPlayer, playerId);
+  void killPlayer(int playerId) {
+    gameStateService.killPlayer(gameStateService.getPlayerById(playerId));
+    socket.emit(SocketIoEvents.killPlayer, playerId);
+  }
 
   void investigatePlayer(int playerId) =>
       socket.emit(SocketIoEvents.investigatePlayer, playerId);
 
   void pickNextViceChair(int playerId) =>
       socket.emit(SocketIoEvents.pickNextViceChair, playerId);
+
+  void finishPolicyPeek() => socket.emit(SocketIoEvents.finishedPolicyPeek);
+
+  Future<Player> whenPlayerCreated() async {
+    var completer = new Completer<Player>();
+    socket.once(SocketIoEvents.playerCreated, (String playerJson) {
+      var player = new Player.fromJsonString(playerJson);
+      gameStateService.player = player;
+      completer.complete(player);
+    });
+    return completer.future;
+  }
 
   Future<Lobby> whenLobbyJoined() async {
     var completer = new Completer<Lobby>();
@@ -104,10 +123,10 @@ class SocketIoService {
   Future<bool> whenVoteFinished() async {
     var completer = new Completer<bool>();
     socket.once(SocketIoEvents.voteFinished, (String voteResultJson) {
-      Map<int, bool> voteResult = JSON.decode(voteResultJson);
+      Map<String, bool> voteResult = JSON.decode(voteResultJson);
       Map<Player, bool> playerVotes = new Map<Player, bool>();
       voteResult.forEach((playerId, vote) =>
-          playerVotes[gameStateService.getPlayerById(playerId)] = vote);
+          playerVotes[gameStateService.getPlayerById(int.parse(playerId))] = vote);
       gameStateService.votes = playerVotes;
       completer.complete(gameStateService.evaluateVote());
     });
@@ -129,8 +148,10 @@ class SocketIoService {
 
   Future<bool> whenIsChancellorPalpatine() async {
     var completer = new Completer<bool>();
-    socket.once(SocketIoEvents.chancellorIsPalpatine,
-        (bool isPalpatine) => completer.complete(isPalpatine));
+    socket.once(SocketIoEvents.chancellorIsPalpatine, (bool isPalpatine) {
+      gameStateService.palpatineWin = isPalpatine;
+      completer.complete(isPalpatine);
+    });
     return completer.future;
   }
 
@@ -180,6 +201,15 @@ class SocketIoService {
       completer.complete(player);
     });
     return completer.future;
+  }
+  
+  void listenForPlayersVoting() {
+    socket.on(SocketIoEvents.playerFinishedVoting, (int playerId) {
+      gameStateService.votes[gameStateService.getPlayerById(playerId)] = null;
+      if (gameStateService.votes.length == gameStateService.alivePlayers.length) {
+        socket.off(SocketIoEvents.playerFinishedVoting);
+      }
+    });
   }
 
   Future<List<Lobby>> getLobbies() async {

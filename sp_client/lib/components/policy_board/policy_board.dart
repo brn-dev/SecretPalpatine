@@ -6,11 +6,19 @@ import 'package:sp_client/services/game_state_service.dart';
   selector: 'app-policy-board',
   styleUrls: const ['policy_board.scss.css'],
   templateUrl: 'policy_board.html',
-  directives: const [materialDirectives],
+  directives: const [CORE_DIRECTIVES, materialDirectives],
   providers: const [materialProviders],
 )
 class PolicyBoardComponent implements OnInit {
   GameStateService gameStateService;
+
+  List<String> get loyalistPolicyImgs => new List<String>.filled(
+      gameStateService.loyalistEnactedPolicies,
+      '/assets/images/policy/loyalistPolicy.gif');
+
+  List<String> get separatistPolicyImgs => new List<String>.filled(
+      gameStateService.separatistEnactedPolicies,
+      '/assets/images/policy/separatistPolicy.gif');
 
   String get separatistBoardImgUrl {
     if (gameStateService.players.length < 7) {

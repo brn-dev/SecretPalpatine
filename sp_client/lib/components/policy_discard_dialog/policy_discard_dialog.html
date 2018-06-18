@@ -1,6 +1,7 @@
 <modal [visible]="showDialog">
     <material-dialog class="transparent-dialog">
         <div class="container">
+            <div class="action-text star-wars-font">{{ actionText }}</div>
 
             <div class="policy-container">
                 <div [ngClass]="{'policy-image-container' : true, 'selectable-policy-image-container' : showPolicies && !isPolicyPeek }"

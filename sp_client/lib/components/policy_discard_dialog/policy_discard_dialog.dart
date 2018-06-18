@@ -10,28 +10,41 @@ import 'package:angular_components/angular_components.dart';
   providers: const [materialProviders],
 )
 class PolicyDiscardDialogComponent implements OnInit {
+
   String loyalistPolicyImgUrl = '/assets/images/policy/loyalistPolicy.gif';
   String separatistPolicyImgUrl = '/assets/images/policy/separatistPolicy.gif';
   String hiddenPolicyImgUrl = '/assets/images/policy/galacticPolicy.gif';
 
+  String discardActionText =  'choose a policy to discard';
+  String peekActionText = 'have a look at the top 3 policies';
+
   bool showPolicies = false;
 
-  final _finishedDiscarding = new StreamController<List<bool>>();
+  final _finished = new StreamController<bool>();
+  bool _showDialog = false;
+
 
   @Output()
-  Stream<List<bool>> get finishedDiscarding => _finishedDiscarding.stream;
+  Stream<bool> get finished => _finished.stream;
 
   @Input()
   List<bool> policies;
-
-  @Input()
-  bool showDialog = false;
 
   @Input()
   bool hideOnFinished = true;
 
   @Input()
   bool isPolicyPeek = false;
+
+
+  @Input()
+  set showDialog(bool value) {
+    showPolicies = false;
+    _showDialog = value;
+  }
+  get showDialog => _showDialog;
+
+  String get actionText => isPolicyPeek ? peekActionText : discardActionText;
 
   @override
   ngOnInit() async {}
@@ -41,16 +54,7 @@ class PolicyDiscardDialogComponent implements OnInit {
       return;
     }
 
-    var found = false;
-    var remainingPolicies = policies.sublist(0);
-    remainingPolicies.removeWhere((bool policyElem) {
-      if (!found && policyElem == policy) {
-        found = true;
-        return true;
-      }
-      return false;
-    });
-    _finishedDiscarding.add(remainingPolicies);
+    _finished.add(policy);
 
     if (hideOnFinished) {
       showDialog = false;
@@ -59,5 +63,6 @@ class PolicyDiscardDialogComponent implements OnInit {
 
   void onOk() {
     showDialog = false;
+    _finished.add(null);
   }
 }

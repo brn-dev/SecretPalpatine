@@ -2,7 +2,7 @@
     <material-dialog class="transparent-dialog">
         <div class="membership-container">
             <div class="membership-text">
-                <div>{{ player.name }}</div>
+                <div>{{ player != null ? player.name : '' }}</div>
                 <div *ngIf="showMembership" class="star-wars-font" >is a {{ membership ? 'loyalist' : 'separatist' }}</div>
             </div>
             <div class="membership-img-container">

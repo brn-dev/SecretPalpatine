@@ -8,7 +8,7 @@ import 'package:sp_client/services/game_state_service.dart';
   selector: 'app-board',
   styleUrls: const ['board.scss.css'],
   templateUrl: 'board.html',
-  directives: const [materialDirectives, PolicyBoardComponent, PolicyPileComponent],
+  directives: const [CORE_DIRECTIVES, materialDirectives, PolicyBoardComponent, PolicyPileComponent],
   providers: const [materialProviders],
 )
 class BoardComponent implements OnInit {

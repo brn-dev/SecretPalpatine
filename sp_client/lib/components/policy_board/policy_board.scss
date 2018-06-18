@@ -6,6 +6,41 @@
   flex-direction: column;
 }
 
+.board-part {
+  position: relative;
+}
+
+.policy-container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  top: 27%;
+  height: 43%;
+}
+
+.policy-container > img {
+  width: unset;
+  height: 100%;
+}
+
+.separatist-policy-container {
+  left: 8.5%;
+  width: 83%;
+}
+
+.separatist-policy-container > img {
+  margin-right: 4.2%;
+}
+
+.loyalist-policy-container {
+  left: 15.5%;
+  width: 70%;
+}
+
+.loyalist-policy-container > img {
+  margin-right: 5.25%;
+}
+
 img {
   width: 100%;
 }

@@ -7,15 +7,17 @@
 .player-card {
   width: 10em;
   height: 3.5em;
-  margin-left: 1vw;
-  margin-right: 1vw;
-  margin-top: 2vh;
   padding-top: 0.5em;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-color: gray;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+}
+
+.dead-player {
+  background-color: #211f20;
+  box-shadow: none;
 }
 
 .player-name {
