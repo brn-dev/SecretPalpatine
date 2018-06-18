@@ -21,6 +21,8 @@ class LobbiesPageComponent implements OnInit {
   bool showDialog = false;
   String lobbyName = "";
   Router router;
+  Lobby hostLobby = null;
+  bool isJoined = false;
 
   ngOnInit() async {
     this.socketService.setName(routeParams.get('name'));
@@ -55,6 +57,8 @@ class LobbiesPageComponent implements OnInit {
     var createdLobby = await this.socketService.whenLobbyJoined();
     lobbies.add(createdLobby);
     showDialog = false;
+    isJoined = true;
+    hostLobby = createdLobby;
   }
 
   Future joinLobby(Lobby lobby) async {
@@ -66,6 +70,7 @@ class LobbiesPageComponent implements OnInit {
         break;
       }
     }
+    isJoined = true;
   }
 
   void startGame() {

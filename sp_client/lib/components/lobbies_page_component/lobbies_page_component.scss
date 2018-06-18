@@ -1,22 +1,55 @@
-#mainDiv{
-    position: absolute;
-    min-width: 100%;
-    min-height: 100%;
-    background-color: white;
-    color:black;
-}
-material-dialog{
-    color:black;
-}
-section{
-    padding: 3%;
+#mainDiv {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
 }
 
-
-p{
-    font-family: 'Roboto', sans-serif;
+section {
+  padding: 3vh;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
 }
-material-button{
-    background-color: lightblue;
 
+section > :first-child {
+  flex: 1;
+  overflow-y: auto;
+}
+
+section > :last-child {
+  margin-top: 2vh;
+}
+
+section > :first-child::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #575757;
+}
+
+section > :first-child::-webkit-scrollbar {
+  width: 5px;
+  background-color: #373737;
+}
+
+section > :first-child::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #373737;
+}
+
+material-button {
+  background-color: #0173a2;
+}
+
+material-dialog {
+  background-color: #575757 !important;
+  color: white !important;
+}
+
+material-input ::ng-deep .label-text {
+  color: lightgray;
+}
+
+material-input {
+  color: white !important;
 }
