@@ -23,6 +23,7 @@ class SocketIoEvents {
   static const String viceChairPickingNextViceChair = 'viceChair-picking-next-viceChair';
   static const String lobbyCreated = "lobby-created";
   static const String governmentVetoed = 'government-vetoed';
+  static const String palpatineKilled = 'palpatine-killed';
 
   // Client to Server 
   static const String setName = 'set-name';

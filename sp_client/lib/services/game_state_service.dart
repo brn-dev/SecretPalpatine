@@ -42,7 +42,8 @@ class GameStateService {
   bool get voteResult => evaluateVote();
   int failedGovernmentCounter;
 
-  bool palpatineWin;
+  bool palpatineWin = false;
+  bool palpatineDead = false;
 
   GameStateService() {
     print('in constructor');
@@ -150,7 +151,8 @@ class GameStateService {
   bool get hasGameEnded =>
       loyalistEnactedPolicies == 5 ||
       separatistEnactedPolicies == 6 ||
-      palpatineWin;
+      palpatineWin ||
+      palpatineDead;
 
   bool get isPlayerViceChair => player == viceChair;
 

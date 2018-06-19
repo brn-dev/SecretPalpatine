@@ -507,7 +507,14 @@ class GameHandler {
       viceChair.socket
           .to(roomId)
           .emit(SocketIoEvents.playerKilled, killedPlayer.player.id);
-      callback();
+      if (rolesForPlayers[killedPlayer]  == Roles.palpatine) {
+        log('game ended through killing palpatine');
+        room.emit(SocketIoEvents.palpatineKilled, true);
+      } else {
+        log('killed player was not palpatine');
+        room.emit(SocketIoEvents.palpatineKilled, false);
+        callback();
+      }
     });
   }
 

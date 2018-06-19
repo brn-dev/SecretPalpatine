@@ -3,18 +3,37 @@
 }
 
 .palpatine-image-hidden {
+  position: relative;
   position: fixed;
   z-index: 100;
   top: 50%;
   left: 50%;
   height: 60vh;
   max-height: 819px;
-  transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0.000001);
   transition: transform 1s ease-out;
 }
 
-.palpatine-image-shown {
+.palpatine-image-hidden > img {
+  max-height: 100%;
+}
+
+.palpatine-win-image {
   transform: translate(-50%, -50%) scale(1);
+}
+
+.palpatine-dead-image {
+  transform: translate(-50%, -50%) scale(1) rotate(30deg);
+}
+
+.palpatine-dead-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 0, 0, 0.2);
 }
 
 .board-container {

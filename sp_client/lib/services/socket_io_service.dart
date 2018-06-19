@@ -213,6 +213,15 @@ class SocketIoService {
     });
     return completer.future;
   }
+
+  Future<bool> whenIsPalpatineDead() async {
+    var completer = new Completer();
+    socket.once(SocketIoEvents.palpatineKilled, (bool isDead) {
+      gameStateService.palpatineDead = isDead;
+      completer.complete(isDead);
+    });
+    return completer.future;
+  }
   
   void listenForPlayersVoting() {
     socket.on(SocketIoEvents.playerFinishedVoting, (int playerId) {

@@ -7,5 +7,8 @@
                      backgroundImgUrl="assets/images/board/discardPileBlue.gif"
                      class="discard-pile"></app-policy-pile>
 </div>
-<img [ngClass]=" { 'palpatine-image-hidden' : true, 'palpatine-image-shown' : gameStateService.palpatineWin }"
-     src="/assets/images/roles/palpatine.gif">
+<div [ngClass]=" { 'palpatine-image-hidden' : true,
+                   'palpatine-win-image' : gameStateService.palpatineWin,
+                   'palpatine-dead-image' : gameStateService.palpatineDead }">
+    <img src="/assets/images/board/palpatine_win.gif">
+</div>

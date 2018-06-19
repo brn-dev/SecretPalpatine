@@ -318,5 +318,7 @@ class GameComponent implements OnInit {
     } else {
       await socketIoService.whenPlayerKilled();
     }
+    await socketIoService.whenIsPalpatineDead();
+    print('is killed player palpatine: ${gameStateService.palpatineDead}');
   }
 }
