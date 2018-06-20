@@ -14,11 +14,11 @@ class PolicyBoardComponent implements OnInit {
 
   List<String> get loyalistPolicyImgs => new List<String>.filled(
       gameStateService.loyalistEnactedPolicies,
-      '/assets/images/policy/loyalistPolicy.gif');
+      './assets/images/policy/loyalistPolicy.gif');
 
   List<String> get separatistPolicyImgs => new List<String>.filled(
       gameStateService.separatistEnactedPolicies,
-      '/assets/images/policy/separatistPolicy.gif');
+      './assets/images/policy/separatistPolicy.gif');
 
   String get separatistBoardImgUrl {
     if (gameStateService.players.length < 7) {

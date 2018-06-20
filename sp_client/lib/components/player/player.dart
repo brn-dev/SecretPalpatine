@@ -19,17 +19,17 @@ class PlayerComponent {
 
   GameStateService gameStateService;
 
-  String _currViceChairImgUrl = '/assets/images/board/vicechair_icon.gif';
-  String _currChancellorImgUrl = '/assets/images/board/supremechancellor_icon.gif';
-  String _termLimitedImgUrl = '/assets/images/board/term_limited_icon.gif';
+  String _currViceChairImgUrl = './assets/images/board/vicechair_icon.gif';
+  String _currChancellorImgUrl = './assets/images/board/supremechancellor_icon.gif';
+  String _termLimitedImgUrl = './assets/images/board/term_limited_icon.gif';
 
   String _viceChairTooltip = 'This player is currently the Vice Chair of the government';
   String _chancellorTooltip = 'This player is currently the Supreme Chancellor of the government';
   String _termLimitedTooltip = 'This player is term-limited for the next legislative session';
 
-  String _yesVoteImgUrl = '/assets/images/vote/arrow_up_icon.gif';
-  String _noVoteImgUrl = '/assets/images/vote/arrow_down_icon.gif';
-  String _unknownVoteImgUrl = '/assets/images/vote/unknown_icon.gif';
+  String _yesVoteImgUrl = './assets/images/vote/arrow_up_icon.gif';
+  String _noVoteImgUrl = './assets/images/vote/arrow_down_icon.gif';
+  String _unknownVoteImgUrl = './assets/images/vote/unknown_icon.gif';
 
   String _yesVoteTooltip = 'this player voted yes in the last election';
   String _noVoteTooltip = 'this player voted no in the last election';

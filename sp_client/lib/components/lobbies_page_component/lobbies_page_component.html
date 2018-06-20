@@ -11,7 +11,8 @@
                     <material-icon icon="person_add"></material-icon>
                     join lobby
                 </material-button>
-                <material-button *ngIf="lobby == hostLobby" class="button star-wars-font" (click)="startGame()">
+                <material-button *ngIf="lobby == hostLobby" class="button star-wars-font" (click)="startGame()"
+                                 [disabled]="hostLobby.players.length < 5 || hostLobby.players.length > 10">
                     <material-icon icon="play_arrow"></material-icon>
                     start game
                 </material-button>

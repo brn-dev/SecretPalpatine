@@ -18,9 +18,9 @@ class DiscardResult {
 )
 class PolicyDiscardDialogComponent implements OnInit {
 
-  String loyalistPolicyImgUrl = '/assets/images/policy/loyalistPolicy.gif';
-  String separatistPolicyImgUrl = '/assets/images/policy/separatistPolicy.gif';
-  String hiddenPolicyImgUrl = '/assets/images/policy/galacticPolicy.gif';
+  String loyalistPolicyImgUrl = './assets/images/policy/loyalistPolicy.gif';
+  String separatistPolicyImgUrl = './assets/images/policy/separatistPolicy.gif';
+  String hiddenPolicyImgUrl = './assets/images/policy/galacticPolicy.gif';
 
   String discardActionText =  'choose a policy to discard';
   String peekActionText = 'have a look at the top 3 policies';
