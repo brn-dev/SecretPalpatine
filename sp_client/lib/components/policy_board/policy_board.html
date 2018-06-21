@@ -1,15 +1,17 @@
-<div class="board-part">
-    <div class="policy-container separatist-policy-container">
-        <img *ngFor="let policyImg of separatistPolicyImgs" [src]="policyImg">
+<div class="policy-board-container">
+    <div class="board-part">
+        <div class="policy-container separatist-policy-container">
+            <img *ngFor="let policyImg of separatistPolicyImgs" [src]="policyImg">
+        </div>
+        <img [src]="separatistBoardImgUrl" alt="separatist board">
     </div>
-    <img [src]="separatistBoardImgUrl" alt="separatist board">
-</div>
-<div class="board-part">
-    <div class="policy-container loyalist-policy-container">
-        <img *ngFor="let policyImg of loyalistPolicyImgs" [src]="policyImg">
+    <div class="board-part">
+        <div class="policy-container loyalist-policy-container">
+            <img *ngFor="let policyImg of loyalistPolicyImgs" [src]="policyImg">
+        </div>
+        <img src="assets/images/board/loyalistBoard.gif" alt="loyalist board">
     </div>
-    <img src="assets/images/board/loyalistBoard.gif" alt="loyalist board">
-</div>
-<div>
-    {{ gameStateService.failedGovernmentCounter }}
+    <div>
+        {{ gameStateService.failedGovernmentCounter }}
+    </div>
 </div>

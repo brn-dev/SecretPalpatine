@@ -1,9 +1,8 @@
 @import "../../variables";
 
 :host {
-  width: $policy-board-width;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
 }
 
 .board-part {
@@ -43,4 +42,12 @@
 
 img {
   width: 100%;
+}
+
+.policy-board-container {
+  width: $policy-board-width;
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  align-items: center;
 }

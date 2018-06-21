@@ -105,8 +105,11 @@ $role-button-height: 90vh;
 $role-button-tooltip-width: 10em;
 
 .role-button-container {
-  z-index: 200;
-  height: 100vh;
+  position: fixed;
+  z-index: 200000;
+  height: 60vh;
+  top: 20vh;
+  right: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
