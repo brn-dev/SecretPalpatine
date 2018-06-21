@@ -1,7 +1,7 @@
 import 'role.dart';
 
 class Roles {
-  static final String _roleImageFolderPath = '/assets/images/roles/';
+  static final String _roleImageFolderPath = './assets/images/roles/';
 
   static final Role palpatine = new Role(1, false, 'Palpatine', _roleImageFolderPath + 'palpatine.gif');
 

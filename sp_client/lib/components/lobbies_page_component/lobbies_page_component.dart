@@ -49,7 +49,8 @@ class LobbiesPageComponent implements OnInit {
     }
   }
 
-  LobbiesPageComponent(this.routeParams, this.router, this.gameStateService, this.socketService);
+  LobbiesPageComponent(
+      this.routeParams, this.router, this.gameStateService, this.socketService);
 
   Future createLobby() async {
     print(this.lobbyName);
@@ -59,6 +60,7 @@ class LobbiesPageComponent implements OnInit {
     showDialog = false;
     isJoined = true;
     hostLobby = createdLobby;
+    listenForPlayerLeaving();
   }
 
   Future joinLobby(Lobby lobby) async {
@@ -71,6 +73,13 @@ class LobbiesPageComponent implements OnInit {
       }
     }
     isJoined = true;
+    listenForPlayerLeaving();
+  }
+
+  void listenForPlayerLeaving() {
+    socketService
+        .listenForPlayersLeaving()
+        .listen((player) => gameStateService.killedPlayers.add(player));
   }
 
   void startGame() {

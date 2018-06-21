@@ -170,6 +170,7 @@ class GameHandler {
     lobby.removePlayerWithId(playerSocket.player.id);
     players.remove(playerSocket);
     playerSocket.socket.leave(roomId, null);
+    room.emit(SocketIoEvents.playerLeft, playerSocket.player.id);
 
     if (playerSocket == host && players.isNotEmpty) {
       host = players[0];

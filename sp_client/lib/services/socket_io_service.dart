@@ -262,4 +262,13 @@ class SocketIoService {
     });
     return controller.stream;
   }
+
+  Stream<Player> listenForPlayersLeaving() {
+    var controller = new StreamController<Player>();
+    socket.on(SocketIoEvents.playerLeft, (int playerId) {
+      Player player = gameStateService.getPlayerById(playerId);
+      controller.add(player);
+    });
+    return controller.stream;
+  }
 }
